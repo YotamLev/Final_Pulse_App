@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from pulse.powers import power_by_id
-from pulse.sheet import format_power_html, render_character_sheet
+from pulse.sheet import format_level_up_summary, format_power_html, render_character_sheet
 from tests.support import level_2_ready_character, minimal_mortal_character
 
 
@@ -35,6 +35,40 @@ class TestPowerSheetFormatting(unittest.TestCase):
         self.assertIn("Rapid Healing", html_out)
         self.assertIn("power-block", html_out)
         self.assertIn("Vigor", html_out)
+
+    def test_level_up_log_on_sheet(self) -> None:
+        character = minimal_mortal_character()
+        level_2_ready_character(character)
+        v = character["vampire"]
+        v["level"] = 4
+        v["level_ups"] = [
+            {"to_level": 3, "choice": "skills", "details": {"Stealth": 1, "Athletics": 1}},
+            {
+                "to_level": 4,
+                "choice": "power",
+                "details": {"id": "fortitude_rapid_healing"},
+            },
+        ]
+        html_out = render_character_sheet(character)
+        self.assertIn("Level-up log", html_out)
+        self.assertIn("+1 Stealth", html_out)
+        self.assertIn("Rapid Healing", html_out)
+
+    def test_format_level_up_summary_specialties(self) -> None:
+        summary = format_level_up_summary(
+            {
+                "to_level": 5,
+                "choice": "specialties",
+                "details": {
+                    "specialties": [
+                        {"skill": "Stealth", "text": "shadows"},
+                        {"skill": "Brawl", "text": "bar fights"},
+                    ]
+                },
+            }
+        )
+        self.assertIn("Stealth (shadows)", summary)
+        self.assertIn("Brawl (bar fights)", summary)
 
 
 if __name__ == "__main__":

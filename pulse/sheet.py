@@ -14,6 +14,50 @@ def _esc(text: str) -> str:
     return html.escape(text)
 
 
+def format_level_up_summary(entry: dict[str, Any]) -> str:
+    """Human-readable summary of one level-up audit entry."""
+    choice = entry.get("choice", "")
+    details = entry.get("details") or {}
+    if choice == "attr":
+        attr = details.get("attribute", "?")
+        dots = int(details.get("dots", 1))
+        return f"+{dots} {attr}"
+    if choice == "power":
+        power = power_by_id(details.get("id", ""))
+        if power:
+            return f"Power: {power['name']} ({power['source']})"
+        return f"Power: {details.get('id', '?')}"
+    if choice == "skills":
+        parts = [f"+{int(dots)} {skill}" for skill, dots in sorted(details.items()) if int(dots) > 0]
+        return "Skills: " + ", ".join(parts) if parts else "Skills"
+    if choice == "specialties":
+        specs = details.get("specialties") or []
+        parts = [
+            f"{spec.get('skill', '?')} ({spec.get('text', '')})"
+            for spec in specs
+            if spec.get("skill") or spec.get("text")
+        ]
+        return "Specialties: " + "; ".join(parts) if parts else "Specialties"
+    return str(choice or "—")
+
+
+def format_level_up_log_html(level_ups: list[dict[str, Any]]) -> str:
+    if not level_ups:
+        return "<p><em>No level-ups recorded.</em></p>"
+    rows = []
+    for entry in level_ups:
+        level = entry.get("to_level", "?")
+        summary = format_level_up_summary(entry)
+        rows.append(
+            f"<tr><td>{_esc(str(level))}</td><td>{_esc(summary)}</td></tr>"
+        )
+    return (
+        "<table class=\"level-up-log\">"
+        "<tr><th>Level</th><th>Advancement</th></tr>"
+        f"{''.join(rows)}</table>"
+    )
+
+
 def format_power_html(chosen: dict, power_def: dict | None = None) -> str:
     """Render one character power with full rulebook text for print/export."""
     if power_def is None and chosen.get("id"):
@@ -117,6 +161,7 @@ def render_character_sheet(character: dict[str, Any]) -> str:
         innate = "".join(f"<li>{html.escape(a)}</li>" for a in INNATE_VAMPIRE_ABILITIES)
         predator = vampire.get("predator") or {}
         pred_line = html.escape(predator.get("custom_name") or predator.get("type", "—"))
+        level_up_log = format_level_up_log_html(vampire.get("level_ups", []))
         vampire_html = f"""
   <h2>Clan &amp; Bane</h2>
   <p><strong>Clan:</strong> {clan_name} · <strong>Level:</strong> {vampire.get('level', 0)}</p>
@@ -127,6 +172,8 @@ def render_character_sheet(character: dict[str, Any]) -> str:
   <ul>{disc_rows or '<li>—</li>'}</ul>
   <h2>Powers</h2>
   {power_blocks or '<p><em>No powers</em></p>'}
+  <h2>Level-up log</h2>
+  {level_up_log}
   <h2>Innate abilities</h2>
   <ul>{innate}</ul>
 """
@@ -149,6 +196,7 @@ def render_character_sheet(character: dict[str, Any]) -> str:
     .power-text {{ margin: 0.5rem 0; line-height: 1.45; }}
     .power-predator {{ margin: 0.5rem 0; font-style: italic; color: #5a3030; }}
     .power-prereq {{ margin: 0.5rem 0 0; font-size: 0.9rem; color: #444; }}
+    .level-up-log {{ margin-bottom: 1.5rem; }}
     @media print {{
       body {{ margin: 0.5in; max-width: none; }}
       .power-block {{ page-break-inside: avoid; break-inside: avoid; }}
