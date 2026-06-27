@@ -1,0 +1,82 @@
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT / "data"
+
+SCHEMA_VERSION = 2
+APP_VERSION = "0.1.0"
+
+ATTRIBUTES = [
+    "Strength",
+    "Dexterity",
+    "Stamina",
+    "Charisma",
+    "Manipulation",
+    "Composure",
+    "Intelligence",
+    "Wits",
+    "Resolve",
+]
+
+ATTRIBUTE_GROUPS = {
+    "Physical": ["Strength", "Dexterity", "Stamina"],
+    "Social": ["Charisma", "Manipulation", "Composure"],
+    "Mental": ["Intelligence", "Wits", "Resolve"],
+}
+
+ATTRIBUTE_DESCRIPTIONS = {
+    "Strength": "Muscles, stability in movement",
+    "Dexterity": "Finesse, grace in movement",
+    "Stamina": "Constitution, endurance",
+    "Charisma": "Likability, ability to convince, initial perceived trustworthiness",
+    "Manipulation": "Ability to see through others, push buttons",
+    "Composure": "Poker face, withstanding adverse social situations",
+    "Intelligence": "Memory, pattern recognition, problem-solving",
+    "Wits": "Snap judgment, situational awareness",
+    "Resolve": "Grit, ability to perform lengthy boring tasks",
+}
+
+BASE_ATTRIBUTE_VALUE = 2
+TARGET_DISTRIBUTION = {3: 3, 2: 3, 1: 3}
+
+SKILL_MAX_DEFAULT = 5
+ATTRIBUTE_MAX_DEFAULT = 5
+
+SKILL_POOLS = ("professional", "life_event", "leisure", "natural")
+POOL_BUDGETS = {
+    "professional": 10,
+    "life_event": 5,
+    "leisure": 3,
+    "natural": 4,
+}
+TOTAL_SKILL_DOTS = sum(POOL_BUDGETS.values())
+
+POOL_LABELS = {
+    "professional": "Professional Skills",
+    "life_event": "Life Event Skills",
+    "leisure": "Leisure Skills",
+    "natural": "Natural Skills",
+}
+
+POOL_PROMPTS = {
+    "professional": "What do you spend most of your waking hours doing? Add 10 dots to relevant skills.",
+    "life_event": "What major life events shaped you? Add 5 dots to relevant skills.",
+    "leisure": "What do you do for kicks? Add 3 dots to relevant skills.",
+    "natural": "Some people are born better than others. Add 4 dots to skills.",
+}
+
+MORTAL_STEPS = {
+    1: "Chronicle & Concept",
+    2: "Traits",
+    3: "Attributes",
+    4: "Professional Skills",
+    5: "Life Event Skills",
+    6: "Leisure Skills",
+    7: "Natural Skills",
+    8: "Languages",
+    9: "Specialties",
+    10: "Beliefs & Relations",
+    11: "Mortal Complete",
+}
+
+MORTAL_STEP_COUNT = len(MORTAL_STEPS)

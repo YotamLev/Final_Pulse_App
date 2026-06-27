@@ -1,0 +1,218 @@
+[
+  {
+    "name": "Shy",
+    "plus": "Resolve",
+    "minus": "Charisma",
+    "blurb": "Withdrawn in social settings but steady under pressure."
+  },
+  {
+    "name": "Confident",
+    "plus": "Charisma",
+    "minus": "Wits",
+    "blurb": "Charismatic but sometimes slow to notice danger."
+  },
+  {
+    "name": "Brawny",
+    "plus": "Strength",
+    "minus": "Dexterity",
+    "blurb": "Powerfully built, but less capable of delicate or graceful movement."
+  },
+  {
+    "name": "Nimble",
+    "plus": "Dexterity",
+    "minus": "Strength",
+    "blurb": "Quick and precise, but lacks raw physical power."
+  },
+  {
+    "name": "Hardy",
+    "plus": "Stamina",
+    "minus": "Charisma",
+    "blurb": "Able to withstand hardship, though rough manners can put others off."
+  },
+  {
+    "name": "Delicate",
+    "plus": "Dexterity",
+    "minus": "Stamina",
+    "blurb": "Graceful and precise, but easily exhausted or physically overwhelmed."
+  },
+  {
+    "name": "Imposing",
+    "plus": "Strength",
+    "minus": "Charisma",
+    "blurb": "Physically commanding, but more intimidating than approachable."
+  },
+  {
+    "name": "Restless",
+    "plus": "Wits",
+    "minus": "Resolve",
+    "blurb": "Alert and quick to react, but struggles with prolonged, repetitive effort."
+  },
+  {
+    "name": "Patient",
+    "plus": "Resolve",
+    "minus": "Wits",
+    "blurb": "Persistent and methodical, but slow to respond to sudden changes."
+  },
+  {
+    "name": "Studious",
+    "plus": "Intelligence",
+    "minus": "Charisma",
+    "blurb": "Knowledgeable and analytical, but uncomfortable with casual social interaction."
+  },
+  {
+    "name": "Absent-Minded",
+    "plus": "Intelligence",
+    "minus": "Wits",
+    "blurb": "Capable of deep thought, but prone to missing what is happening nearby."
+  },
+  {
+    "name": "Impulsive",
+    "plus": "Wits",
+    "minus": "Composure",
+    "blurb": "Acts quickly and decisively, but has difficulty controlling immediate reactions."
+  },
+  {
+    "name": "Stoic",
+    "plus": "Composure",
+    "minus": "Charisma",
+    "blurb": "Calm and unreadable, but emotionally distant and difficult to warm to."
+  },
+  {
+    "name": "Expressive",
+    "plus": "Charisma",
+    "minus": "Composure",
+    "blurb": "Emotionally engaging and easy to read, but poor at concealing distress or uncertainty."
+  },
+  {
+    "name": "Cunning",
+    "plus": "Manipulation",
+    "minus": "Charisma",
+    "blurb": "Skilled at finding leverage, but rarely comes across as sincere."
+  },
+  {
+    "name": "Guileless",
+    "plus": "Charisma",
+    "minus": "Manipulation",
+    "blurb": "Open and naturally trustworthy, but poor at detecting or exploiting hidden motives."
+  },
+  {
+    "name": "Suspicious",
+    "plus": "Manipulation",
+    "minus": "Composure",
+    "blurb": "Quick to notice ulterior motives, but easily unsettled by ambiguous behavior."
+  },
+  {
+    "name": "Unflappable",
+    "plus": "Composure",
+    "minus": "Wits",
+    "blurb": "Remains calm in a crisis, but may react too slowly to rapidly developing threats."
+  },
+  {
+    "name": "Driven",
+    "plus": "Resolve",
+    "minus": "Composure",
+    "blurb": "Relentless in pursuit of a goal, but tense and easily frustrated by setbacks."
+  },
+  {
+    "name": "Easygoing",
+    "plus": "Composure",
+    "minus": "Resolve",
+    "blurb": "Relaxed under pressure, but struggles to sustain effort when motivation fades."
+  },
+  {
+    "name": "Observant",
+    "plus": "Wits",
+    "minus": "Charisma",
+    "blurb": "Notices subtle details, but spends more attention studying people than engaging them."
+  },
+  {
+    "name": "Charming",
+    "plus": "Charisma",
+    "minus": "Resolve",
+    "blurb": "Naturally wins people over, but relies on inspiration rather than persistence."
+  },
+  {
+    "name": "Calculating",
+    "plus": "Manipulation",
+    "minus": "Composure",
+    "blurb": "Carefully identifies pressure points, but becomes uneasy when events escape control."
+  },
+  {
+    "name": "Disciplined",
+    "plus": "Resolve",
+    "minus": "Dexterity",
+    "blurb": "Consistent and tireless, but rigid habits make spontaneous movement less fluid."
+  },
+  {
+    "name": "Athletic",
+    "plus": "Stamina",
+    "minus": "Intelligence",
+    "blurb": "Physically conditioned and energetic, but inclined toward action rather than reflection."
+  },
+  {
+    "name": "Bookish",
+    "plus": "Intelligence",
+    "minus": "Strength",
+    "blurb": "Well-read and mentally capable, but physically underdeveloped."
+  },
+  {
+    "name": "Tough",
+    "plus": "Stamina",
+    "minus": "Composure",
+    "blurb": "Endures pain and deprivation, but responds to stress with visible aggression."
+  },
+  {
+    "name": "Precise",
+    "plus": "Dexterity",
+    "minus": "Wits",
+    "blurb": "Excels when careful accuracy is possible, but hesitates when forced to improvise."
+  },
+  {
+    "name": "Instinctive",
+    "plus": "Wits",
+    "minus": "Intelligence",
+    "blurb": "Makes effective snap judgments, but rarely examines problems in depth."
+  },
+  {
+    "name": "Methodical",
+    "plus": "Intelligence",
+    "minus": "Dexterity",
+    "blurb": "Solves problems through careful analysis, but lacks fluidity and spontaneity."
+  },
+  {
+    "name": "Commanding",
+    "plus": "Charisma",
+    "minus": "Composure",
+    "blurb": "Naturally draws attention and obedience, but reacts poorly when openly challenged."
+  },
+  {
+    "name": "Reserved",
+    "plus": "Composure",
+    "minus": "Manipulation",
+    "blurb": "Keeps emotions firmly controlled, but has difficulty probing or influencing others."
+  },
+  {
+    "name": "Tenacious",
+    "plus": "Resolve",
+    "minus": "Manipulation",
+    "blurb": "Refuses to abandon a chosen course, but struggles to adapt through subtlety or compromise."
+  },
+  {
+    "name": "Adaptable",
+    "plus": "Wits",
+    "minus": "Strength",
+    "blurb": "Responds rapidly to changing circumstances, but lacks force when direct action is required."
+  },
+  {
+    "name": "Forceful",
+    "plus": "Strength",
+    "minus": "Manipulation",
+    "blurb": "Solves obstacles through direct pressure, but lacks subtlety in dealing with people."
+  },
+  {
+    "name": "Silver-Tongued",
+    "plus": "Manipulation",
+    "minus": "Resolve",
+    "blurb": "Skilled at steering others, but inclined to seek shortcuts instead of enduring hardship."
+  }
+]

@@ -1,0 +1,2948 @@
+{
+  "schema_version": 1,
+  "meta": {
+    "source": "Final Pulse text - Second Edition",
+    "source_file": "Final Pulse text - Second Edition.docx",
+    "power_count": 241,
+    "unresolved_power_references": [
+      {
+        "referenced_in": "Momentum",
+        "power": "Unrelenting"
+      }
+    ]
+  },
+  "disciplines": [
+    "Animalism",
+    "Auspex",
+    "Celerity",
+    "Dominate",
+    "Fortitude",
+    "Nightmare",
+    "Obfuscate",
+    "Potence",
+    "Presence",
+    "Protean",
+    "Arrete",
+    "Mortifex"
+  ],
+  "sorcery_paths": [
+    "Path of Koldun",
+    "Path of Force",
+    "Path of Wards",
+    "Path of Vines",
+    "Path of Shadows",
+    "Path of Blood",
+    "Path of Necromancy",
+    "Path of Demons",
+    "Path of Illusion"
+  ],
+  "powers": [
+    {
+      "id": "animalism_ghoul_animal",
+      "name": "Ghoul Animal",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "By feeding a drained animal some of her Vitae, a vampire can infuse it with a fragment of the Kindred’s twilight life. It looks as it did when it died, though if appropriate, it might gain retractable fangs like a vampire. If it was wounded in death, it retains signs of the injuries, but its body functions fully. A coyote crushed by an SUV has a tire track running across it but no crushed bones, and a crow with a busted wing has bone jutting out of the wound but can still fly. It doesn’t act like a normal animal — it doesn’t hunt for food, nor is it spooked by loud noises. It sleeps throughout the day, but becomes active at night. A human observing such an animal might be able to tell something’s wrong."
+    },
+    {
+      "id": "animalism_feral_whispers",
+      "name": "Feral Whispers",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "Communicate with a species of animal. Animals are smart enough for their survival, and can know many things, but they typically do not recognize shapes. Most can recognize recurring individuals. The vampire appears to make communication sounds of that animal, so chittering for rats, and finger movements for bees."
+    },
+    {
+      "id": "animalism_mark_territory",
+      "name": "Mark Territory",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "The vampire marks her territory with Vitae, in much the same way that animals use urine or feces. She must encircle her territory in a ring of Vitae, claiming it as her own — assuming she has driven off any prior residents. When encircling the territory, she must walk the whole border. Some Kindred open wounds on their hands and arms and walk at a stately pace, dripping a slow stream of thick blood behind them. Others run wild, smearing blood on surfaces like a feral beast. Once she has established her territory, the vampire is privy to everything that happens within it. She can command animals, banish people, and provoke other vampires to leave her lair, inflicting Willpower damage if they resist. Most vampires establish their territory in small places, like a brownstone or small public garden. A powerful vampire might claim a whole public park or castle."
+    },
+    {
+      "id": "animalism_the_wild_hunt",
+      "name": "The Wild Hunt",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "The vampire infuses some of her Vitae with the essence of her prey, making it irresistible to other predators and scavenging beasts. Wherever she spills her blood — on the ground, over an object, or even splashing it on another person— the animals she calls will try to consume it. Her blood only loses potency once the summoned animals destroy whatever she poured it over or once the sun rises, at which point the Vitae burns away as though it were never present. She can focus her Beast’s call on one kind of creature, for example summoning just birds or rats. Prey animals in the affected area rightly shy away, afraid of the power of a vampire’s Beast."
+    },
+    {
+      "id": "animalism_pack_hunter",
+      "name": "Pack Hunter",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": {
+        "raw": "1 other Animalism power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Animalism",
+            "min_count": 1,
+            "exclude": [
+              "Pack Hunter"
+            ]
+          }
+        ]
+      },
+      "summary": "Can give an animal a Liter of your vitae, gaining the ability to see through the eyes and senses of every animal within your chosen species in an area. Rather than controlling or speaking to them, you become a passive receiver of impressions, sounds, visions, and instincts — like a distributed surveillance system made of rats, birds, insects, or wolves. If used with The Wild Hunt, applies to the wider category of animals summoned."
+    },
+    {
+      "id": "animalism_confront_the_beast",
+      "name": "Confront the Beast",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "You can quell, or draw, the Beast of other vampires, stopping or provoking Frenzy."
+    },
+    {
+      "id": "animalism_animal_succulence",
+      "name": "Animal Succulence",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "Drinking from animals has no penalties, and can even, rarely, give resonance."
+    },
+    {
+      "id": "animalism_apex_recognition",
+      "name": "Apex Recognition",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "Animals recognize you are the supreme predator, the top of the food chain. When interacting with animals, the vampire can add Blood Surge at a rate of 1 Liter per 3 bonus dice, instead of 1, and the maximum is 6."
+    },
+    {
+      "id": "animalism_abomination",
+      "name": "Abomination",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": {
+        "raw": "Ghoul Animal",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ghoul Animal"
+          }
+        ]
+      },
+      "summary": "Some things should not be, and yet are. The vampire can overfeed an animal using Ghoul Animal, creating a “night of growth”, allowing that animal to gain monstrous features - bats grow to the size of horses over a month, etc. Each night the animal can add a feature that is an extension of an existing feature it has, or gain 1 point in a physical attribute, to a maximum of 5. Animals with over 7 nights of growth tend to be unstable, and may experience symptoms. Animals with over 15 nights of growth tend to have short lifespans."
+    },
+    {
+      "id": "animalism_borrowed_wisdom",
+      "name": "Borrowed Wisdom",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "When consuming an animal, the vampire can access a natural ability or knowledge that animal had: climbing, swimming, darkvision, sniffing, reaction speed, tremor-sense. The vampire gains up to  5 dice bonus in rolls involving that natural ability or knowledge until the next feeding."
+    },
+    {
+      "id": "animalism_unliving_hive",
+      "name": "Unliving Hive",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": null,
+      "summary": "A swarm of small animals burrow into your dead flesh, feeding off of miniscule amounts of your Vitae. They can be wasps, flies, roaches, etc. They can make one unsettling, if they are revealed. If visible, the vampire is a walking Masquerade breach, but gains +2 to intimidation."
+    },
+    {
+      "id": "animalism_animal_dominion",
+      "name": "Animal Dominion",
+      "source_type": "discipline",
+      "source": "Animalism",
+      "prerequisites": {
+        "raw": "The Wild Hunt, Ghoul Animal, Pack Hunter",
+        "all": [
+          {
+            "type": "power",
+            "power": "The Wild Hunt"
+          },
+          {
+            "type": "power",
+            "power": "Ghoul Animal"
+          },
+          {
+            "type": "power",
+            "power": "Pack Hunter"
+          }
+        ]
+      },
+      "summary": "You dole out tiny droplets of your Vitae to nearby animal apostles, who readily take some and go on to distribute. After some minutes, every animal in the area of a large neighborhood or park will serve you for a scene. You gain all of the communication benefits of Pack Hunter, and all of the ferociousness of The Wild Hunt, to direct the animals to missions of your liking. Packs of street dogs and coyotes prowl at your command, as swarms of roaches and ants infiltrate buildings you choose, while racoons steal enemy guns & ammo."
+    },
+    {
+      "id": "auspex_enhance_senses",
+      "name": "Enhance Senses",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "When using a sense to detect information, like sight or sound, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum is 6."
+    },
+    {
+      "id": "auspex_sense_the_unseen",
+      "name": "Sense The Unseen",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "The senses of the vampire become attuned to dimensions beyond the mundane, allowing them to sense presences otherwise hidden from the naked eye. This can be anything from another vampire using Obfuscate to someone using Auspex to spy upon the character to a ghost in the middle of the room. Dormant Sorcery spells and rituals might also be found with this power, at the Storyteller’s discretion."
+    },
+    {
+      "id": "auspex_read_aura",
+      "name": "Read Aura",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "By focusing on a person, the vampire can perceive the state of that person’s psyche as a shifting aura of colors. Auras reveal little precise information, but do provide clues regarding many subjects, e.g., emotional state, Resonance, and supernatural traits. If looking for a specific condition, the vampire can cursorily scan the crowd to detect it. Such cursory scans provide no further information. Each question costs 1 advantage. Each additional use per night costs 1 Liter extra."
+    },
+    {
+      "id": "auspex_impulse",
+      "name": "Impulse",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "The Beast focuses on danger and weakness. A vampire who borrows her Beast’s senses can use that focus to know if someone is about to attack her, or to pinpoint the weakest person in the room. The Beast is sensitive to things that other people cannot normally perceive; using this Discipline can pierce Obfuscate."
+    },
+    {
+      "id": "auspex_premonition",
+      "name": "Premonition",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "The beast can protect itself preternaturally by plucking possibilities from the strands of the future’s fate. This ability has a passive effect, allowing the vampire to receive odd & cryptic messages, for example: the character sees 4 blind mice, and then later decides to take the fourth door. \nThe active power can be used when the vampire wants information they do not possess. The Storyteller sets a skill roll, and if successful, the vampire makes the impossible deduction."
+    },
+    {
+      "id": "auspex_spirits_touch",
+      "name": "Spirit’s Touch",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "By touching an inanimate object or the ground at a location, the vampire can sense the emotional residue left by those who have handled that object or visited the location in the past. The user gains insight into not only that person, but also what was done and under what circumstances. While rarely crystal clear, the information often provides leads impossible to gain from regular forensics and deduction."
+    },
+    {
+      "id": "auspex_telepathy",
+      "name": "Telepathy",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "Open a channel of conversation between you and the target. The difficulty increases per distance, and decreases per familiarity. You can communicate verbally, even if the target does not share a language."
+    },
+    {
+      "id": "auspex_scry",
+      "name": "Scry",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "By reaching out with their mind, the vampire can tap into the senses of another mortal or vampire, seeing, hearing, and feeling what they do. The user still retains their own perceptions and is still aware of their own surroundings, though the effect requires some getting used to. The user decides whether to tap into only one, some, or all of the target’s senses. When used on a stranger this power requires line of sight to initiate. However, it can be used over longer distances on someone who still has some of the user’s Blood in their body."
+    },
+    {
+      "id": "auspex_clairvoyance",
+      "name": "Clairvoyance",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "By closing their eyes and entering a light trance, the vampire becomes master of its surroundings. In a few minutes it can gather information from roughly a street sized area (more if outdoors or less populated) that would normally take many hours, perhaps days of legwork and investigation. Once connected in such a way to their surroundings the vampire can also receive information on anything happening out of the ordinary in the area. Information is usually presented similarly to answers from the Impulse Auspex power."
+    },
+    {
+      "id": "auspex_alert",
+      "name": "Alert",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Wits by 1.\nFor example, let’s say a 6th level vampire has 5 in Wits. When they gain the 7th level, they take this power, their Wits remaining as 5. When they gain the 8th level, they can increase their Wits to 6, beyond the normal maximum."
+    },
+    {
+      "id": "auspex_anticipation",
+      "name": "Anticipation",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": null,
+      "summary": "You anticipate another’s action. If you wish to counter another character’s action, and for that character to act first, you gain 2 bonus dice per Liter spent to do so, to a maximum of 6 bonus dice."
+    },
+    {
+      "id": "auspex_auspex_mastery",
+      "name": "Auspex Mastery",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": {
+        "raw": "1 other Auspex powers",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Auspex",
+            "min_count": 1,
+            "exclude": [
+              "Auspex Mastery"
+            ]
+          }
+        ]
+      },
+      "summary": "Reduce an Auspex power cost by 1 Liter. Can be taken twice. Each time you may choose a different power. Powers cannot be reduced below ½ - meaning a roll of 1 die determines whether a liter is spent."
+    },
+    {
+      "id": "auspex_awaken",
+      "name": "Awaken",
+      "source_type": "discipline",
+      "source": "Auspex",
+      "prerequisites": {
+        "raw": "Auspex Mastery",
+        "all": [
+          {
+            "type": "power",
+            "power": "Auspex Mastery"
+          }
+        ]
+      },
+      "summary": "You ghouls can use any Auspex power you know that costs 1 or less, (by default or by Auspex Mastery) for free, once per scene."
+    },
+    {
+      "id": "celerity_speed",
+      "name": "Speed",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "When doing tasks requiring quick or nimble hands, fast movements, and precision (driving in a car chase, dueling, pickpocketing, dancing, sniping, playing basketball), the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "celerity_between_the_ticks",
+      "name": "Between The Ticks",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "The world around them slowing to a crawl, the vampire can aim an attack at a target as if the target were stationary. The Rapid Reflex power can be used against this power."
+    },
+    {
+      "id": "celerity_rapid_reflex",
+      "name": "Rapid Reflex",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "When reacting, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6. In addition, the vampire can add 1 to their defense per 1 Liter for a turn, as long as they are free to move around."
+    },
+    {
+      "id": "celerity_the_still_world",
+      "name": "The Still World",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "The vampire can move momentarily into a hyper-fast state of reality, where objects seem to stand still. The vampire can walk on water, or squeeze between the blades of a spinning jet engine. Any interaction (such as attacking, feeding, pickpocketing) with another human or supernatural being causes the Beast to return to normal time. Maximum distance of 20 meters."
+    },
+    {
+      "id": "celerity_whirlwind",
+      "name": "Whirlwind",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "Prerequisite: Between The Ticks or The Still World"
+    },
+    {
+      "id": "celerity_split_second",
+      "name": "Split Second",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "Prerequisite: Rapid Reflex"
+    },
+    {
+      "id": "celerity_quick",
+      "name": "Quick",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Dexterity by 1.\nFor example, let’s say a 6th level vampire has 5 in Dexterity. When they gain the 7th level, they take this power, their Dexterity remaining as 5. When they gain the 8th level, they can increase their Dexterity to 6, beyond the normal maximum."
+    },
+    {
+      "id": "celerity_draught_of_movement",
+      "name": "Draught of Movement",
+      "source_type": "discipline",
+      "source": "Celerity",
+      "prerequisites": null,
+      "summary": "You ghouls can use any Celerity power you know that costs 1 or less, for free, once per scene."
+    },
+    {
+      "id": "dominate_draw_on_instinct",
+      "name": "Draw On Instinct",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": null,
+      "summary": "Issue a simple, instinctual, immediate command that is some type of fight-flight-freeze. Requires the target to be able to hear & understand you."
+    },
+    {
+      "id": "dominate_mesmerize",
+      "name": "Mesmerize",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": null,
+      "summary": "Create eye contact with the target, and make them enter a suggestible state. Must be used in a calm environment where the target has your attention, or difficulty increases. Mesmerize takes a turn, as the vampire utters a simple command the victim will fulfill. Since this overrides free will, the command  cannot have complex conditions, or be used to reveal truth. It can be complex if the action is routine for the target (a security guard issued a command of “open the gate” can press the correct button, but “delete camera footage” will fail). Commands cannot directly imperil the target."
+    },
+    {
+      "id": "dominate_complex_command",
+      "name": "Complex Command",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Mesmerize",
+        "all": [
+          {
+            "type": "power",
+            "power": "Mesmerize"
+          }
+        ]
+      },
+      "summary": "Allows for some autonomous thinking when using Mesmerize, but the power still cannot be used for information extraction."
+    },
+    {
+      "id": "dominate_cloud_mind",
+      "name": "Cloud Mind",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": null,
+      "summary": "Looking deeply into the eyes of the target, you make it enter a temporary fugue state. It forgets all events in the duration and is unable to act, unless in immediate danger."
+    },
+    {
+      "id": "dominate_modify_memory",
+      "name": "Modify Memory",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Cloud Mind",
+        "all": [
+          {
+            "type": "power",
+            "power": "Cloud Mind"
+          }
+        ]
+      },
+      "summary": "The vampire can rewrite whole swathes of the victim’s memories, as long as they can keep the victim’s gaze and full, uninterrupted attention. The vampire verbally describes the victim’s new memories, which the victim then accepts as their own. This power does not allow the user to investigate the victim’s true memories; it more resembles blindly painting over the old canvas."
+    },
+    {
+      "id": "dominate_mnemonic_collapse",
+      "name": "Mnemonic Collapse",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Cloud Mind",
+        "all": [
+          {
+            "type": "power",
+            "power": "Cloud Mind"
+          }
+        ]
+      },
+      "summary": "You cause a specific skill to become temporarily inaccessible — “lock away” someone's ability to use a language, drive, or sharpshoot. Requires eye contact which is hard to achieve once combat has started."
+    },
+    {
+      "id": "dominate_implant_trigger",
+      "name": "Implant Trigger",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Mesmerize",
+        "all": [
+          {
+            "type": "power",
+            "power": "Mesmerize"
+          }
+        ]
+      },
+      "summary": "When using Mesmerize, the vampire can now implant a posthypnotic suggestion, allowing the command to remain dormant until a specific stimulus occurs. This trigger can be anything from a specific date, to a person (“When you meet Roland, tell him these words”), to hearing a specific phrase. The Submerged Directive never expires; people can conceivably walk around with an order buried in their mind for years. The user can only embed one suggestion per victim."
+    },
+    {
+      "id": "dominate_slippery_tongue",
+      "name": "Slippery Tongue",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": null,
+      "summary": "You manipulate a conversation to cause the target to say a phrase you choose."
+    },
+    {
+      "id": "dominate_terminal_decree",
+      "name": "Terminal Decree",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Mesmerize + 2 other Dominate powers",
+        "all": [
+          {
+            "type": "power",
+            "power": "Mesmerize"
+          },
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Dominate",
+            "min_count": 2,
+            "exclude": [
+              "Terminal Decree"
+            ]
+          }
+        ]
+      },
+      "summary": "No longer hampered by the self preservation instincts of their victims, the vampire can now issue commands that directly lead to the harm or death of the victim. Rolls still apply."
+    },
+    {
+      "id": "dominate_dominate_expert",
+      "name": "Dominate Expert",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": null,
+      "summary": "When using Dominate powers, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "dominate_rationalize",
+      "name": "Rationalize",
+      "source_type": "discipline",
+      "source": "Dominate",
+      "prerequisites": {
+        "raw": "Mesmerize or Draw on Instinct",
+        "any": [
+          {
+            "type": "power",
+            "power": "Mesmerize"
+          },
+          {
+            "type": "power",
+            "power": "Draw On Instinct"
+          }
+        ]
+      },
+      "summary": "The victim now rationalizes their behavior under Dominate powers, not seeing them as outside influence. Prolonged exposure can lead to adverse mental health."
+    },
+    {
+      "id": "fortitude_rapid_healing",
+      "name": "Rapid Healing",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "When healing, the vampire spends 1 Liter per 2 Health Points. In addition, you can use 2 Liters per turn for healing without spending your action on it. Given to other vampires, your blood heals 2 HP if drank directly from the source."
+    },
+    {
+      "id": "fortitude_mental_fortress",
+      "name": "Mental Fortress",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "When resisting emotional or supernatural pressure (including all non-physical Disciplines) the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "fortitude_defy_bane",
+      "name": "Defy Bane",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "The vampire soaks 6 points of Health damage from Fire, Sunlight, Cold Iron, or Faith per 1 Liter spent. This happens as the vampire takes the damage. In addition, spending 2 or more Liters with this power (from soaking damage or as a decision) in a scene grants temporary immunity to both Clan Bane and Mythic banes, for the scene."
+    },
+    {
+      "id": "fortitude_retain_the_sanguine_gift",
+      "name": "Retain the Sanguine Gift",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "The vampire can hold up to their Stamina in extra Liters. In addition, if they feed when full, they can store half (rounded up) the taken Liters in their body, to a maximum of 5 extra Liters. So If a vampire has 2 dots in Stamina, they can store 12 Liters with this power, instead of the regular 10. If, while having 12 Liters, they feed themselves another 5 Liters, they can store 12+3 = 15 Liters. If they feed another 4, they can store 17 Liters, which is the maximum for a 2-dot Stamina character with this power. Those who overuse this extra gorging may find that overtime they turn from a moving corpse, to a bloated one, their gluttony evident, even if only temporarily."
+    },
+    {
+      "id": "fortitude_deflection_of_wooden_doom",
+      "name": "Deflection of Wooden Doom",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "When staked, attempt to crush the wood. Can only happen reflexively (doesn’t require action) when staked, otherwise go into Torpor."
+    },
+    {
+      "id": "fortitude_flesh_of_marble",
+      "name": "Flesh of Marble",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "Your skin becomes like marble. You are immune to all damage for a turn. This power cannot prevent damage unless activated beforehand."
+    },
+    {
+      "id": "fortitude_karmic_flesh",
+      "name": "Karmic Flesh",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": {
+        "raw": "Flesh of Marble",
+        "all": [
+          {
+            "type": "power",
+            "power": "Flesh of Marble"
+          }
+        ]
+      },
+      "summary": "When Flesh of Marble is active, close-range attacks reflect their damage on the attacker (fist, claw, fang, or weapon)"
+    },
+    {
+      "id": "fortitude_last_stand",
+      "name": "Last Stand",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": {
+        "raw": "Flesh of Marble",
+        "all": [
+          {
+            "type": "power",
+            "power": "Flesh of Marble"
+          }
+        ]
+      },
+      "summary": "When reduced to 0 Health, you activate Flesh of Marble with 0 cost, and remain active. You cannot heal for the rest of this scene. After that, you collapse into torpor, even if you fed during the scene."
+    },
+    {
+      "id": "fortitude_immovable",
+      "name": "Immovable",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "You cannot be moved. Physically — no pushing, pulling, grappling, or even being dislodged by explosions. Magically — you’re immune to forced relocation or mental redirection. Cannot be activated mid-air. Affects the floor you stand on or walls you lean against."
+    },
+    {
+      "id": "fortitude_prowess_from_pain",
+      "name": "Prowess From Pain",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": {
+        "raw": "Rapid Healing",
+        "all": [
+          {
+            "type": "power",
+            "power": "Rapid Healing"
+          }
+        ]
+      },
+      "summary": "When healing HP with blood, you can add a +1 bonus to any Physical Attribute per 2 HP healed, to a total maximum of 5. So, if a vampire has taken 5 HP damage, and heals 2 in one turn using Rapid Healing, they can add +1 to their Strength. Next turn, if they again heal 2 HP, they can add +1 to their Dexterity, or turn the +1 to +2 Strength. Secondary abilities don’t change, so raising Stamina gives no extra HP.\nIf you have Defy Bane, each Liter spent on it also grants a +1 bonus to any Physical Attribute, like healing 2 HP."
+    },
+    {
+      "id": "fortitude_hardy",
+      "name": "Hardy",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Stamina increases by 1.\nFor example, let’s say a 6th level vampire has 5 in Stamina. When they gain the 7th level, they take this power, their Stamina remaining as 5. When they gain the 8th level, they can increase their Stamina to 6, beyond the normal maximum."
+    },
+    {
+      "id": "fortitude_draught_of_endurance",
+      "name": "Draught of Endurance",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": null,
+      "summary": "Your ghouls double their HP, so instead of Stamina + 4 they get Stamina*2 + 8."
+    },
+    {
+      "id": "fortitude_fortitude_mastery",
+      "name": "Fortitude Mastery",
+      "source_type": "discipline",
+      "source": "Fortitude",
+      "prerequisites": {
+        "raw": "Any Fortitude power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Fortitude",
+            "min_count": 1,
+            "exclude": [
+              "Fortitude Mastery"
+            ]
+          }
+        ]
+      },
+      "summary": "One Fortitude power you choose improves. Can be taken once per power you already have:\nRapid Healing - heal 3 HP per Liter"
+    },
+    {
+      "id": "nightmare_haunt_dream",
+      "name": "Haunt Dream",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Enter and affect the dreams of a target known to you. Difficulty is reduced per familiarity. For example: close friend is difficulty 2, while someone you saw at the bar is difficulty 5."
+    },
+    {
+      "id": "nightmare_sleep_thief",
+      "name": "Sleep Thief",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": {
+        "raw": "Haunt Dream",
+        "all": [
+          {
+            "type": "power",
+            "power": "Haunt Dream"
+          }
+        ]
+      },
+      "summary": "You remove the ability to rest from a victim. If mortal, they toss, turn, sweat, and fear closing their eyes. As nights pass, hallucinations begin. This effect can be made permanent with repeated use."
+    },
+    {
+      "id": "nightmare_silence_between_breaths",
+      "name": "Silence Between Breaths",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "The world briefly goes mute for the target — ambient noise vanishes, people’s mouths move with no sound, and the character hears only their own heartbeat. During this state, they become hyper-aware of something watching them, yet are typically paralyzed with fear. The target cannot utter a sound, even if they wanted to."
+    },
+    {
+      "id": "nightmare_feast_of_dread",
+      "name": "Feast of Dread",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": {
+        "raw": "2 other Nightmare powers",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Nightmare",
+            "min_count": 2,
+            "exclude": [
+              "Feast of Dread"
+            ]
+          }
+        ]
+      },
+      "summary": "You may feed on a mortal's fear directly, without drinking blood — gaining 1 Liter per scene in which a mortal suffers from a Nightmare effect. If the power used costs 1 Liter or less, it costs 0 with this power."
+    },
+    {
+      "id": "nightmare_display_fear",
+      "name": "Display Fear",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Reach into the mind of the target and pull their greatest fear, displayed. The vampire can attempt to perceive it, but doing so is an advantage costing 3. Advantages can be used for Willpower damage."
+    },
+    {
+      "id": "nightmare_dread_countenance",
+      "name": "Dread Countenance",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "When threatening or intimidating, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "nightmare_dread_gaze",
+      "name": "Dread Gaze",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Briefly exposing their vampiric nature, the user instills a single subject with utter terror. Mortals are cowed, run, or freeze with fear, while other vampires either submit like whipped dogs or flee."
+    },
+    {
+      "id": "nightmare_lullaby",
+      "name": "Lullaby",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Keep sleepers sleeping, cause wakeful to sleep."
+    },
+    {
+      "id": "nightmare_paranoia",
+      "name": "Paranoia",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Unnerve the target by causing delusions of harm. Difficulty increases with distance and reduces with familiarity."
+    },
+    {
+      "id": "nightmare_reflected_eyes",
+      "name": "Reflected Eyes",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "When the victim sees their reflection (mirror, glass, water), they see you watching them from behind — even if you're nowhere near."
+    },
+    {
+      "id": "nightmare_contagious_fear",
+      "name": "Contagious Fear",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": {
+        "raw": "Paranoia or Display Fear",
+        "any": [
+          {
+            "type": "power",
+            "power": "Paranoia"
+          },
+          {
+            "type": "power",
+            "power": "Display Fear"
+          }
+        ]
+      },
+      "summary": "Paranoia and Display Fear can now affect all targets you choose in the scene, rolls are still separate. No additional cost."
+    },
+    {
+      "id": "nightmare_dream_shield",
+      "name": "Dream Shield",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Heal Resolve+Wits Willpower damage each uninterrupted Daysleep."
+    },
+    {
+      "id": "nightmare_manipulator",
+      "name": "Manipulator",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Manipulation increases by 1.\nFor example, let’s say a 6th level vampire has 5 in Manipulation . When they gain the 7th level, they take this power, their Manipulation remaining as 5. When they gain the 8th level, they can increase their Manipulation to 6, beyond the normal maximum."
+    },
+    {
+      "id": "nightmare_it_was_all_a_bad_dream",
+      "name": "It Was All a Bad Dream",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": null,
+      "summary": "A power to make mortals think that whatever scary masquerade-breaking shit they just saw was, in fact, a dream, or has some plausible, mundane & rational explanation. Not as air-tight as deleting the memory, but easier to achieve."
+    },
+    {
+      "id": "nightmare_shadow_avatars",
+      "name": "Shadow Avatars",
+      "source_type": "discipline",
+      "source": "Nightmare",
+      "prerequisites": {
+        "raw": "any other Nightmare power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Nightmare",
+            "min_count": 1,
+            "exclude": [
+              "Shadow Avatars"
+            ]
+          }
+        ]
+      },
+      "summary": "The vampire creates shadowy illusions of themselves. They move as the vampire pleases, but have no substance, and do not appear in reflections. These shadows cannot move beyond the vampire’s general perception (same room, but momentary obstructions in the line-of-sight are fine) or reveal information to the vampire."
+    },
+    {
+      "id": "obfuscate_shady",
+      "name": "Shady",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "The vampire can hide their form and face well. When sneaking or lying, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "obfuscate_cloak_of_darkness",
+      "name": "Cloak of Darkness",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "In spaces where there are thick shadows or distorted light (laser show, flickering lights) the vampire can turn partially invisible. The user’s defense gets a +2 bonus. This power affects electronic devices, but can make it unclear if it is a bug or something supernatural."
+    },
+    {
+      "id": "obfuscate_silence",
+      "name": "Silence",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "The user can nullify sounds they make, including footsteps, rustlings, etc. Loud sounds, like a gunshot, cost 1 Liter. This power works on electronic recordings. This power cannot affect anything further than 1 meter from the user."
+    },
+    {
+      "id": "obfuscate_fade",
+      "name": "Fade",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "A low-level hypnotism makes all characters avert their eyes or otherwise ignore you, seeing the user as a forgettable nobody. You can interact with objects in a non-attention-grabbing way (open doors, not ram a car)."
+    },
+    {
+      "id": "obfuscate_ambusher",
+      "name": "Ambusher",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "When standing relatively still against a backdrop (wall, tree, below the murky water, etc.) you become invisible. If you attempt an attack, intimidation, or other action by surprising a target, you gain a +3 dice bonus."
+    },
+    {
+      "id": "obfuscate_disguise",
+      "name": "Disguise",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "With some preparation the vampire can make themselves appear as a specific individual of any build and gender. The user must carefully study the subject, otherwise the charade fails when meeting anyone with more than a casual familiarity with the person being mimicked. The user must study the face to be copied for at least five minutes, from different angles. The user requires another ten minutes of observation to mimic the subject’s voice and mannerisms. The user can only copy human appearance, not animal form. The Storyteller then makes a hidden test of Wits/Manipulation + Subterfuge/Performance (Difficulty 4, lower for greater familiarity. Skill synergy is possible). A failure means that the resemblance is less than convincing, and anyone close to the person copied notices something amiss automatically. A win creates a convincing illusion, but the user must still attempt to impersonate speech and mannerisms. A critical win creates a perfect illusion with no further roll necessary. Sense the Unseen (Auspex 1) can pierce the mask as per General Rules."
+    },
+    {
+      "id": "obfuscate_vanish",
+      "name": "Vanish",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "The user turns completely invisible. This power affects all senses. In the same turn the power was activated, unless the only action the activating vampire takes is escape, anybody watching suffers no penalty to attack against the user. Otherwise, attacks cannot target the user unless the user is perceived (such as with the Auspex power Sense the Unseen). Using this power halves the speed at which the user can move, and does not allow sudden forceful movements, such as swinging a sword or shooting a gun - these dispel the invisibility. The user can click a button detonating a bomb elsewhere, for example."
+    },
+    {
+      "id": "obfuscate_unseen_passage",
+      "name": "Unseen Passage",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": {
+        "raw": "Vanish",
+        "all": [
+          {
+            "type": "power",
+            "power": "Vanish"
+          }
+        ]
+      },
+      "summary": "Vanish duration increases to a scene."
+    },
+    {
+      "id": "obfuscate_conceal",
+      "name": "Conceal",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "Make an object you carry not be perceived, like the Fade power, except it works on supernaturals by default. Openly using the object breaks the effect. This power affects electronic devices (such as metal detectors). The object must be carried: shotguns, books, skulls - but not coffins."
+    },
+    {
+      "id": "obfuscate_blankmap",
+      "name": "Blankmap",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": {
+        "raw": "Conceal or Fade",
+        "any": [
+          {
+            "type": "power",
+            "power": "Conceal"
+          },
+          {
+            "type": "power",
+            "power": "Fade"
+          }
+        ]
+      },
+      "summary": "Like the Fade power, except on a building. The building must not have much mortal activity, and is perceived as just another building, or as abandoned or otherwise boring, but the building is perceivable. No more than 1 location at a time."
+    },
+    {
+      "id": "obfuscate_obscure",
+      "name": "Obscure",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "The vampire can now activate Obfuscate powers on others. Each activation demands they be close by. Unwilling characters require a roll."
+    },
+    {
+      "id": "obfuscate_obfuscate_mastery",
+      "name": "Obfuscate Mastery",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "An Obfuscate power you know costs 1 Liter less. Each time you may choose a different power. Powers cannot be reduced below ½ - meaning a roll of 1 die determines whether a liter is spent."
+    },
+    {
+      "id": "obfuscate_hidden_servants",
+      "name": "Hidden Servants",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "Your ghouls may use Obfuscate powers you know, which cost 1 or less Liters, for free, once per scene."
+    },
+    {
+      "id": "obfuscate_pull_the_wool",
+      "name": "Pull the Wool",
+      "source_type": "discipline",
+      "source": "Obfuscate",
+      "prerequisites": null,
+      "summary": "The Auspex power Sense the Unseen (and other supernatural abilities) no longer automatically pierces your Obfuscate powers. Make a hidden roll of your amount of Obfuscate powers vs the observer’s amount of Auspex power, only once per scene."
+    },
+    {
+      "id": "potence_vigor",
+      "name": "Vigor",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "When doing tasks requiring muscle (jumping, punching, slicing, lifting, bending metal), the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "potence_brutal_feed",
+      "name": "Brutal Feed",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "Known as the “Savage Kiss”, this power allows the user to employ an unholy inner strength when draining a victim. In mere seconds, the attacker swallows torrents of blood while mauling the victim. The result is an efficient, if messy, feeding often employed in the heat of battle where the mangled remains of the victim can be disguised."
+    },
+    {
+      "id": "potence_shockwave",
+      "name": "Shockwave",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "Their strength an elemental force, the vampire can slam their fist or foot into the ground or wall, creating a shockwave that throws their opponents prone. One of the more dramatic applications of Potence, this power needs to be carefully employed, lest the user literally bring the house down upon themselves."
+    },
+    {
+      "id": "potence_unholy_fist",
+      "name": "Unholy Fist",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "Your unarmed attacks aren’t halved by mortals, and do double damage to objects."
+    },
+    {
+      "id": "potence_berserker",
+      "name": "Berserker",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "In rolls of strength involving red dice (either from using a Blood Surge or from having Hunger), each result of 10 (ankh with stars, ankh with fangs) counts as 2 successes, even if unmatched. A critical (two results of 10, two ankhs with stars/fangs) count as 5 successes instead of the usual 4."
+    },
+    {
+      "id": "potence_perseverance",
+      "name": "Perseverance",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": {
+        "raw": "Vigor",
+        "all": [
+          {
+            "type": "power",
+            "power": "Vigor"
+          }
+        ]
+      },
+      "summary": "Once activated, all Potence powers cost no liters for this scene."
+    },
+    {
+      "id": "potence_bloody_strangle",
+      "name": "Bloody Strangle",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "When grappling a target, the vampire can prevent it from accessing supernatural powers, such as Disciplines. The target must be held tightly by the vampire, and the vampire using this power cannot do anything else while using it, except walking short distances with great difficulty, or exclaiming short phrases. The only powers a vampire trapped this way can use while grappled are blood surge and Potence."
+    },
+    {
+      "id": "potence_powerhouse",
+      "name": "Powerhouse",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Strength increases by 1.\nFor example, let’s say a 6th level vampire has 5 in Strength . When they gain the 7th level, they take this power, their Strength remaining as 5. When they gain the 8th level, they can increase their Strength to 6, beyond the normal maximum."
+    },
+    {
+      "id": "potence_draught_of_might",
+      "name": "Draught of Might",
+      "source_type": "discipline",
+      "source": "Potence",
+      "prerequisites": null,
+      "summary": "Your ghouls may use Potence powers you know, which cost 1 or less Liters, for free, once per scene."
+    },
+    {
+      "id": "presence_awe",
+      "name": "Awe",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "When requiring charm, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "presence_protected_flower",
+      "name": "Protected Flower",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": {
+        "raw": "Awe or Hypnotize",
+        "any": [
+          {
+            "type": "power",
+            "power": "Awe"
+          },
+          {
+            "type": "power",
+            "power": "Hypnotize"
+          }
+        ]
+      },
+      "summary": "As long as the vampire doesn’t engage in aggressive behavior, the vampire cannot be targeted for attacks, as they are perceived as too majestic to hurt."
+    },
+    {
+      "id": "presence_gravitas",
+      "name": "Gravitas",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": {
+        "raw": "Awe or Hypnotize",
+        "any": [
+          {
+            "type": "power",
+            "power": "Awe"
+          },
+          {
+            "type": "power",
+            "power": "Hypnotize"
+          }
+        ]
+      },
+      "summary": "A subtle aura pulls people closer to you. In crowded spaces, mortals brush shoulders with you without realizing; in meetings, people stand too near. You can use this to control movement, spacing, or privacy. You can use the crowd a human shields, but once someone gets shot - the effect is over."
+    },
+    {
+      "id": "presence_summon",
+      "name": "Summon",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The vampire can call to themselves any person, mortal or vampire, upon targets that satisfy one of these conditions:"
+    },
+    {
+      "id": "presence_lingering_kiss",
+      "name": "Lingering Kiss",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The Kiss of a vampire induces near-ecstasy in the victim, but this power leaves other Kisses in the dust. Victims become addicted to the Kiss - obsessing over it and even seeking the vampire out for repeated feedings. Mortals denied repeated kisses may become anemic, self-harm, or even die from this addiction, unless they can get their fix."
+    },
+    {
+      "id": "presence_hypnotize",
+      "name": "Hypnotize",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The vampire captures the attention of onlookers, making them ignore other events, unless they are dramatic or obviously dangerous."
+    },
+    {
+      "id": "presence_conjure_desire",
+      "name": "Conjure Desire",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "Reach into the mind of the target and pull their greatest momentary desire, displayed. The vampire can attempt to perceive it, but doing so is an advantage costing 3. Advantages can be used for Willpower damage."
+    },
+    {
+      "id": "presence_midnight_command",
+      "name": "Midnight Command",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The vampire can inspire courage and motivate listeners."
+    },
+    {
+      "id": "presence_midnight_inspiration",
+      "name": "Midnight Inspiration",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "When using Midnight Command, the duration increases to the whole night. In addition, the listeners get the advantages of the roll as bonus Willpower."
+    },
+    {
+      "id": "presence_share_mood",
+      "name": "Share Mood",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The vampire can project a strong emotion they experience onto a character, when sharing a scene. A possible advantage is changing or heightening that mortal’s blood resonance."
+    },
+    {
+      "id": "presence_charming",
+      "name": "Charming",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Charisma increases by 1.\nFor example, let’s say a 6th level vampire has 5 in Charisma . when they gain the 7th level, they take this power, their Charisma remaining as 5. When they gain the 8th level, they can increase their Charisma to 6, beyond the normal maximum."
+    },
+    {
+      "id": "presence_nurture_obsession",
+      "name": "Nurture Obsession",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "The vampire can take an existing value, desire, goal, thought, or ideology of the victim and greatly amplify it. The victim grows obsessed, working tirelessly towards it."
+    },
+    {
+      "id": "presence_groupies",
+      "name": "Groupies",
+      "source_type": "discipline",
+      "source": "Presence",
+      "prerequisites": null,
+      "summary": "Your ghouls can know your emotional state at all times, as long as you choose to share it. In addition, your ghouls receive your amount of Presence powers in bonus dice when attempting to please you, or to focus on serving you."
+    },
+    {
+      "id": "protean_animorph",
+      "name": "Animorph",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "The vampire can assume the shape of an animal as small as a mouse or as big as a bear. The vampire can only change into one type of animal. Taking this power multiple times allows for 1 extra animal per power. The animal, while usually a spectacular example of their species, shows no signs to a mundane observer of being supernatural. An advantage of 2 on a Stamina + Manipulation vs 4 roll allows for a different-looking version of the animal, otherwise it is the same animal every time (same fur, same breed of dog, etc.)"
+    },
+    {
+      "id": "protean_back_to_basics",
+      "name": "Back to Basics",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "Animorph",
+        "all": [
+          {
+            "type": "power",
+            "power": "Animorph"
+          }
+        ]
+      },
+      "summary": "Your excellence as an animal starts to overshadow your human-form. Choose 4 animal-relevant skills (this excludes, for example, firearms or finance, but includes new skills, like “smell tracking” or “flying”) and 2 Attributes per Animorph animal form. While in that form, You get +3 in the skills (+5 if they are new animal-specific skills you have no dots in), and +2 in Attributes, even surpassing your maximum. In addition, you gain the ability to speak while in animal form."
+    },
+    {
+      "id": "protean_feral_weapons",
+      "name": "Feral Weapons",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "The vampire can extend their natural weapons to monstrous proportions. This usually takes the form of fingernails extending into wicked talons but can also come in other forms such as fangs elongating into veritable daggers, as from a gigantic serpent."
+    },
+    {
+      "id": "protean_beast_form",
+      "name": "Beast Form",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "You crouch to run on all fours. Your toes elongate, knees invert, ankles strengthen, as your hands grip concrete, asphalt, or earth. Your speed increases significantly, and can reach a cheetah-like maximum of 80 km/h, able to keep up with cars. You gain +2 automatic successes to rolls for climbing or chasing. You gain +2 dice bonus to brawl. This power can be activated while Animorph is active."
+    },
+    {
+      "id": "protean_bone_armor",
+      "name": "Bone armor",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "You create a subdermal enhanced exoskeleton-like layer. It looks a bit weird, but not outright inhuman."
+    },
+    {
+      "id": "protean_wring_out",
+      "name": "Wring Out",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "2 other Protean powers",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Protean",
+            "min_count": 2,
+            "exclude": [
+              "Wring Out"
+            ]
+          }
+        ]
+      },
+      "summary": "When you increase hunger to get available Liters, you gain 2 Liter per hunger. Once you use this power, and until your next feeding, you cannot reduce any hunger, and vampires cannot gain Liters from your Vitae."
+    },
+    {
+      "id": "protean_shift_balance",
+      "name": "Shift balance",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "You can move dots between all three physical attributes: Strength, Dexterity, Stamina. HP is unaffected. The maximum stays the same (typically 5, without other Discipline powers)."
+    },
+    {
+      "id": "protean_bone_bullets",
+      "name": "Bone Bullets",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "Separate Limb or Feral Weapons",
+        "any": [
+          {
+            "type": "power",
+            "power": "Separate Limb"
+          },
+          {
+            "type": "power",
+            "power": "Feral Weapons"
+          }
+        ]
+      },
+      "summary": "You can create bone spurs and eject spine links like crude weapons. They are effective at about 20 meters, and typically piercing or causing blunt force trauma - user’s choice."
+    },
+    {
+      "id": "protean_attach_organ",
+      "name": "Attach Organ",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "Take a limb/organ from another living or deceased being, and attach it to yourself in a ghastly ritual. You can use the limb as the original being used it."
+    },
+    {
+      "id": "protean_reform_limb",
+      "name": "Reform Limb",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "Attach Organ",
+        "all": [
+          {
+            "type": "power",
+            "power": "Attach Organ"
+          }
+        ]
+      },
+      "summary": "After drinking from an animal, you can grow a limb that animal has, or shape an existing limb to it. Vampires drinking from bats can grow wings, and Australian vampires have been known to sprout kangaroo legs. Note that having a limb does not equate knowing how to use it, so that may take some time - the Animalism power “borrowed knowledge” helps with this. In addition, growing wings doesn’t allow flight - without Potence or something similar - so it mostly is used for gliding."
+    },
+    {
+      "id": "protean_separate_limb",
+      "name": "Separate Limb",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "Seperate a limb you have in your original vampiric body (not one from the Attach Limb power), and grant it independence. It can serve you and understand you when you talk to it, but can only access senses it has physically. You suffer damage appropriate to the size of the limb, until it re-attaches."
+    },
+    {
+      "id": "protean_horrid_molting",
+      "name": "Horrid Molting",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "Separate Limb",
+        "all": [
+          {
+            "type": "power",
+            "power": "Separate Limb"
+          }
+        ]
+      },
+      "summary": "In preparation for battle, you can stock up on extra organs - another set of lungs, tendons, bones - probably taken from a mortal victim you consume. Then, if you are damaged, you can shed your damaged exterior - like a snake - and continue the fight."
+    },
+    {
+      "id": "protean_gullet_of_the_beast",
+      "name": "Gullet of the Beast",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "You may “consume” — and safely hold — an object inside your body. This is not digestion; this is temporary containment. Smuggling, or protecting something precious all become viable."
+    },
+    {
+      "id": "protean_earth_meld",
+      "name": "Earth Meld",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "Becoming one with the soil, the vampire sinks into the earth. Unless in torpor, the vampire rises again the following night."
+    },
+    {
+      "id": "protean_mist_form",
+      "name": "Mist Form",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "The vampire gains the legendary power to turn into a cloud of mist, perceivable to the eye but untouchable by anything save fire, sunlight, and supernatural aggression (a supernatural attacking mundanely, like punching, does nothing). They can fit through pipes, crevices, and cracks. While strong winds might buffet them, no natural force can disperse the cloud."
+    },
+    {
+      "id": "protean_liquid_form",
+      "name": "Liquid Form",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "The vampire becomes a sentient, viscous, bloody liquid. The vampire can interact with objects, at a -3 penalty. Vampires can use this form to strangle and drown mortals, for example. Cutting the liquid and fully separating it can damage the vampire as normal. Eye contact or speech are not possible. Feeding is possible if in contact with the internal organs of the victim."
+    },
+    {
+      "id": "protean_remove_heart",
+      "name": "Remove Heart",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "The kindred becomes able to remove their heart. This requires an hour's effort, after which the heart is most often hidden to the best of the kindred's abilities. The heart is at a constant physical vulnerability. If your heart is destroyed, you suffer incredible physical harm (And must repeat this process after regrowing the heart). If another bears your heart, however, the consequences may be far more dire, as it becomes a leash of your own making. While your heart is divorced from your body, you cannot be staked. If your heart is staked, you are paralyzed as though staked in person. If your heart is destroyed, you suffer Health damage equal to Stamina*2, and Willpower damage equal to 5. If another person is holding your heart, you treat them as being blood bonded with a maximal Bond Strength."
+    },
+    {
+      "id": "protean_fleshcrafting",
+      "name": "Fleshcrafting",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": null,
+      "summary": "Changes made with Protean or can now be permanent."
+    },
+    {
+      "id": "protean_szlachta",
+      "name": "Szlachta",
+      "source_type": "discipline",
+      "source": "Protean",
+      "prerequisites": {
+        "raw": "Fleshcrafting",
+        "all": [
+          {
+            "type": "power",
+            "power": "Fleshcrafting"
+          }
+        ]
+      },
+      "summary": "You can now use Protean on your ghouls, for free."
+    },
+    {
+      "id": "arrete_perfect_recall",
+      "name": "Perfect Recall",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "You can retroactively remember a detail from something you have seen, heard, or read - for details the Storyteller hadn’t mentioned (those mentioned are given freely without Discipline usage, provided the Storyteller can recall them…). For example, when encountering an occult symbol, you can ask if it was present in a room you visited. To ask about all rooms, you pay the number of rooms in Liters."
+    },
+    {
+      "id": "arrete_data_siphon",
+      "name": "Data Siphon",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "You can siphon data from encrypted, locked, or otherwise inaccessible that is locally stored in electronic devices you hold. This power works by the Beast connecting to the psychic residue of all those who entered data, or who expect to gain data from the device."
+    },
+    {
+      "id": "arrete_silent_siphon",
+      "name": "Silent Siphon",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "Data Siphon",
+        "all": [
+          {
+            "type": "power",
+            "power": "Data Siphon"
+          }
+        ]
+      },
+      "summary": "Your usage of Data Siphon and Digital Haunting is imperceptible afterwards."
+    },
+    {
+      "id": "arrete_far_siphon",
+      "name": "Far Siphon",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "Data Siphon",
+        "all": [
+          {
+            "type": "power",
+            "power": "Data Siphon"
+          }
+        ]
+      },
+      "summary": "Your usage of Data Siphon and Digital Haunting requires only line of sight."
+    },
+    {
+      "id": "arrete_digital_haunting",
+      "name": "Digital Haunting",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "Data Siphon",
+        "all": [
+          {
+            "type": "power",
+            "power": "Data Siphon"
+          }
+        ]
+      },
+      "summary": "You embed a fragment of your will into a digital system — a phone, camera, speaker, terminal. You may “speak” through it, issue commands, or leak disturbing imagery/sound. Controlling the machine actions may require a Resolve/Intelligence + Technology roll."
+    },
+    {
+      "id": "arrete_spectrum_expansion",
+      "name": "Spectrum Expansion",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "you can see Electromagnetic waves as if they were other colors of visible light."
+    },
+    {
+      "id": "arrete_physics_engine",
+      "name": "Physics Engine",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "You can simulate in your mind the results of physical events: if this knife is thrown at that angle, it will hit exactly there. When doing tasks involving chain reactions, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "arrete_mind_palace",
+      "name": "Mind Palace",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "You can think about a problem from all angles, deduce all possible conclusions. When doing tasks involving pure thought, intellect, or deduction, the vampire can add Blood Surge at a rate of 1 Liter per 2 bonus dice, instead of 1, and the maximum becomes 6."
+    },
+    {
+      "id": "arrete_credibility",
+      "name": "Credibility",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "When resisting intimidation or powers affecting the mind, you get a dice bonus equal to the amount of Arrete powers you have."
+    },
+    {
+      "id": "arrete_ego_architecture",
+      "name": "Ego Architecture",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "Credibility",
+        "all": [
+          {
+            "type": "power",
+            "power": "Credibility"
+          }
+        ]
+      },
+      "summary": "You design mental separations that partition segments of your identity: rage in one room, secrets in another, Beast in a cage. Or: your mortal life chapter, your lover, and your ambition. You gain immense resistance to psychic intrusion (Dominate, Auspex), but also risk locking away parts of yourself too well."
+    },
+    {
+      "id": "arrete_the_common_denominator",
+      "name": "The Common Denominator",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "You can know any human language - read, write, speak, understand & translate."
+    },
+    {
+      "id": "arrete_borrowed_knowledge",
+      "name": "Borrowed Knowledge",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "When feeding from a victim, you gain a bonus to an area of expertise they had, such as banking, journalism, cooking meth, etc. the bonus is between 1 and 3 dice."
+    },
+    {
+      "id": "arrete_calculating",
+      "name": "Calculating",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "Your maximum possible attribute in Intelligence increases by 1.\nFor example, let’s say a 6th level vampire has 5 in Intelligence. when they gain the 7th level, they take this power, their Intelligence remaining as 5. When they gain the 8th level, they can increase their Intelligence to 6, beyond the normal maximum."
+    },
+    {
+      "id": "arrete_masterwork",
+      "name": "Masterwork",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": null,
+      "summary": "Your maximum possible skill dots in any 2 chosen skills increases by 1, or increases by 2 in a single skill.\nFor example, let’s say a 6th level vampire has 5 in Science. When they gain the 7th level, they take this power, their Science remaining as 5. When they gain the 8th level, they can increase their possible maximum Science to 7 , beyond the normal maximum. Then, next level, they can take 2 skill dots in Science, raising the skill to 7."
+    },
+    {
+      "id": "arrete_gifted_kids",
+      "name": "Gifted Kids",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "Another Arrete power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Arrete",
+            "min_count": 1,
+            "exclude": [
+              "Gifted Kids"
+            ]
+          }
+        ]
+      },
+      "summary": "Your ghouls may use your Intelligence score, and any skills you have, when performing tasks for you."
+    },
+    {
+      "id": "arrete_logic_bomb",
+      "name": "Logic Bomb",
+      "source_type": "discipline",
+      "source": "Arrete",
+      "prerequisites": {
+        "raw": "2 other Arrete power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Arrete",
+            "min_count": 2,
+            "exclude": [
+              "Logic Bomb"
+            ]
+          }
+        ]
+      },
+      "summary": "You utter a perfectly formed question, riddle, or contradiction into a target’s mind. If they fail to resolve it, they freeze — suffering disorientation, nosebleeds, or confusion. Kindred may frenzy under logic collapse. Other listeners other than the target may be affected."
+    },
+    {
+      "id": "mortifex_touch_of_oblivion",
+      "name": "Touch of Oblivion",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire can harm, cripple, and age with a single touch, aging the affected body part catastrophically. It can be used to wither a limb, crumple a throat, or to blind a pair of eyes. Vampires cannot mend this damage in the same scene, while mortals might never recover the affected limb."
+    },
+    {
+      "id": "mortifex_ashes_to_ashes",
+      "name": "Ashes to Ashes",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "By touching a corpse, the vampire speeds the passage of time on it, as it withers quickly into dust. Useful for getting rid of evidence. Works against zombies, too."
+    },
+    {
+      "id": "mortifex_kill_the_vibe",
+      "name": "Kill the Vibe",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire instills cynicism, deadens emotion, and snuffs out passion. Everyone able to see or hear the vampire cools down and loses hope, but loses despair as well, becoming grey and empty instead."
+    },
+    {
+      "id": "mortifex_dead_nerves",
+      "name": "Dead Nerves",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "With a touch, you sever the connection between a target’s brain and their pain or anxiety. They stop reacting to injury, heat, even broken limbs. Mortals may become reckless or dissociate. Vampires can act while injured with less hindrance, but may risk themselves (e.g., cracking a safe while on fire without realizing)."
+    },
+    {
+      "id": "mortifex_carrion_instinct",
+      "name": "Carrion Instinct",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "You create the scent of a dead or dying creature. Animals, social workers, and even Kindred with high Hunger treat the marked areas as a situation, prey or food. While dangerous, this can be used to draw attention, lure the Beast, or force Frenzied vampires to target the area (or yourself) instead of an ally. You can control the exact smell."
+    },
+    {
+      "id": "mortifex_grave_tethered",
+      "name": "Grave-Tethered",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": {
+        "raw": "2 other Mortifex powers",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Mortifex",
+            "min_count": 2,
+            "exclude": [
+              "Grave-Tethered"
+            ]
+          }
+        ]
+      },
+      "summary": "You bind yourself to a corpse you’ve touched. If you’re killed or torpored, or even imprisoned, you can choose to drag your Beastly soul to the tethered corpse’s location, allowing you to rise there instead, destroying your old body. If the corpse has taken damage or decay, you will take them upon waking up, but all other Health damage is in your previous (now ash) body."
+    },
+    {
+      "id": "mortifex_ossuary_explosion",
+      "name": "Ossuary Explosion",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "You cause rapid bloating in a corpse, shattering it into hundreds of splinters of enchanted bone, causing damage like a fragmentation grenade. Cost: 1 Liter"
+    },
+    {
+      "id": "mortifex_blissful_embalming",
+      "name": "Blissful Embalming",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire can regenerate a corpse, causing wounds to heal, and even blood to refill the corpse. This blood, lifeless, is of course undrinkable to vampires - but can cover up the reason of death, for preservation of the Masquerade. With additional Liters spent, even greater restoration can be performed, slowly regrowing a body from an old skull."
+    },
+    {
+      "id": "mortifex_plague",
+      "name": "Plague",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire can inflict a horrible disease on a mortal victim. This disease is mostly untreatable even with the best modern medicine, confounding doctors and displaying increasingly stubborn and complex mechanisms."
+    },
+    {
+      "id": "mortifex_kiss_of_lachesis",
+      "name": "Kiss of Lachesis",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire can age the victim by touching them. For mortals, these changes are fixed, while vampires recover from them after a night."
+    },
+    {
+      "id": "mortifex_rigor_mortis",
+      "name": "Rigor Mortis",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "The vampire can cause a victim to freeze in a full-body lockup, either by touching them and sapping their muscles, or by an eye-to-eye stare, but that is harder."
+    },
+    {
+      "id": "mortifex_foresighted_sleep",
+      "name": "Foresighted Sleep",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": null,
+      "summary": "This power allows the vampire to enter a state of controlled torpor, preserving themselves and hastening their recovery. Upon activation, the vampire enters torpor. While in this state, they can specify a condition for their awakening, such as: a specific time, the presence of a particular individual, or a certain temperature change. For each night spent this way, the vampire can roll stamina to heal HP."
+    },
+    {
+      "id": "mortifex_addams_family",
+      "name": "Addams Family",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": {
+        "raw": "another Mortifex power",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Mortifex",
+            "min_count": 1,
+            "exclude": [
+              "Addams Family"
+            ]
+          }
+        ]
+      },
+      "summary": "Should your ghouls die, they will always come back to you as ghosts, ready to serve. All powers which grant ghouls perks and bonuses work on these ghosts. The Sabbat has used the tactic of creating a ghoul, immediately killing it, then having the ghost serve for eternity - even creating ghost armies. If the user has one of the powers: Groupies (Presence), Draught of Might (Potence), Draught of Endurance (Fortitude) - these ghosts can also manifest physically, and fade back to incorporeality, at will."
+    },
+    {
+      "id": "mortifex_fatal_sympathy",
+      "name": "Fatal Sympathy",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": {
+        "raw": "2 other Mortifex powers",
+        "all": [
+          {
+            "type": "powers_from_source",
+            "source_type": "discipline",
+            "source": "Mortifex",
+            "min_count": 2,
+            "exclude": [
+              "Fatal Sympathy"
+            ]
+          }
+        ]
+      },
+      "summary": "By abusing their connection, the vampire can inflict their woes on another."
+    },
+    {
+      "id": "mortifex_pestilence",
+      "name": "Pestilence",
+      "source_type": "discipline",
+      "source": "Mortifex",
+      "prerequisites": {
+        "raw": "Plague",
+        "all": [
+          {
+            "type": "power",
+            "power": "Plague"
+          }
+        ]
+      },
+      "summary": "The vampire creates a truly Gehennic phenomena: an illness affecting vampire kind. By corrupting their own blood, the vampire can become a disease vector, infecting others."
+    },
+    {
+      "id": "amalgams_superior_apex_recognition",
+      "name": "Superior Apex Recognition",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Animalism & Dominate, Apex Recognition",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Animalism",
+              "Dominate"
+            ]
+          },
+          {
+            "type": "power",
+            "power": "Apex Recognition"
+          }
+        ]
+      },
+      "summary": "Can now use Apex Recognition on humans."
+    },
+    {
+      "id": "amalgams_memento_mori",
+      "name": "Memento Mori",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Fortitude & Nightmare",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Fortitude",
+              "Nightmare"
+            ]
+          }
+        ]
+      },
+      "summary": "Your fear of being hurt is projected outwards.. When attacked or cornered, you project the feeling of inevitable doom. If injured, your fear fills enemies with the irrational belief they may die alongside you."
+    },
+    {
+      "id": "amalgams_ghost_fist",
+      "name": "Ghost-Fist",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Obfuscate & Potence or Obfuscate & Celerity",
+        "any": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Obfuscate",
+              "Potence"
+            ]
+          },
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Obfuscate",
+              "Celerity"
+            ]
+          }
+        ]
+      },
+      "summary": "You strike from impossible angles — a punch from behind when you’re in front, a blow that phases through a wall."
+    },
+    {
+      "id": "amalgams_persistance_hunter",
+      "name": "Persistance Hunter",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Animalism & Fortitude",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Animalism",
+              "Fortitude"
+            ]
+          }
+        ]
+      },
+      "summary": "Can now use Stamina when attacking, instead of Strength or Dexterity."
+    },
+    {
+      "id": "amalgams_raise_carcass",
+      "name": "Raise Carcass",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Animalism & Mortifex, Ghoul Animal",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Animalism",
+              "Mortifex"
+            ]
+          },
+          {
+            "type": "power",
+            "power": "Ghoul Animal"
+          }
+        ]
+      },
+      "summary": "Can raise an animal from the dead to be your servant. It functions like the power Ghoul Animal, except operating on whichever dead animal you find."
+    },
+    {
+      "id": "amalgams_stop_barking",
+      "name": "Stop Barking",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Animalism & Obfuscate",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Animalism",
+              "Obfuscate"
+            ]
+          }
+        ]
+      },
+      "summary": "You can make animals completely ignore you + any companions."
+    },
+    {
+      "id": "amalgams_eyes_of_the_beast",
+      "name": "Eyes of the Beast",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Animalism & Protean",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Animalism",
+              "Protean"
+            ]
+          }
+        ]
+      },
+      "summary": "Your eyes turn an unnatural red, granting +2 dice for intimidation rolls. In addition, you can see in darkness."
+    },
+    {
+      "id": "amalgams_blood_cipher",
+      "name": "Blood Cipher",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Arrete & Obfuscate",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Arrete",
+              "Obfuscate"
+            ]
+          }
+        ]
+      },
+      "summary": "Can write in a code only the intended target will comprehend, without prior coordination. Determining the message, or its intended recipient, is an Intelligence +Investigation/Academics vs difficulty 6 + Intelligence + academics/science/subterfuge roll."
+    },
+    {
+      "id": "amalgams_true_schema",
+      "name": "True Schema",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Arrete & Auspex, Mind Palace or Premonition",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Arrete",
+              "Auspex"
+            ]
+          },
+          {
+            "type": "any_powers",
+            "powers": [
+              "Mind Palace",
+              "Premonition"
+            ]
+          }
+        ]
+      },
+      "summary": "You intuitively understand the structure of complex systems — bureaucracies, organizations, databases, even cults or conspiracies. With minimal input, you can sketch how the system operates and where its vulnerabilities lie.\nWhen investigating a system (including using Premonition to investigate), each result of 10 (ankh with stars, ankh with fangs) counts as 2 successes, even if unmatched. A critical (two results of 10, two ankhs with stars/fangs) count as 5 successes instead of the usual 4. Advantages gained from this roll can be stored, to be used in the context of the investigated system - if planning a bank heist, advantages are kept, and can be added as success to a later roll to escape the bank, for example."
+    },
+    {
+      "id": "amalgams_false_exit",
+      "name": "False Exit",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Obfuscate, Fade, Ambusher, or Vanish",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Obfuscate"
+            ]
+          },
+          {
+            "type": "any_powers",
+            "powers": [
+              "Fade",
+              "Ambusher",
+              "Vanish"
+            ]
+          }
+        ]
+      },
+      "summary": "You create a temporary illusion of your departure. Mortals and some supernaturals believe you’ve walked away, jumped out a window, exited a car, etc. In reality, you’ve hidden via another power like Fade, Ambusher, or Vanish.\nIf used with Ambusher or Vanish - this power works on most supernaturals, including vampires. If used with Fade, same as Fade rules."
+    },
+    {
+      "id": "amalgams_momentum",
+      "name": "Momentum",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Celerity & Potence, one of: Unrelenting, Vigor, Speed, Rapid Reflex",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Celerity",
+              "Potence"
+            ]
+          },
+          {
+            "type": "any_powers",
+            "powers": [
+              "Unrelenting",
+              "Vigor",
+              "Speed",
+              "Rapid Reflex"
+            ]
+          }
+        ]
+      },
+      "summary": "In a situation where both powers apply, the maximum red dice you can gain rises to 8."
+    },
+    {
+      "id": "amalgams_languid_movement",
+      "name": "Languid Movement",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Celerity & Presence, Performance Specialty: Dance",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Celerity",
+              "Presence"
+            ]
+          },
+          {
+            "type": "specialty",
+            "skill": "Performance",
+            "specialty": "Dance"
+          }
+        ]
+      },
+      "summary": "You can use Performance instead of Athletics or Brawl. When trying a social roll involving dance, you get +2 dice."
+    },
+    {
+      "id": "amalgams_command_the_wraiths",
+      "name": "Command the Wraiths",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Mortifex",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Mortifex"
+            ]
+          }
+        ]
+      },
+      "summary": "All Dominate powers work on ghosts, zombies."
+    },
+    {
+      "id": "amalgams_melpominee",
+      "name": "Melpominee",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Auspex & Presence",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Auspex",
+              "Presence"
+            ]
+          }
+        ]
+      },
+      "summary": "You can cast your voice to sound as if coming from a point you can see."
+    },
+    {
+      "id": "amalgams_voice_of_authority",
+      "name": "Voice of Authority",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Presence",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Presence"
+            ]
+          }
+        ]
+      },
+      "summary": "You can use your Dominate powers without eye contact, relying on voice alone. You suffer a -2 dice penalty for these rolls."
+    },
+    {
+      "id": "amalgams_vicissitude",
+      "name": "Vicissitude",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Protean",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Protean"
+            ]
+          }
+        ]
+      },
+      "summary": "You can use your Protean powers on another vampire, willing, or staked. You can also use them on ghouls, causing great suffering."
+    },
+    {
+      "id": "amalgams_dementation",
+      "name": "Dementation",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Auspex & Dominate or Presence & Nightmare",
+        "any": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Auspex",
+              "Dominate"
+            ]
+          },
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Nightmare"
+            ]
+          }
+        ]
+      },
+      "summary": "After engaging in seemingly non-magical conversation, you can subtly attack the mental stability of the target, causing willpower damage. Advantages can also inflict mental afflictions, lasting for 1 night. Repeat use may make these permanent."
+    },
+    {
+      "id": "amalgams_labyrinth",
+      "name": "Labyrinth",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Obfuscate or Nightmare & Obfuscate",
+        "any": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Obfuscate"
+            ]
+          },
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Nightmare",
+              "Obfuscate"
+            ]
+          }
+        ]
+      },
+      "summary": "One of the best Haven protections available, this power lets the vampire turn a closed, windowless location they inhabit into a confusing maze, causing targets to wander, dazed, unable to find their way."
+    },
+    {
+      "id": "amalgams_psychopathy",
+      "name": "Psychopathy",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Presence & Mortifex or Presence & Obfuscate",
+        "any": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Mortifex"
+            ]
+          },
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Obfuscate"
+            ]
+          }
+        ]
+      },
+      "summary": "You can suck empathy and emotion from the target, turning them cold and ruthless."
+    },
+    {
+      "id": "amalgams_face_sculpt",
+      "name": "Face Sculpt",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Presence & Protean",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Protean"
+            ]
+          }
+        ]
+      },
+      "summary": "You can increase your beauty and attractiveness by molding your face & hair, though you are still recognizable as yourself. Interactions with those who are attracted gain a +3 dice bonus, and with those that aren’t, a +1 dice bonus."
+    },
+    {
+      "id": "amalgams_darkspeed",
+      "name": "Darkspeed",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Celerity & Obfuscate",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Celerity",
+              "Obfuscate"
+            ]
+          }
+        ]
+      },
+      "summary": "If using an Obfuscate and a Celerity power at the same time, you can pay for the costlier power only, provided it doesn’t have a shorter duration."
+    },
+    {
+      "id": "amalgams_momento_de_vida",
+      "name": "Momento de Vida",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Presence & Fortitude",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Fortitude"
+            ]
+          }
+        ]
+      },
+      "summary": "Blush of Life now costs 0 Liters. You can be warm & cuddly."
+    },
+    {
+      "id": "amalgams_inception",
+      "name": "Inception",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Dominate & Arrete, Rationalize",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Dominate",
+              "Arrete"
+            ]
+          },
+          {
+            "type": "power",
+            "power": "Rationalize"
+          }
+        ]
+      },
+      "summary": "The rationalization improves. Victims truly believe they intend to carry out your orders, with less mental paradoxes or contradictions. Memory alterations by Dominate get a +3 bonus."
+    },
+    {
+      "id": "amalgams_terracotta",
+      "name": "Terracotta",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Fortitude & Protean",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Fortitude",
+              "Protean"
+            ]
+          }
+        ]
+      },
+      "summary": "Your ghouls can mend damage as vampires do, and they have 5 “Liters” per night to do so."
+    },
+    {
+      "id": "amalgams_spark_of_rage",
+      "name": "Spark of Rage",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Presence & Potence",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Presence",
+              "Potence"
+            ]
+          }
+        ]
+      },
+      "summary": "By displaying their raging Beast, the vampire can allow all vampire allies to use all Potence powers they know, except Perseverance. Expansive use may risk Frenzy."
+    },
+    {
+      "id": "amalgams_double_jointed",
+      "name": "Double Jointed",
+      "source_type": "amalgam",
+      "source": "Amalgams",
+      "prerequisites": {
+        "raw": "Potence & Protean",
+        "all": [
+          {
+            "type": "disciplines",
+            "disciplines": [
+              "Potence",
+              "Protean"
+            ]
+          }
+        ]
+      },
+      "summary": "The vampire can use all of their body equally, or reshape parts for their new purpose, suffering no penalties for lost limbs in any circumstance."
+    },
+    {
+      "id": "path_of_koldun_frost_touch",
+      "name": "Frost Touch",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": null,
+      "summary": "The vampire can chill objects, freeze areas of water, or inflict frostbite with a touch. Damage caused by this power is double for mortals. Advantages can be used to slow or freeze a limb of a target."
+    },
+    {
+      "id": "path_of_koldun_fog_over_sea",
+      "name": "Fog Over Sea",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": null,
+      "summary": "Allows the vampire to walk on water."
+    },
+    {
+      "id": "path_of_koldun_hungry_earth",
+      "name": "Hungry Earth",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": null,
+      "summary": "You can command natural soil and earth to sink and attempt to engulf your target. This can be used both for restraining enemies or creating small barriers."
+    },
+    {
+      "id": "path_of_koldun_upend_the_course",
+      "name": "Upend the Course",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": null,
+      "summary": "The vampire can somewhat affect the weather of a city area. They can summon clouds, rain, or snow."
+    },
+    {
+      "id": "path_of_koldun_wrath_of_zeus",
+      "name": "Wrath of Zeus",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": {
+        "raw": "Upend the Course",
+        "all": [
+          {
+            "type": "power",
+            "power": "Upend the Course"
+          }
+        ]
+      },
+      "summary": "The vampire can now summon great storms, and even direct lightning. No roll required to activate.\nOnce per scene, the vampire can direct lightning to strike a target. This does double damage for mortals and regular (not halved) damage to vampires."
+    },
+    {
+      "id": "path_of_koldun_the_foul_sky",
+      "name": "The Foul Sky",
+      "source_type": "sorcery_path",
+      "source": "Path of Koldun",
+      "prerequisites": {
+        "raw": "Wrath of Zeus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Wrath of Zeus"
+          }
+        ]
+      },
+      "summary": "The vampire can now totally cover the sky in great unclean clouds, darker and malevolent, making natural weather pale in comparison. This event is highly unlikely, causing animals to act strange, mortals to feel odd, and any supernaturally-aware organization to take note. All electronic devices may malfunction."
+    },
+    {
+      "id": "path_of_force_slip_the_bonds",
+      "name": "Slip the Bonds",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": null,
+      "summary": "You can hover above ground, not touching it - maximum 1 meter off the ground. You can hover at any direction parallel to the ground, at a speed of 5 meters per turn (or slow walking speed). This does not take your action for that turn."
+    },
+    {
+      "id": "path_of_force_true_angel_of_caine",
+      "name": "True Angel of Caine",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": {
+        "raw": "Slip the Bonds",
+        "all": [
+          {
+            "type": "power",
+            "power": "Slip the Bonds"
+          }
+        ]
+      },
+      "summary": "Your hover speed increases to 20 meters per turn (or fast running speed). You are also not limited by height."
+    },
+    {
+      "id": "path_of_force_ghost_hands",
+      "name": "Ghost Hands",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": null,
+      "summary": "The vampire can physically manipulate objects she can see at a range of 30 meters, as if she was holding them. The Strength of the ghostly hand is 1, regardless of the vampire’s Strength. The vampire may use her skills if applicable. If the vampire tries to cause damage by clashing, swinging, or squeezing, it has -2 dice to do so. This power cannot be combined with other Disciplines, and cannot benefit from Blood Surge."
+    },
+    {
+      "id": "path_of_force_ghost_force",
+      "name": "Ghost Force",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": {
+        "raw": "Ghost Hands",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ghost Hands"
+          }
+        ]
+      },
+      "summary": "You can use Intelligence or Resolve instead of 1 when using Ghost Hands."
+    },
+    {
+      "id": "path_of_force_the_greater_force",
+      "name": "The Greater Force",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": {
+        "raw": "Ghost Force",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ghost Force"
+          }
+        ]
+      },
+      "summary": "When using Ghost Hands, there is now no penalty for attempting damage."
+    },
+    {
+      "id": "path_of_force_baby_mobile",
+      "name": "Baby Mobile",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": null,
+      "summary": "The vampire can lift & move small objects, such as pebbles, beads, etc. They move slowly in the direction of the vampire’s choosing. Small objects that cannot be held, like sand, cannot be affected. The total weight cannot be more than 2 kilograms."
+    },
+    {
+      "id": "path_of_force_barrage",
+      "name": "Barrage",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": {
+        "raw": "Baby Mobile",
+        "all": [
+          {
+            "type": "power",
+            "power": "Baby Mobile"
+          }
+        ]
+      },
+      "summary": "Small objects that cannot be held, like sand, can now be affected. the vampire can hurl the objects, rolling for damage or distraction, and ending this power"
+    },
+    {
+      "id": "path_of_force_thunder",
+      "name": "Thunder",
+      "source_type": "sorcery_path",
+      "source": "Path of Force",
+      "prerequisites": null,
+      "summary": "The vampire creates a forceful gust from themselves outwards, knocking things over."
+    },
+    {
+      "id": "path_of_wards_cast_ward",
+      "name": "Cast Ward",
+      "source_type": "sorcery_path",
+      "source": "Path of Wards",
+      "prerequisites": null,
+      "summary": "Each time you choose this power, you choose a type of target: Vampires, ghouls, mortals, ghosts, werewolves, mages, or another creature type."
+    },
+    {
+      "id": "path_of_wards_damaging_ward",
+      "name": "Damaging Ward",
+      "source_type": "sorcery_path",
+      "source": "Path of Wards",
+      "prerequisites": {
+        "raw": "Cast Ward",
+        "all": [
+          {
+            "type": "power",
+            "power": "Cast Ward"
+          }
+        ]
+      },
+      "summary": "When casting the ward, the caster can choose to have it damage the toucher, in addition to notifying the caster. When touched, the caster rolls Resolve/Craft + Occult to damage the one who activated the ward. This damage is not halved or doubled by anyone."
+    },
+    {
+      "id": "path_of_wards_blocking_ward",
+      "name": "Blocking Ward",
+      "source_type": "sorcery_path",
+      "source": "Path of Wards",
+      "prerequisites": {
+        "raw": "Damaging Ward",
+        "all": [
+          {
+            "type": "power",
+            "power": "Damaging Ward"
+          }
+        ]
+      },
+      "summary": "When casting the ward, the caster can choose to have it block the toucher, in addition to notifying the caster. When touched, the caster rolls Resolve/Craft + Occult +2 vs victim’s Resolve + Stamina. On caster’s success, the victim cannot touch (or pass the threshold if on a structure) for 24 hours. Being pushed to touch by another causes double damage, as per Damaging Ward."
+    },
+    {
+      "id": "path_of_wards_tattle_tale_ward",
+      "name": "Tattle-tale Ward",
+      "source_type": "sorcery_path",
+      "source": "Path of Wards",
+      "prerequisites": {
+        "raw": "Cast Ward",
+        "all": [
+          {
+            "type": "power",
+            "power": "Cast Ward"
+          }
+        ]
+      },
+      "summary": "In addition to notifying the caster, the caster gains the activation of the Auspex power Read Aura, on the toucher which activated the ward, with no extra cost."
+    },
+    {
+      "id": "path_of_wards_expansive_ward",
+      "name": "Expansive Ward",
+      "source_type": "sorcery_path",
+      "source": "Path of Wards",
+      "prerequisites": {
+        "raw": "Cast Ward",
+        "all": [
+          {
+            "type": "power",
+            "power": "Cast Ward"
+          }
+        ]
+      },
+      "summary": "Can cast a ward on a bedroom-sized room, which targets must enter to activate."
+    },
+    {
+      "id": "path_of_vines_speed_the_seasons_passing",
+      "name": "Speed the Season’s Passing",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "You can cause nearby living plants to move forward in their natural life cycle. You can cause flowers to bloom, vines to rot, and trees to grow new branches. Major changes, such as causing an edible fruit to grow, require Liters."
+    },
+    {
+      "id": "path_of_vines_herbal_harvest",
+      "name": "Herbal Harvest",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "You can get sustenance by violently absorbing the life out of nearby vegetation. When in a lush environment with lots of plants, such as a jungle or forest, you can sink your fangs or claws into a large plant and draw the life out of nearby vegetation. This process takes a whole scene where the vampire consumes the sap, and leaves all plants in several meters around the feeding vampire dry and dead. The vampire slakes one hunger and receives 1 Liter. This power can be used once per night."
+    },
+    {
+      "id": "path_of_vines_root_grasp",
+      "name": "Root Grasp",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "You can command roots, vines, branches, or other available living plants to entangle and immobilize your target. This can be used both for restraining enemies or creating small barriers."
+    },
+    {
+      "id": "path_of_vines_emerald_shroud",
+      "name": "Emerald Shroud",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "This power allows you to shape a dense layer of vegetation to envelop your form, providing protection from sunlight. This natural armor of leaves and vines, or other local flora, shields you from the harmful effects of the sun. From outside, unless very close, it appears natural. Tests to awaken during the day or stay awake while under this cover receive a bonus of 2 dice."
+    },
+    {
+      "id": "path_of_vines_blossom_s_whispers",
+      "name": "Blossom's Whispers",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "You gain the ability to communicate with plants, receiving information about events that occurred in their vicinity. Note that plants’ processing capabilities are almost nonexistent, and their sensory input is minimal. They can report mostly about what they feel: moisture, temperature, someone treading on them, sunlight, etc."
+    },
+    {
+      "id": "path_of_vines_flesh_to_bark",
+      "name": "Flesh to Bark",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "You can harden your skin to the toughness of tree bark, significantly increasing your resistance to physical damage. This bark-like armor blends with your natural appearance and provides formidable protection, especially against blunt force and cutting weapons."
+    },
+    {
+      "id": "path_of_vines_verdant_gaze",
+      "name": "Verdant Gaze",
+      "source_type": "sorcery_path",
+      "source": "Path of Vines",
+      "prerequisites": null,
+      "summary": "Verdant Gaze allows the vampire to extend their senses to a plant within their line of sight, experiencing the environment from the plant's perspective, becoming disconnected from their own senses. This unique form of eavesdropping is undetectable except by supernatural means, such as Auspex power Sense The Unseen."
+    },
+    {
+      "id": "path_of_shadows_dim_the_lights",
+      "name": "Dim the Lights",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": null,
+      "summary": "You cause lights to dim or flicker, subject to your control. Turning a light completely off requires a roll."
+    },
+    {
+      "id": "path_of_shadows_shadow_play",
+      "name": "Shadow Play",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": {
+        "raw": "Dim the Lights",
+        "all": [
+          {
+            "type": "power",
+            "power": "Dim the Lights"
+          }
+        ]
+      },
+      "summary": "When using Dim the Lights, you can additionally manipulate the shadows, moving them, creating images. Notice this does not affect powers like Grab the Effigy."
+    },
+    {
+      "id": "path_of_shadows_shadow_perspective",
+      "name": "Shadow Perspective",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": null,
+      "summary": "The vampire can look into one shadow, and see the perspective of another shadow that is  visible from the original shadow’s line of sight. Normally, more than 500 meters don’t meet these requirements."
+    },
+    {
+      "id": "path_of_shadows_shadow_step",
+      "name": "Shadow Step",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": {
+        "raw": "Shadow Perspective",
+        "all": [
+          {
+            "type": "power",
+            "power": "Shadow Perspective"
+          }
+        ]
+      },
+      "summary": "You can slip into a shadow, and re-emerge into another shadow visible from the original shadow’s line of sight. Normally, more than 500 meters don’t meet these requirements."
+    },
+    {
+      "id": "path_of_shadows_grab_the_effigy",
+      "name": "Grab the Effigy",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": null,
+      "summary": "The vampire can beat, grapple, or otherwise use another’s shadow as if it was the target. Meaning: by grabbing the shadow someone casts, the vampire can hold them, or cause them damage. This works for casted shadows connected to the target, so typically allows action within the same room."
+    },
+    {
+      "id": "path_of_shadows_arms_of_ahriman",
+      "name": "Arms of Ahriman",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": {
+        "raw": "Grab the Effigy",
+        "all": [
+          {
+            "type": "power",
+            "power": "Grab the Effigy"
+          }
+        ]
+      },
+      "summary": "When using Grab the Effigy, if the scene is dark and full of shadows, The vampire can now cause tendrils of shadow to come into 3-dimensional space, acting on their will."
+    },
+    {
+      "id": "path_of_shadows_replay",
+      "name": "Replay",
+      "source_type": "sorcery_path",
+      "source": "Path of Shadows",
+      "prerequisites": null,
+      "summary": "The vampire can see how the shadows in a small area (room) moved in the past 24 hours. For example, if a house was broken into, the vampire can see the shadow silhouette."
+    },
+    {
+      "id": "path_of_blood_bend_blood",
+      "name": "Bend Blood",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "You can control the movement of spilled blood, making it flow, contract, constrict. You can even make a small amount float in the air. The blood can be of any kind, but must be spilled blood - not in something’s body, and not consumed."
+    },
+    {
+      "id": "path_of_blood_bend_veins",
+      "name": "Bend Veins",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": {
+        "raw": "Bend Blood",
+        "all": [
+          {
+            "type": "power",
+            "power": "Bend Blood"
+          }
+        ]
+      },
+      "summary": "You can now use Bend Blood even on blood not spilled, residing in the body of another. The blood still has a Strength of 0, and cannot cause damage, just great discomfort. Applied to vampires, targets can be made to hurl recently-drank blood. Mortals can be made to appear not anemic, or extra anemic."
+    },
+    {
+      "id": "path_of_blood_tear_veins",
+      "name": "Tear Veins",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": {
+        "raw": "Bend Veins",
+        "all": [
+          {
+            "type": "power",
+            "power": "Bend Veins"
+          }
+        ]
+      },
+      "summary": "You can now use Bend Veins to cause damage. You can also cause involuntary movements, though they are clumsy and imprecise."
+    },
+    {
+      "id": "path_of_blood_a_taste_for_blood",
+      "name": "A Taste for Blood",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "By drinking a Liter of vitae from another vampire, the vampire can detect Clan, rough age, Disciplines, and Sire of the target."
+    },
+    {
+      "id": "path_of_blood_scorpions_touch",
+      "name": "Scorpion’s Touch",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "You turn your spilled vitae corrosive, melting whatever it touches. Each Liter causes Health damage, not halved by mortals or vampires, if it touches them. Double damage to objects. Each additional Liter causes +2 damage."
+    },
+    {
+      "id": "path_of_blood_splatter",
+      "name": "Splatter",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": {
+        "raw": "Bend Blood",
+        "all": [
+          {
+            "type": "power",
+            "power": "Bend Blood"
+          }
+        ]
+      },
+      "summary": "You can turn the blood you bend into tiny sharp needles, hurling them. This damage is piercing damage, like arrows."
+    },
+    {
+      "id": "path_of_blood_torrent",
+      "name": "Torrent",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": {
+        "raw": "Bend Blood",
+        "all": [
+          {
+            "type": "power",
+            "power": "Bend Blood"
+          }
+        ]
+      },
+      "summary": "The vampire can turn their potent, concentrated vitae into a simpler liquid. Can turn 1 Liter of your blood into 5 liters of worthless blood, undrinkable. Useful for extinguishing fires, or for pretending to bleed to preserve the masquerade."
+    },
+    {
+      "id": "path_of_blood_sympathy",
+      "name": "Sympathy",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "By owning a piece of the victim, the mage can inflict harm. The mage must have 2 different items from the victim's body, taken less than 24 hours before the ritual. These can be: nails, hair, skin, blood, teeth - big enough to be visible to the naked eye."
+    },
+    {
+      "id": "path_of_blood_sympathetic_range",
+      "name": "Sympathetic Range",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": {
+        "raw": "Sympathy",
+        "all": [
+          {
+            "type": "power",
+            "power": "Sympathy"
+          }
+        ]
+      },
+      "summary": "When using Sympathy, the mage only needs 1 item from the victim’s body, and it can be up to 3 days old."
+    },
+    {
+      "id": "path_of_blood_bloodseeker",
+      "name": "Bloodseeker",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "The mage can anoint a weapon with her Vitae, granting it a greater propensity to cause bleeding. A weapon blessed this way that pierces flesh causes 1 additional Health damage that is not halved by mortals or supernaturals. This additional damage cannot be healed by vampiric healing in the same night it was caused."
+    },
+    {
+      "id": "path_of_blood_change_clan",
+      "name": "Change Clan",
+      "source_type": "sorcery_path",
+      "source": "Path of Blood",
+      "prerequisites": null,
+      "summary": "With a complex ritual, the vampire can submerge another vampire in a bath of Vitae, having them emerge as a new Clan (or bloodline). All Discipline powers of the target vanish, and it instead learns 3 Disciplines of the new Clan, starting with no powers. Rumors say  entirely new bloodlines can, and where, created this way."
+    },
+    {
+      "id": "path_of_necromancy_summon_wraith",
+      "name": "Summon Wraith",
+      "source_type": "sorcery_path",
+      "source": "Path of Necromancy",
+      "prerequisites": null,
+      "summary": "Using an object, place, or person important to the ghost, attempt to summon a ghost. Not all who died exist as ghosts. The ghost is under no compulsion to obey."
+    },
+    {
+      "id": "path_of_necromancy_raise_zombie",
+      "name": "Raise Zombie",
+      "source_type": "sorcery_path",
+      "source": "Path of Necromancy",
+      "prerequisites": null,
+      "summary": "Raises a cadaver to be a loyal servant. It has 2 in all physical Attributes and 0 in all social and mental Attributes. Dominate, Presence, Nightmare and other mental Disciplines do not work on zombies. Decayed or broken corpses are weaker. This takes a full action."
+    },
+    {
+      "id": "path_of_necromancy_zombie_legion",
+      "name": "Zombie Legion",
+      "source_type": "sorcery_path",
+      "source": "Path of Necromancy",
+      "prerequisites": {
+        "raw": "Raise Zombie",
+        "all": [
+          {
+            "type": "power",
+            "power": "Raise Zombie"
+          }
+        ]
+      },
+      "summary": "Increases duration to 1 night."
+    },
+    {
+      "id": "path_of_necromancy_strength_of_sinews",
+      "name": "Strength of Sinews",
+      "source_type": "sorcery_path",
+      "source": "Path of Necromancy",
+      "prerequisites": {
+        "raw": "Raise Zombie",
+        "all": [
+          {
+            "type": "power",
+            "power": "Raise Zombie"
+          }
+        ]
+      },
+      "summary": "All physical Attributes of raised zombies increase to 3."
+    },
+    {
+      "id": "path_of_necromancy_quick_rise",
+      "name": "Quick Rise",
+      "source_type": "sorcery_path",
+      "source": "Path of Necromancy",
+      "prerequisites": {
+        "raw": "Raise Zombie",
+        "all": [
+          {
+            "type": "power",
+            "power": "Raise Zombie"
+          }
+        ]
+      },
+      "summary": "Raise Zombie now does not require a full action, and many can be raised simultaneously."
+    },
+    {
+      "id": "path_of_demons_summon_demon",
+      "name": "Summon Demon",
+      "source_type": "sorcery_path",
+      "source": "Path of Demons",
+      "prerequisites": null,
+      "summary": "After learning the True Name of a demon, allows to create a ritual summoning it. Each demon has different requirements for components & sacrifices, learned as part of discovering its True Name. The length of the ritual can be from 1 night to decades, depending on the demon. There is no guarantee the demon will make a pact, or obey the summoner at all. For this reason, it is ill-advised to use this power without using Bind Demon first. In addition, it is also ill-advised to use both."
+    },
+    {
+      "id": "path_of_demons_bind_demon",
+      "name": "Bind Demon",
+      "source_type": "sorcery_path",
+      "source": "Path of Demons",
+      "prerequisites": null,
+      "summary": "After learning the True Name of a demon, allows to create a ritual circle, from which the demon cannot escape. Each demon has different requirements for components & sacrifices, learned as part of discovering its True Name. The length of the ritual can be from 1 night to decades, depending on the demon."
+    },
+    {
+      "id": "path_of_illusion_ignis_fatuus",
+      "name": "Ignis Fatuus",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": null,
+      "summary": "Create a small (up to a chair) motionless illusion that affects one of the five senses for a short moment. The illusion cannot make things invisible, or make a character appear as another. Sounds cannot be produced to the quality of speech."
+    },
+    {
+      "id": "path_of_illusion_fata_morgana",
+      "name": "Fata Morgana",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": {
+        "raw": "Ignis Fatuus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ignis Fatuus"
+          }
+        ]
+      },
+      "summary": "Illusions can now reach the size of a car."
+    },
+    {
+      "id": "path_of_illusion_apparition",
+      "name": "Apparition",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": {
+        "raw": "Ignis Fatuus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ignis Fatuus"
+          }
+        ]
+      },
+      "summary": "Illusions can now move."
+    },
+    {
+      "id": "path_of_illusion_lasting_illusion",
+      "name": "Lasting Illusion",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": {
+        "raw": "Ignis Fatuus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ignis Fatuus"
+          }
+        ]
+      },
+      "summary": "Illusions duration increases to a scene, but only 1 illusion can be active at a time."
+    },
+    {
+      "id": "path_of_illusion_synesthetic",
+      "name": "Synesthetic",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": {
+        "raw": "Ignis Fatuus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ignis Fatuus"
+          }
+        ]
+      },
+      "summary": "Illusions can affect 2 senses."
+    },
+    {
+      "id": "path_of_illusion_mass_illusion",
+      "name": "Mass Illusion",
+      "source_type": "sorcery_path",
+      "source": "Path of Illusion",
+      "prerequisites": {
+        "raw": "Ignis Fatuus",
+        "all": [
+          {
+            "type": "power",
+            "power": "Ignis Fatuus"
+          }
+        ]
+      },
+      "summary": "Cost reduced to 0.5 Liter per target affected, rounded up. For example: affecting 3 targets costs 2 Liters."
+    }
+  ]
+}

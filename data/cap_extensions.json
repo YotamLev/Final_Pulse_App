@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "meta": {
+    "source": "Final Pulse text - Second Edition",
+    "base_rule": "Attributes can't be raised above 5, unless with a Discipline. Per-skill cap defaults to 5 at character creation."
+  },
+  "defaults": {
+    "attribute_max": 5,
+    "skill_max": 5
+  },
+  "permanent_extensions": {
+    "attribute_max_plus_one": [
+      {
+        "power_id": "auspex_alert",
+        "power": "Alert",
+        "discipline": "Auspex",
+        "attribute": "Wits",
+        "effect": "Permanent maximum for Wits increases by 1 (e.g. 5 → 6)."
+      },
+      {
+        "power_id": "celerity_quick",
+        "power": "Quick",
+        "discipline": "Celerity",
+        "attribute": "Dexterity",
+        "effect": "Permanent maximum for Dexterity increases by 1."
+      },
+      {
+        "power_id": "fortitude_hardy",
+        "power": "Hardy",
+        "discipline": "Fortitude",
+        "attribute": "Stamina",
+        "effect": "Permanent maximum for Stamina increases by 1."
+      },
+      {
+        "power_id": "nightmare_manipulator",
+        "power": "Manipulator",
+        "discipline": "Nightmare",
+        "attribute": "Manipulation",
+        "effect": "Permanent maximum for Manipulation increases by 1."
+      },
+      {
+        "power_id": "potence_powerhouse",
+        "power": "Powerhouse",
+        "discipline": "Potence",
+        "attribute": "Strength",
+        "effect": "Permanent maximum for Strength increases by 1."
+      },
+      {
+        "power_id": "presence_charming",
+        "power": "Charming",
+        "discipline": "Presence",
+        "attribute": "Charisma",
+        "effect": "Permanent maximum for Charisma increases by 1."
+      },
+      {
+        "power_id": "arrete_calculating",
+        "power": "Calculating",
+        "discipline": "Arrete",
+        "attribute": "Intelligence",
+        "effect": "Permanent maximum for Intelligence increases by 1."
+      }
+    ],
+    "skill_max": [
+      {
+        "power_id": "arrete_masterwork",
+        "power": "Masterwork",
+        "discipline": "Arrete",
+        "effect": "On acquisition, choose either: +1 maximum on any 2 skills, or +2 maximum on 1 skill.",
+        "choices": {
+          "mode": "two_skills_plus_one_or_one_skill_plus_two",
+          "examples": "Science 5 → can later raise to 6 or 7 depending on choice."
+        }
+      }
+    ]
+  },
+  "temporary_or_situational": [
+    {
+      "power_id": "protean_back_to_basics",
+      "power": "Back to Basics",
+      "discipline": "Protean",
+      "applies_to": "character_sheet_caps",
+      "effect": "While in Animorph animal form only: +2 to chosen Attributes (can exceed normal maximum) and skill bonuses. Does not change permanent dots/caps on sheet."
+    },
+    {
+      "power_id": "fortitude_prowess_from_pain",
+      "power": "Prowess From Pain",
+      "discipline": "Fortitude",
+      "applies_to": "runtime_bonus",
+      "effect": "Temporary +1 to Physical Attributes per 2 HP healed; total bonus cap 5 (10 if improved by Fortitude Mastery)."
+    },
+    {
+      "power_id": "fortitude_fortitude_mastery",
+      "power": "Fortitude Mastery",
+      "discipline": "Fortitude",
+      "applies_to": "upgrade",
+      "effect": "Can improve Prowess From Pain: maximum temporary Physical Attribute bonus increases to 10. Not a direct cap change."
+    },
+    {
+      "power_id": "protean_shift_balance",
+      "power": "Shift balance",
+      "discipline": "Protean",
+      "applies_to": "runtime_redistribution",
+      "effect": "Redistribute dots among Strength/Dexterity/Stamina; maximum stays the same (typically 5 without other Discipline powers)."
+    }
+  ],
+  "attributes_without_cap_power": [
+    "Resolve",
+    "Composure"
+  ],
+  "notes": [
+    "No rulebook power permanently raises Resolve or Composure above 5.",
+    "Blood Surge dice maximum increases (e.g. to 6 or 8 via Momentum) affect roll bonuses, not attribute/skill dot caps.",
+    "Masterwork requires player choices stored on character when power is acquired."
+  ]
+}
