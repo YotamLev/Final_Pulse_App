@@ -79,6 +79,21 @@ def known_discipline_names(character: dict[str, Any]) -> list[str]:
     return [d["name"] for d in vampire.get("disciplines", [])]
 
 
+def discipline_pick_options(
+    character: dict[str, Any],
+    slot_index: int,
+    pool: list[str],
+) -> list[str]:
+    """Options for editing one discipline slot without dropping the current pick."""
+    taken = known_discipline_names(character)
+    excluded = set(taken[:slot_index])
+    options = sorted(set(pool) - excluded)
+    current = taken[slot_index] if len(taken) > slot_index else None
+    if current and current not in options:
+        options = sorted(options + [current])
+    return options
+
+
 def non_predator_powers(vampire: dict[str, Any]) -> list[dict]:
     return [p for p in vampire.get("powers", []) if not p.get("is_predator_power")]
 

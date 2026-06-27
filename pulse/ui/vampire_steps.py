@@ -21,6 +21,7 @@ from pulse.vampire import (
     ensure_predator,
     ensure_vampire,
     get_clan_disciplines,
+    discipline_pick_options,
     known_discipline_names,
     non_predator_powers,
     power_entry_from_def,
@@ -383,8 +384,8 @@ def step_l2_discipline_power(character: dict[str, Any]) -> None:
     all_discs = disciplines_list()
     all_paths = sorcery_paths_list()
     taken_names = known_discipline_names(character)
-    taken = set(taken_names)
-    disc_options = sorted(set(clan_discs + all_discs + all_paths) - taken)
+    pool = clan_discs + all_discs + all_paths
+    disc_options = discipline_pick_options(character, 2, pool)
     saved_third = taken_names[2] if len(taken_names) > 2 else None
     _init_widget_choice("l2_disc3", saved_third, disc_options)
 

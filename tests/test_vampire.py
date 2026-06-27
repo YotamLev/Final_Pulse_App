@@ -5,6 +5,7 @@ from __future__ import annotations
 import unittest
 
 from pulse.vampire import (
+    discipline_pick_options,
     ensure_predator,
     known_discipline_names,
     new_vampire_state,
@@ -37,6 +38,22 @@ class TestDisciplinePersistence(unittest.TestCase):
         set_discipline_slot(vampire, 1, "Protean", "clan", 1)
         set_discipline_slot(vampire, 0, "Dominate", "clan", 0)
         self.assertEqual(known_discipline_names({"vampire": vampire}), ["Dominate", "Protean"])
+
+    def test_third_discipline_stays_in_pick_options(self) -> None:
+        character = {
+            "vampire": {
+                "disciplines": [
+                    {"name": "Dominate", "source": "clan", "acquired_at_level": 0},
+                    {"name": "Protean", "source": "clan", "acquired_at_level": 1},
+                    {"name": "Fortitude", "source": "other", "acquired_at_level": 2},
+                ]
+            }
+        }
+        pool = ["Dominate", "Protean", "Fortitude", "Potence"]
+        options = discipline_pick_options(character, 2, pool)
+        self.assertIn("Fortitude", options)
+        self.assertNotIn("Dominate", options)
+        self.assertNotIn("Protean", options)
 
     def test_upsert_non_predator_preserves_predator_powers(self) -> None:
         vampire = new_vampire_state()
