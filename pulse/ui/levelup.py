@@ -52,7 +52,7 @@ def _render_masterwork_choice(character: dict[str, Any]) -> None:
             st.rerun()
 
 
-def render_level_up_panel(character: dict[str, Any]) -> None:
+def render_level_up_panel(character: dict[str, Any], *, apply_label: str = "Apply level-up") -> None:
     v = ensure_vampire(character)
     if v.get("level", 0) < 2:
         st.info("Complete creation through Level 2 first.")
@@ -130,7 +130,7 @@ def render_level_up_panel(character: dict[str, Any]) -> None:
     if errors:
         render_errors(errors)
 
-    if st.button("Apply level-up", type="primary", disabled=bool(errors), key="lu_apply"):
+    if st.button(apply_label, type="primary", disabled=bool(errors), key="lu_apply"):
         _apply_level_up(character, choice_id, details)
         st.success(f"Advanced to level {v['level']}!")
         st.rerun()

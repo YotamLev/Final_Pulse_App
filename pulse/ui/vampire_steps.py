@@ -15,7 +15,8 @@ from pulse.caps import (
     skills_with_predator_room,
 )
 from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
-from pulse.data_loader import load_clans, load_predator_types
+from pulse.models import export_filename
+from pulse.sheet import render_character_sheet
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
 from pulse.ui.mortal_steps import render_errors
 from pulse.vampire import (
@@ -470,7 +471,7 @@ def step_complete(character: dict[str, Any]) -> None:
     from pulse.ui.levelup import render_level_up_panel
 
     st.subheader("The Damned — Character Complete")
-    st.success("You have survived creation. Review your hunter of the night, save, or continue leveling up.")
+    st.success("You have survived creation. Export your sheet or continue leveling up.")
 
     v = ensure_vampire(character)
     c1, c2, c3, c4 = st.columns(4)
@@ -479,17 +480,29 @@ def step_complete(character: dict[str, Any]) -> None:
     c3.metric("Powers", len(v.get("powers", [])))
     c4.metric("Clan", clan_by_id(v.get("clan", ""))["name"] if v.get("clan") else "—")
 
-    tab_review, tab_level = st.tabs(["Summary", "Level up (3+)"])
-    with tab_review:
-        st.markdown("**Disciplines**")
-        for d in v.get("disciplines", []):
-            st.markdown(f"- {d['name']} (level {d['acquired_at_level']})")
-        st.markdown("**Powers**")
-        for p in v.get("powers", []):
-            tag = " — predator" if p.get("is_predator_power") else ""
-            st.markdown(f"- {p['name']} ({p['source']}){tag}")
-    with tab_level:
-        render_level_up_panel(character)
+    sheet_name = export_filename(character).replace(".json", ".html")
+    st.download_button(
+        "Export character sheet",
+        data=render_character_sheet(character),
+        file_name=sheet_name,
+        mime="text/html",
+        type="primary",
+        use_container_width=True,
+        key="complete_export_sheet",
+    )
+
+    st.divider()
+    st.markdown("**Disciplines**")
+    for d in v.get("disciplines", []):
+        st.markdown(f"- {d['name']} (level {d['acquired_at_level']})")
+    st.markdown("**Powers**")
+    for p in v.get("powers", []):
+        tag = " — predator" if p.get("is_predator_power") else ""
+        st.markdown(f"- {p['name']} ({p['source']}){tag}")
+
+    st.divider()
+    st.subheader("Level up")
+    render_level_up_panel(character, apply_label="Level up")
 
 
 VAMPIRE_STEP_RENDERERS = {
