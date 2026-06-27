@@ -247,7 +247,8 @@ def step_predator(character: dict[str, Any]) -> None:
 
     needed = 1
     pdef = next((t for t in types if t["id"] == predator.get("type")), None) if predator.get("source") == "curated" else None
-    if pdef and pdef.get("special_rules", {}) and pdef["special_rules"].get("predator_power_count") == 2:
+    rules = (pdef.get("special_rules") if pdef else None) or {}
+    if rules.get("predator_power_count") == 2:
         needed = 2
         st.info("Leech: choose 2 powers from the same Discipline.")
 
@@ -273,7 +274,7 @@ def step_predator(character: dict[str, Any]) -> None:
             )
     v["powers"] = v["powers"] + pred_entries
 
-    if pdef and pdef.get("special_rules", {}).get("feeding_restriction"):
+    if rules.get("feeding_restriction"):
         st.caption("Feeding restriction: vampires only (like Ventrue bane).")
 
     v["level"] = 1
