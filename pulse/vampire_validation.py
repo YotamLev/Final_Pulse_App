@@ -127,10 +127,11 @@ def _validate_predator(character: dict) -> list[str]:
     predator_powers = [p for p in v.get("powers", []) if p.get("is_predator_power")]
     ptype = predator.get("type")
     pdef = next((p for p in load_predator_types() if p["id"] == ptype), None)
-    needed = 2 if pdef and pdef.get("special_rules", {}) and pdef["special_rules"].get("predator_power_count") == 2 else 1
+    needed = 2 if pdef and (pdef.get("special_rules") or {}).get("predator_power_count") == 2 else 1
     if len(predator_powers) < needed:
         errors.append(f"Choose {needed} predator power(s).")
-    if pdef and pdef.get("special_rules", {}).get("same_discipline") and len(predator_powers) >= 2:
+    rules = (pdef.get("special_rules") if pdef else None) or {}
+    if rules.get("same_discipline") and len(predator_powers) >= 2:
         sources = {p.get("source") for p in predator_powers}
         if len(sources) > 1:
             errors.append("Leech predator powers must be from the same Discipline.")
@@ -165,8 +166,7 @@ def _validate_l2_discipline_power(character: dict) -> list[str]:
     v = _vampire(character)
     if len(v.get("disciplines", [])) < 3:
         errors.append("Choose a third Discipline.")
-    non_pred = [p for p in v.get("powers", []) if not p.get("is_predator_power")]
-    if len(non_pred) < 4:
+    if len(v.get("powers", [])) < 4:
         errors.append("Choose your fourth Discipline power.")
     return errors
 

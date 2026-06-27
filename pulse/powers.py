@@ -126,5 +126,8 @@ def available_powers(
 
 
 def has_predator_bonus(power: dict) -> bool:
+    if "predator_bonus" in power:
+        return bool(power["predator_bonus"])
     summary = power.get("summary", "").lower()
-    return "predator power" in summary or "predator type power" in summary
+    bonus_text = power.get("predator_bonus_text", "").lower()
+    return "if chosen as predator" in summary or "if chosen as predator" in bonus_text

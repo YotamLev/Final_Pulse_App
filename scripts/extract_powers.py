@@ -41,6 +41,10 @@ SORCERY_PATHS = [
 ]
 
 REQ_LINE = re.compile(r"^Requirements?:\s*(.+)$", re.IGNORECASE)
+PREDATOR_BONUS_LINE = re.compile(
+    r"^If chosen as predator(?: type)? power:\s*(.+)$",
+    re.IGNORECASE,
+)
 
 # Canonical power name fixes for prerequisite text that drifts from headings.
 POWER_ALIASES = {
@@ -263,6 +267,15 @@ def parse_prerequisites(raw: str, source: str, source_type: str, power_name: str
     return result
 
 
+def detect_predator_bonus(body_paragraphs: list[str]) -> tuple[bool, str | None]:
+    """Detect predator-type bonus lines in full power body text."""
+    for text in body_paragraphs:
+        stripped = text.strip()
+        if PREDATOR_BONUS_LINE.match(stripped):
+            return True, stripped
+    return False, None
+
+
 def collect_unknown_power_refs(powers: list[dict]) -> list[dict]:
     """Find prerequisite power names that do not match any extracted power."""
     power_names = {entry["name"] for entry in powers}
@@ -325,6 +338,7 @@ def extract_powers() -> dict:
 
         prereq_raw: str | None = None
         summary: str | None = None
+        body_paragraphs: list[str] = []
 
         for j in range(i + 1, len(doc.paragraphs)):
             nxt = doc.paragraphs[j]
@@ -337,9 +351,11 @@ def extract_powers() -> dict:
             if req_match and prereq_raw is None:
                 prereq_raw = req_match.group(1).strip()
                 continue
-            if summary is None and not REQ_LINE.match(body):
+            body_paragraphs.append(body)
+            if summary is None:
                 summary = body
-                break
+
+        predator_bonus, predator_bonus_text = detect_predator_bonus(body_paragraphs)
 
         base_id = slugify(power_name)
         parent_slug = slugify(current_parent)
@@ -354,9 +370,12 @@ def extract_powers() -> dict:
             "source_type": st,
             "source": source,
             "prerequisites": None,
+            "predator_bonus": predator_bonus,
         }
         if summary:
             entry["summary"] = summary
+        if predator_bonus_text:
+            entry["predator_bonus_text"] = predator_bonus_text
         if prereq_raw:
             entry["prerequisites"] = parse_prerequisites(
                 prereq_raw, source=current_parent, source_type=st, power_name=power_name
@@ -383,7 +402,11 @@ def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     with_prereq = sum(1 for p in data["powers"] if p.get("prerequisites"))
-    print(f"Wrote {data['meta']['power_count']} powers ({with_prereq} with prerequisites) to {OUTPUT_PATH}")
+    with_predator = sum(1 for p in data["powers"] if p.get("predator_bonus"))
+    print(
+        f"Wrote {data['meta']['power_count']} powers "
+        f"({with_prereq} with prerequisites, {with_predator} with predator bonus) to {OUTPUT_PATH}"
+    )
 
 
 if __name__ == "__main__":
