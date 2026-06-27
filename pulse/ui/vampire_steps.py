@@ -4,7 +4,13 @@ from typing import Any
 
 import streamlit as st
 
-from pulse.caps import effective_attribute_max, get_attribute_values, get_skill_dots, skills_with_predator_room
+from pulse.caps import (
+    attribute_adjustment_bounds,
+    effective_attribute_max,
+    get_attribute_values,
+    get_skill_dots,
+    skills_with_predator_room,
+)
 from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
 from pulse.data_loader import load_clans, load_predator_types, skill_category_map
 from pulse.models import ensure_skill
@@ -152,30 +158,39 @@ def _attr_editor(character: dict, level: int, key_prefix: str) -> None:
         block = {"level": level, "changes": {}}
         v["attribute_adjustments"].append(block)
     changes = block["changes"]
-    attrs = get_attribute_values(character)
-    st.caption("Assign dots (exactly 2 total).")
+    budget = 2
+    st.caption(f"Assign dots (exactly {budget} total).")
 
     cols = st.columns(3)
     for i, attr in enumerate(ATTRIBUTES):
+        base, max_assignable, assigned = attribute_adjustment_bounds(
+            character, attr, level_changes=changes, budget=budget
+        )
         cap = effective_attribute_max(character, attr)
-        current = attrs.get(attr, 2)
-        max_delta = max(0, cap - current)
         widget_key = f"{key_prefix}_{attr}"
-        extra = min(int(changes.get(attr, 0)), max_delta)
-        if widget_key in st.session_state and int(st.session_state[widget_key]) > max_delta:
-            st.session_state[widget_key] = extra
+        value = min(assigned, max_assignable)
+        if assigned != value:
+            if value:
+                changes[attr] = value
+            elif attr in changes:
+                del changes[attr]
+        if widget_key in st.session_state and int(st.session_state[widget_key]) > max_assignable:
+            st.session_state[widget_key] = value
         with cols[i % 3]:
             delta = st.number_input(
-                f"{attr} ({current}→ max {cap})",
+                f"{attr} ({base} → max {cap})",
                 min_value=0,
-                max_value=max_delta,
-                value=extra,
+                max_value=max_assignable,
+                value=value,
                 key=widget_key,
             )
             if delta:
                 changes[attr] = delta
             elif attr in changes:
                 del changes[attr]
+
+    total = sum(int(v) for v in changes.values())
+    st.progress(min(total / budget, 1.0), text=f"Assigned {total} / {budget}")
 
 
 def step_l1_attributes(character: dict[str, Any]) -> None:

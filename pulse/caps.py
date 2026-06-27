@@ -80,6 +80,25 @@ def get_attribute_values(character: dict[str, Any]) -> dict[str, int]:
     return attrs
 
 
+def attribute_adjustment_bounds(
+    character: dict[str, Any],
+    attribute: str,
+    *,
+    level_changes: dict[str, int],
+    budget: int = 2,
+) -> tuple[int, int, int]:
+    """Return (base_before_level, max_assignable, assigned) for one attribute step."""
+    attrs = get_attribute_values(character)
+    assigned = int(level_changes.get(attribute, 0))
+    base = int(attrs.get(attribute, 2)) - assigned
+    cap = effective_attribute_max(character, attribute)
+    room_to_cap = max(0, cap - base)
+    other_total = sum(int(v) for v in level_changes.values()) - assigned
+    room_in_budget = max(0, budget - other_total)
+    max_assignable = min(room_to_cap, room_in_budget)
+    return base, max_assignable, assigned
+
+
 def mortal_skill_dots(character: dict[str, Any], skill: str) -> int:
     entry = character.get("mortal", {}).get("skills", {}).get(skill, {})
     return int(entry.get("dots", 0))
