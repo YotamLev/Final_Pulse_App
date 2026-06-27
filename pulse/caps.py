@@ -96,7 +96,7 @@ def attribute_adjustment_bounds(
     other_total = sum(int(v) for v in level_changes.values()) - assigned
     room_in_budget = max(0, budget - other_total)
     max_assignable = min(room_to_cap, room_in_budget)
-    return base, max_assignable, assigned
+    return base, max_assignable, min(assigned, max_assignable)
 
 
 def mortal_skill_dots(character: dict[str, Any], skill: str) -> int:
@@ -120,11 +120,14 @@ def skills_with_predator_room(
     ]
 
 
-def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
+def _mortal_skill_dots_map(character: dict[str, Any]) -> dict[str, int]:
     skills: dict[str, int] = {}
     for name, entry in character.get("mortal", {}).get("skills", {}).items():
         skills[name] = int(entry.get("dots", 0))
+    return skills
 
+
+def _apply_predator_skill_bonus(character: dict[str, Any], skills: dict[str, int]) -> None:
     vampire = character.get("vampire") or {}
     predator = vampire.get("predator") or {}
     if predator.get("skill_choice"):
@@ -134,14 +137,63 @@ def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
             cap = effective_skill_max(character, sk)
             skills[sk] = min(cap, skills.get(sk, 0) + dots)
 
+
+def _apply_skill_adjustments(
+    skills: dict[str, int],
+    vampire: dict[str, Any],
+    *,
+    skip_removed_at_level: int | None = None,
+) -> None:
     for block in vampire.get("skill_adjustments", []):
-        for name, delta in block.get("removed", {}).items():
-            skills[name] = max(0, skills.get(name, 0) - int(delta))
+        level = block.get("level")
+        if skip_removed_at_level is None or level != skip_removed_at_level:
+            for name, delta in block.get("removed", {}).items():
+                skills[name] = max(0, skills.get(name, 0) - int(delta))
         for name, delta in block.get("added", {}).items():
             skills[name] = skills.get(name, 0) + int(delta)
 
+
+def _apply_skill_level_ups(skills: dict[str, int], vampire: dict[str, Any]) -> None:
     for level_up in vampire.get("level_ups", []):
         if level_up.get("choice") == "skills":
             for name, delta in level_up.get("details", {}).items():
                 skills[name] = skills.get(name, 0) + int(delta)
+
+
+SKILL_REMOVAL_BUDGET = 2
+
+
+def skill_dots_before_removal(character: dict[str, Any], level: int = 2) -> dict[str, int]:
+    """Skill totals before forget-step removals at level are applied."""
+    skills = _mortal_skill_dots_map(character)
+    _apply_predator_skill_bonus(character, skills)
+    vampire = character.get("vampire") or {}
+    _apply_skill_adjustments(skills, vampire, skip_removed_at_level=level)
+    _apply_skill_level_ups(skills, vampire)
+    return skills
+
+
+def skill_removal_bounds(
+    character: dict[str, Any],
+    skill: str,
+    *,
+    removed: dict[str, int],
+    level: int = 2,
+    budget: int = SKILL_REMOVAL_BUDGET,
+) -> tuple[int, int, int]:
+    """Return (dots_before_removal, max_removable, clamped_removal)."""
+    available = int(skill_dots_before_removal(character, level).get(skill, 0))
+    assigned = int(removed.get(skill, 0))
+    other_total = sum(int(v) for v in removed.values()) - assigned
+    room_in_budget = max(0, budget - other_total)
+    max_removable = min(available, room_in_budget)
+    return available, max_removable, min(assigned, max_removable)
+
+
+def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
+    skills = _mortal_skill_dots_map(character)
+    _apply_predator_skill_bonus(character, skills)
+    vampire = character.get("vampire") or {}
+    _apply_skill_adjustments(skills, vampire)
+    _apply_skill_level_ups(skills, vampire)
     return skills

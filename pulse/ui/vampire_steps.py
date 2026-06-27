@@ -9,6 +9,9 @@ from pulse.caps import (
     effective_attribute_max,
     get_attribute_values,
     get_skill_dots,
+    skill_dots_before_removal,
+    skill_removal_bounds,
+    SKILL_REMOVAL_BUDGET,
     skills_with_predator_room,
 )
 from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
@@ -349,26 +352,42 @@ def step_l2_skill_removal(character: dict[str, Any]) -> None:
         block = {"level": 2, "removed": {}}
         v["skill_adjustments"].append(block)
     removed = block["removed"]
-    skills = {k: v for k, v in get_skill_dots(character).items() if v > 0}
-    if not skills:
+    base_skills = {
+        name: dots for name, dots in skill_dots_before_removal(character, 2).items() if dots > 0
+    }
+    if not base_skills:
         st.warning("No skills to remove.")
         return
-    total_removed = 0
-    for skill_name, dots in sorted(skills.items()):
-        max_remove = min(dots, 2 - total_removed + int(removed.get(skill_name, 0)))
+
+    for skill_name in sorted(base_skills):
+        available, max_removable, value = skill_removal_bounds(
+            character, skill_name, removed=removed
+        )
+        if int(removed.get(skill_name, 0)) != value:
+            if value:
+                removed[skill_name] = value
+            elif skill_name in removed:
+                del removed[skill_name]
+        widget_key = f"rm_{skill_name}"
+        if widget_key in st.session_state and int(st.session_state[widget_key]) > max_removable:
+            st.session_state[widget_key] = value
         val = st.number_input(
-            f"Remove from {skill_name} ({dots} dots)",
+            f"Remove from {skill_name} ({available} dots)",
             min_value=0,
-            max_value=dots,
-            value=int(removed.get(skill_name, 0)),
-            key=f"rm_{skill_name}",
+            max_value=max_removable,
+            value=value,
+            key=widget_key,
         )
         if val:
             removed[skill_name] = val
         elif skill_name in removed:
             del removed[skill_name]
-    total_removed = sum(removed.values())
-    st.progress(min(total_removed / 2, 1.0), text=f"Removed {total_removed} / 2")
+
+    total_removed = sum(int(v) for v in removed.values())
+    st.progress(
+        min(total_removed / SKILL_REMOVAL_BUDGET, 1.0),
+        text=f"Removed {total_removed} / {SKILL_REMOVAL_BUDGET}",
+    )
 
 
 def step_l2_attributes(character: dict[str, Any]) -> None:

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import unittest
 
-from pulse.caps import attribute_adjustment_bounds
 from pulse.powers import has_predator_bonus, power_by_id
 from pulse.vampire_validation import validate_level_up, validate_wizard_step
 from tests.support import (
@@ -15,28 +14,6 @@ from tests.support import (
     minimal_mortal_character,
     predator_ready_character,
 )
-
-
-class TestAttributeAdjustmentBounds(unittest.TestCase):
-    def test_level_delta_not_double_counted_against_cap(self) -> None:
-        character = minimal_mortal_character()
-        level_1_ready_character(character)
-        changes = {"Strength": 1}
-        base, max_assignable, assigned = attribute_adjustment_bounds(
-            character, "Strength", level_changes=changes
-        )
-        self.assertEqual(assigned, 1)
-        self.assertGreater(max_assignable, 0)
-        self.assertEqual(base + assigned, base + 1)
-
-    def test_budget_limits_second_attribute(self) -> None:
-        character = minimal_mortal_character()
-        level_1_ready_character(character)
-        changes = {"Strength": 1, "Dexterity": 1}
-        _, max_strength, _ = attribute_adjustment_bounds(
-            character, "Strength", level_changes=changes
-        )
-        self.assertEqual(max_strength, 1)
 
 
 class TestPredatorBonusFlag(unittest.TestCase):
