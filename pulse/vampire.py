@@ -27,6 +27,12 @@ def new_vampire_state() -> dict[str, Any]:
     }
 
 
+def ensure_predator(vampire: dict[str, Any]) -> dict[str, Any]:
+    if vampire.get("predator") is None:
+        vampire["predator"] = {"source": "curated"}
+    return vampire["predator"]
+
+
 def clan_by_id(clan_id: str) -> dict | None:
     for clan in load_clans():
         if clan["id"] == clan_id:

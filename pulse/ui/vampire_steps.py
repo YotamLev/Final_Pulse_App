@@ -10,7 +10,7 @@ from pulse.data_loader import load_clans, load_predator_types, skill_category_ma
 from pulse.models import ensure_skill
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
 from pulse.ui.mortal_steps import render_errors
-from pulse.vampire import add_discipline, add_power, clan_by_id, ensure_vampire, get_clan_disciplines
+from pulse.vampire import add_discipline, add_power, clan_by_id, ensure_predator, ensure_vampire, get_clan_disciplines
 
 
 def _power_select(
@@ -129,14 +129,18 @@ def _attr_editor(character: dict, level: int, key_prefix: str) -> None:
     for i, attr in enumerate(ATTRIBUTES):
         cap = effective_attribute_max(character, attr)
         current = attrs.get(attr, 2)
-        extra = int(changes.get(attr, 0))
+        max_delta = max(0, cap - current)
+        widget_key = f"{key_prefix}_{attr}"
+        extra = min(int(changes.get(attr, 0)), max_delta)
+        if widget_key in st.session_state and int(st.session_state[widget_key]) > max_delta:
+            st.session_state[widget_key] = extra
         with cols[i % 3]:
             delta = st.number_input(
                 f"{attr} ({current}→ max {cap})",
                 min_value=0,
-                max_value=max(0, cap - current),
+                max_value=max_delta,
                 value=extra,
-                key=f"{key_prefix}_{attr}",
+                key=widget_key,
             )
             if delta:
                 changes[attr] = delta
@@ -201,7 +205,7 @@ def step_predator(character: dict[str, Any]) -> None:
     labels = {t["id"]: t["name"] for t in types}
     labels["__custom__"] = "Custom predator type…"
 
-    predator = v.setdefault("predator", {"source": "curated"})
+    predator = ensure_predator(v)
     current = predator.get("type") or type_ids[0]
     pick = st.selectbox("Predator type", type_ids, format_func=lambda x: labels.get(x, x), key="pred_type")
     predator["type"] = pick if pick != "__custom__" else predator.get("type", "")
@@ -214,11 +218,11 @@ def step_predator(character: dict[str, Any]) -> None:
             value=predator.get("custom_description", ""),
         )
         predator["type"] = "custom"
-        sk = st.text_input("Skill for +2 dots", value=predator.get("skill_choice", {}).get("skill", ""))
+        sk = st.text_input("Skill for +2 dots", value=(predator.get("skill_choice") or {}).get("skill", ""))
         predator["skill_choice"] = {"skill": sk, "dots": 2}
         predator["specialty"] = {
             "skill": sk,
-            "text": st.text_input("Specialty", value=predator.get("specialty", {}).get("text", "")),
+            "text": st.text_input("Specialty", value=(predator.get("specialty") or {}).get("text", "")),
         }
         sources = disciplines_list() + sorcery_paths_list()
     else:
