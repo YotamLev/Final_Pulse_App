@@ -4,8 +4,8 @@ from typing import Any
 
 import streamlit as st
 
-from pulse.caps import effective_attribute_max, get_attribute_values, get_skill_dots
-from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES
+from pulse.caps import effective_attribute_max, get_attribute_values, get_skill_dots, skills_with_predator_room
+from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
 from pulse.data_loader import load_clans, load_predator_types, skill_category_map
 from pulse.models import ensure_skill
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
@@ -213,7 +213,10 @@ def step_l1_discipline_power(character: dict[str, Any]) -> None:
 
 def step_predator(character: dict[str, Any]) -> None:
     st.subheader("Level 1 — Predator type")
-    st.caption("Your feeding style grants 2 skill dots, a specialty, and a predator power.")
+    st.caption(
+        f"Your feeding style grants {PREDATOR_SKILL_DOTS} skill dots, a specialty, and a predator power. "
+        f"Skill dots cannot exceed 5 per skill at creation."
+    )
 
     v = ensure_vampire(character)
     types = load_predator_types()
@@ -234,8 +237,21 @@ def step_predator(character: dict[str, Any]) -> None:
             value=predator.get("custom_description", ""),
         )
         predator["type"] = "custom"
-        sk = st.text_input("Skill for +2 dots", value=(predator.get("skill_choice") or {}).get("skill", ""))
-        predator["skill_choice"] = {"skill": sk, "dots": 2}
+        eligible = skills_with_predator_room(character)
+        saved_sk = (predator.get("skill_choice") or {}).get("skill", "")
+        if saved_sk and saved_sk not in eligible:
+            eligible = [saved_sk] + [s for s in eligible if s != saved_sk]
+        if not eligible:
+            st.error("No skill has room for +2 predator dots (max 5 per skill). Remove dots elsewhere first.")
+            sk = ""
+        else:
+            sk = st.selectbox(
+                "Skill for +2 dots",
+                eligible,
+                index=eligible.index(saved_sk) if saved_sk in eligible else 0,
+                key="pred_custom_skill",
+            )
+        predator["skill_choice"] = {"skill": sk, "dots": PREDATOR_SKILL_DOTS}
         predator["specialty"] = {
             "skill": sk,
             "text": st.text_input("Specialty", value=(predator.get("specialty") or {}).get("text", "")),
@@ -250,8 +266,23 @@ def step_predator(character: dict[str, Any]) -> None:
         branches = pdef.get("skill_branches") or [{"skills": list(skill_category_map().keys())[:5], "specialty_examples": [""]}]
         branch_idx = st.radio("Skill branch", range(len(branches)), format_func=lambda i: " or ".join(branches[i]["skills"]), key="pred_branch")
         branch = branches[branch_idx]
-        skill = st.selectbox("Skill (+2 dots)", branch["skills"], key="pred_skill")
-        predator["skill_choice"] = {"skill": skill, "dots": 2}
+        eligible = skills_with_predator_room(character, branch["skills"])
+        saved_sk = (predator.get("skill_choice") or {}).get("skill", "")
+        if saved_sk and saved_sk in branch["skills"] and saved_sk not in eligible:
+            eligible = [saved_sk] + eligible
+        if not eligible:
+            st.error(
+                f"No skill in this branch has room for +{PREDATOR_SKILL_DOTS} dots (max 5 per skill)."
+            )
+            skill = ""
+        else:
+            skill = st.selectbox(
+                "Skill (+2 dots)",
+                eligible,
+                index=eligible.index(saved_sk) if saved_sk in eligible else 0,
+                key="pred_skill",
+            )
+        predator["skill_choice"] = {"skill": skill, "dots": PREDATOR_SKILL_DOTS}
         ex = branch.get("specialty_examples", [""])
         predator["specialty"] = {
             "skill": skill,

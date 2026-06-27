@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from pulse.caps import effective_attribute_max, effective_skill_max, get_attribute_values, get_skill_dots
+from pulse.caps import effective_attribute_max, effective_skill_max, get_attribute_values, get_skill_dots, mortal_skill_dots
+from pulse.constants import PREDATOR_SKILL_DOTS
 from pulse.data_loader import load_predator_types
 from pulse.powers import power_by_id, prerequisites_met
 from pulse.constants import MORTAL_STEP_COUNT
@@ -136,6 +137,16 @@ def _validate_predator(character: dict) -> list[str]:
         sources = {p.get("source") for p in predator_powers}
         if len(sources) > 1:
             errors.append("Leech predator powers must be from the same Discipline.")
+    sc = predator.get("skill_choice") or {}
+    skill = sc.get("skill")
+    if skill:
+        total = mortal_skill_dots(character, skill) + int(sc.get("dots", 0))
+        cap = effective_skill_max(character, skill)
+        if total > cap:
+            errors.append(
+                f"{skill} exceeds maximum ({total} > {cap}). "
+                f"Choose a skill with room for +{PREDATOR_SKILL_DOTS} dots."
+            )
     return errors
 
 

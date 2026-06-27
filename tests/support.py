@@ -117,7 +117,7 @@ def predator_ready_character(character: dict) -> dict:
     v["predator"] = {
         "source": "curated",
         "type": "alleycat",
-        "skill_choice": {"skill": "Brawl", "dots": 2},
+        "skill_choice": {"skill": "Firearms", "dots": 2},
         "specialty": {"skill": "Brawl", "text": "back alleys"},
     }
     v["powers"].append(

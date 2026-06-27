@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from pulse.constants import DATA_DIR
+from pulse.constants import DATA_DIR, PREDATOR_SKILL_DOTS
 
 CAP_PATH = DATA_DIR / "cap_extensions.json"
 POWERS_PATH = DATA_DIR / "powers.json"
@@ -80,6 +80,27 @@ def get_attribute_values(character: dict[str, Any]) -> dict[str, int]:
     return attrs
 
 
+def mortal_skill_dots(character: dict[str, Any], skill: str) -> int:
+    entry = character.get("mortal", {}).get("skills", {}).get(skill, {})
+    return int(entry.get("dots", 0))
+
+
+def skills_with_predator_room(
+    character: dict[str, Any],
+    candidates: list[str] | None = None,
+    *,
+    grant: int = PREDATOR_SKILL_DOTS,
+) -> list[str]:
+    from pulse.data_loader import skill_category_map
+
+    names = candidates if candidates is not None else sorted(skill_category_map().keys())
+    return [
+        skill
+        for skill in names
+        if mortal_skill_dots(character, skill) + grant <= effective_skill_max(character, skill)
+    ]
+
+
 def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
     skills: dict[str, int] = {}
     for name, entry in character.get("mortal", {}).get("skills", {}).items():
@@ -91,7 +112,8 @@ def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
         sk = predator["skill_choice"].get("skill")
         dots = int(predator["skill_choice"].get("dots", 0))
         if sk:
-            skills[sk] = skills.get(sk, 0) + dots
+            cap = effective_skill_max(character, sk)
+            skills[sk] = min(cap, skills.get(sk, 0) + dots)
 
     for block in vampire.get("skill_adjustments", []):
         for name, delta in block.get("removed", {}).items():
