@@ -10,7 +10,36 @@ from pulse.data_loader import load_clans, load_predator_types, skill_category_ma
 from pulse.models import ensure_skill
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
 from pulse.ui.mortal_steps import render_errors
-from pulse.vampire import add_discipline, add_power, clan_by_id, ensure_predator, ensure_vampire, get_clan_disciplines
+from pulse.vampire import (
+    clan_by_id,
+    ensure_predator,
+    ensure_vampire,
+    get_clan_disciplines,
+    known_discipline_names,
+    non_predator_powers,
+    power_entry_from_def,
+    predator_powers,
+    set_discipline_slot,
+    set_predator_powers,
+    upsert_non_predator_power,
+)
+
+
+def clear_vampire_widget_state() -> None:
+    prefixes = ("l0_", "l1_", "l2_", "pred_", "bane_")
+    for key in list(st.session_state.keys()):
+        if key.startswith(prefixes):
+            del st.session_state[key]
+
+
+def _power_label(power: dict) -> str:
+    tag = " ★ predator bonus" if has_predator_bonus(power) else ""
+    return f"{power['name']} ({power['source']}){tag}"
+
+
+def _init_widget_choice(key: str, saved: str | None, options: list[str]) -> None:
+    if key not in st.session_state and saved and saved in options:
+        st.session_state[key] = saved
 
 
 def _power_select(
@@ -20,6 +49,7 @@ def _power_select(
     allowed_sources: list[str],
     include_amalgams: bool = False,
     label: str = "Choose a power",
+    saved_power_id: str | None = None,
 ) -> dict | None:
     options = available_powers(
         character,
@@ -29,17 +59,18 @@ def _power_select(
     if not options:
         st.warning("No powers available. Check prerequisites or Disciplines.")
         return None
-    labels = []
-    for p in options:
-        tag = " ★ predator bonus" if has_predator_bonus(p) else ""
-        labels.append(f"{p['name']} ({p['source']}){tag}")
+    labels = [_power_label(p) for p in options]
+    if saved_power_id and key not in st.session_state:
+        for power, label_text in zip(options, labels):
+            if power["id"] == saved_power_id:
+                st.session_state[key] = label_text
+                break
     choice = st.selectbox(label, labels, key=key)
     idx = labels.index(choice)
     power = options[idx]
-    with st.expander("Power details"):
-        st.write(power.get("summary", ""))
-        if power.get("prerequisites"):
-            st.caption(f"Requires: {power['prerequisites'].get('raw', '')}")
+    st.markdown(power.get("summary", ""))
+    if power.get("prerequisites"):
+        st.caption(f"Requires: {power['prerequisites'].get('raw', '')}")
     return power
 
 
@@ -93,26 +124,25 @@ def step_level_0(character: dict[str, Any]) -> None:
 
     v = ensure_vampire(character)
     clan_discs = get_clan_disciplines(character)
-    existing = [d["name"] for d in v.get("disciplines", [])]
+    taken = known_discipline_names(character)
+    saved_disc = taken[0] if taken else None
+    _init_widget_choice("l0_disc", saved_disc, clan_discs)
 
     disc = st.selectbox("First Discipline", clan_discs, key="l0_disc")
-    pred_powers = [p for p in v.get("powers", []) if p.get("is_predator_power")]
-    v["disciplines"] = [{"name": disc, "source": "clan", "acquired_at_level": 0}]
+    set_discipline_slot(v, 0, disc, "clan", 0)
 
-    power = _power_select(character, key="l0_power", allowed_sources=[disc], label="First power")
-    v["powers"] = list(pred_powers)
+    saved_power = non_predator_powers(v)[0]["id"] if non_predator_powers(v) else None
+    power = _power_select(
+        character,
+        key="l0_power",
+        allowed_sources=[disc],
+        label="First power",
+        saved_power_id=saved_power,
+    )
     if power:
-        v["powers"].append(
-            {
-                "id": power["id"],
-                "name": power["name"],
-                "source": disc,
-                "acquired_at_level": 0,
-                "is_predator_power": False,
-            }
-        )
-    if v["powers"] and v["disciplines"]:
-        v["level"] = 0
+        upsert_non_predator_power(v, 0, power_entry_from_def(power, 0))
+    if v.get("disciplines") and (non_predator_powers(v) or predator_powers(v)):
+        v["level"] = max(int(v.get("level", 0)), 0)
 
 
 def _attr_editor(character: dict, level: int, key_prefix: str) -> None:
@@ -158,41 +188,27 @@ def step_l1_discipline_power(character: dict[str, Any]) -> None:
     st.subheader("Level 1 — Second Discipline")
     v = ensure_vampire(character)
     clan_discs = get_clan_disciplines(character)
-    taken = [d["name"] for d in v.get("disciplines", [])]
-    options = [d for d in clan_discs if d not in taken] or clan_discs
+    taken = known_discipline_names(character)
+    first = taken[0] if taken else clan_discs[0]
+    disc_options = [d for d in clan_discs if d != first]
+    saved_second = taken[1] if len(taken) > 1 else None
+    _init_widget_choice("l1_disc2", saved_second, disc_options)
 
-    disc2 = st.selectbox("Second clan Discipline", options, key="l1_disc2")
-    if len(taken) < 2:
-        add_discipline(character, disc2, "clan", 1)
-    elif taken[1] != disc2:
-        v["disciplines"] = [v["disciplines"][0], {"name": disc2, "source": "clan", "acquired_at_level": 1}]
+    disc2 = st.selectbox("Second clan Discipline", disc_options, key="l1_disc2")
+    set_discipline_slot(v, 1, disc2, "clan", 1)
 
-    known_discs = [d["name"] for d in v.get("disciplines", [])]
+    known_discs = known_discipline_names(character)
+    saved_power = non_predator_powers(v)[1]["id"] if len(non_predator_powers(v)) > 1 else None
     power = _power_select(
         character,
         key="l1_power2",
         allowed_sources=known_discs,
         include_amalgams=len(known_discs) >= 2,
-        label="Second power (from either Discipline)",
+        label="Second power (from your known Disciplines)",
+        saved_power_id=saved_power,
     )
     if power:
-        non_pred = [p for p in v.get("powers", []) if not p.get("is_predator_power")]
-        preds = [p for p in v.get("powers", []) if p.get("is_predator_power")]
-        entry = {
-            "id": power["id"],
-            "name": power["name"],
-            "source": power["source"],
-            "acquired_at_level": 1,
-            "is_predator_power": False,
-        }
-        if len(non_pred) < 2:
-            if len(non_pred) == 1:
-                non_pred.append(entry)
-            else:
-                non_pred = [entry]
-        else:
-            non_pred[1] = entry
-        v["powers"] = non_pred + preds
+        upsert_non_predator_power(v, 1, power_entry_from_def(power, 1))
 
 
 def step_predator(character: dict[str, Any]) -> None:
@@ -252,27 +268,23 @@ def step_predator(character: dict[str, Any]) -> None:
         needed = 2
         st.info("Leech: choose 2 powers from the same Discipline.")
 
-    v["powers"] = [p for p in v.get("powers", []) if not p.get("is_predator_power")]
-    pred_entries = []
+    existing_pred = predator_powers(v)
+    pred_entries: list[dict] = []
     for i in range(needed):
+        saved_id = existing_pred[i]["id"] if i < len(existing_pred) else None
         power = _power_select(
             character,
             key=f"pred_power_{i}",
             allowed_sources=sources if sources else disciplines_list(),
             include_amalgams=True,
             label=f"Predator power {i + 1}",
+            saved_power_id=saved_id,
         )
         if power:
-            pred_entries.append(
-                {
-                    "id": power["id"],
-                    "name": power["name"],
-                    "source": power["source"],
-                    "acquired_at_level": 1,
-                    "is_predator_power": True,
-                }
-            )
-    v["powers"] = v["powers"] + pred_entries
+            pred_entries.append(power_entry_from_def(power, 1, is_predator_power=True))
+        elif i < len(existing_pred):
+            pred_entries.append(existing_pred[i])
+    set_predator_powers(v, pred_entries)
 
     if rules.get("feeding_restriction"):
         st.caption("Feeding restriction: vampires only (like Ventrue bane).")
@@ -324,43 +336,30 @@ def step_l2_discipline_power(character: dict[str, Any]) -> None:
     clan_discs = get_clan_disciplines(character)
     all_discs = disciplines_list()
     all_paths = sorcery_paths_list()
-    taken = {d["name"] for d in v.get("disciplines", [])}
-
+    taken_names = known_discipline_names(character)
+    taken = set(taken_names)
     disc_options = sorted(set(clan_discs + all_discs + all_paths) - taken)
+    saved_third = taken_names[2] if len(taken_names) > 2 else None
+    _init_widget_choice("l2_disc3", saved_third, disc_options)
+
     disc3 = st.selectbox("Third Discipline (clan or any)", disc_options, key="l2_disc3")
     source = "clan" if disc3 in clan_discs else "other"
-    if len(v.get("disciplines", [])) < 3:
-        add_discipline(character, disc3, source, 2)
-    else:
-        v["disciplines"][2] = {"name": disc3, "source": source, "acquired_at_level": 2}
+    set_discipline_slot(v, 2, disc3, source, 2)
 
-    known = [d["name"] for d in v.get("disciplines", [])]
+    known = known_discipline_names(character)
+    non_pred = non_predator_powers(v)
+    saved_power = non_pred[2]["id"] if len(non_pred) > 2 else None
     power = _power_select(
         character,
         key="l2_power4",
         allowed_sources=known,
         include_amalgams=True,
-        label="Fourth power",
+        label="Fourth power (from your known Disciplines)",
+        saved_power_id=saved_power,
     )
-    non_pred = [p for p in v.get("powers", []) if not p.get("is_predator_power")]
-    preds = [p for p in v.get("powers", []) if p.get("is_predator_power")]
     if power:
-        entry = {
-            "id": power["id"],
-            "name": power["name"],
-            "source": power["source"],
-            "acquired_at_level": 2,
-            "is_predator_power": False,
-        }
-        if len(non_pred) < 4:
-            if len(non_pred) == 3:
-                non_pred.append(entry)
-            else:
-                non_pred.append(entry)
-        else:
-            non_pred[3] = entry
-    v["powers"] = non_pred + preds
-    v["level"] = 2
+        upsert_non_predator_power(v, 2, power_entry_from_def(power, 2))
+    v["level"] = max(int(v.get("level", 0)), 2)
 
 
 def step_complete(character: dict[str, Any]) -> None:

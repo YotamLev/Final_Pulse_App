@@ -9,7 +9,7 @@ from pulse.constants import ATTRIBUTES
 from pulse.data_loader import skill_category_map
 from pulse.powers import available_powers, power_by_id
 from pulse.ui.mortal_steps import render_errors
-from pulse.vampire import add_power, ensure_vampire
+from pulse.vampire import add_power, ensure_vampire, known_discipline_names
 from pulse.vampire_validation import validate_level_up
 
 
@@ -87,7 +87,7 @@ def render_level_up_panel(character: dict[str, Any]) -> None:
             details["attribute"] = st.selectbox("Attribute", options, key="lu_attr")
             details["dots"] = 1
     elif choice_id == "power":
-        known = [d["name"] for d in v.get("disciplines", [])]
+        known = known_discipline_names(character)
         options = available_powers(character, allowed_sources=known, include_amalgams=True)
         if not options:
             st.warning("No powers available.")
@@ -96,7 +96,7 @@ def render_level_up_panel(character: dict[str, Any]) -> None:
             pick = st.selectbox("Power", labels, key="lu_power")
             power = options[labels.index(pick)]
             details["id"] = power["id"]
-            st.caption(power.get("summary", "")[:300])
+            st.markdown(power.get("summary", ""))
     elif choice_id == "skills":
         st.caption("Assign 2 dots total.")
         cats = skill_category_map()
