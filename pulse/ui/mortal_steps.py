@@ -28,6 +28,56 @@ def _trait_suggestion_labels(suggestions: list[dict]) -> list[str]:
     return ["— custom —"] + [f"{s['name']} (+{s['plus']}/−{s['minus']})" for s in suggestions]
 
 
+def _suggestion_from_label(label: str, suggestions: list[dict]) -> dict | None:
+    for suggestion in suggestions:
+        if f"{suggestion['name']} (+{suggestion['plus']}/−{suggestion['minus']})" == label:
+            return suggestion
+    return None
+
+
+def _attrs_used_by_other_traits(index: int, traits: list[dict]) -> set[str]:
+    used: set[str] = set()
+    for i, trait in enumerate(traits):
+        if i == index:
+            continue
+        plus = st.session_state.get(f"trait_plus_{i}", trait.get("plus", ""))
+        minus = st.session_state.get(f"trait_minus_{i}", trait.get("minus", ""))
+        for attr in (plus, minus):
+            if attr:
+                used.add(attr)
+    return used
+
+
+def _filtered_suggestion_labels(
+    suggestions: list[dict],
+    used_elsewhere: set[str],
+    *,
+    current_pick: str | None = None,
+) -> list[str]:
+    labels = ["— custom —"]
+    for suggestion in suggestions:
+        if suggestion["plus"] in used_elsewhere or suggestion["minus"] in used_elsewhere:
+            continue
+        labels.append(f"{suggestion['name']} (+{suggestion['plus']}/−{suggestion['minus']})")
+    if current_pick and current_pick not in labels and current_pick != "— custom —":
+        labels.append(current_pick)
+    return labels
+
+
+def _filtered_attributes(
+    used_elsewhere: set[str],
+    *,
+    exclude: str | None = None,
+    current: str | None = None,
+) -> list[str]:
+    options = [attr for attr in ATTRIBUTES if attr not in used_elsewhere]
+    if exclude:
+        options = [attr for attr in options if attr != exclude]
+    if current and current in ATTRIBUTES and current not in options:
+        options.append(current)
+    return options
+
+
 def _trait_pick_label(trait: dict, suggestions: list[dict]) -> str:
     for suggestion in suggestions:
         if (
@@ -43,7 +93,9 @@ def _apply_trait_suggestion(index: int, suggestions: list[dict], labels: list[st
     pick = st.session_state.get(f"trait_pick_{index}", "— custom —")
     if pick == "— custom —":
         return
-    chosen = suggestions[labels.index(pick) - 1]
+    chosen = _suggestion_from_label(pick, suggestions)
+    if not chosen:
+        return
     st.session_state[f"trait_name_{index}"] = chosen["name"]
     st.session_state[f"trait_plus_{index}"] = chosen["plus"]
     st.session_state[f"trait_minus_{index}"] = chosen["minus"]
@@ -97,18 +149,44 @@ def step_traits(character: dict[str, Any]) -> None:
         st.markdown(f"**Trait {index + 1}**")
         cols = st.columns([2, 1, 1, 1])
         pick_key = f"trait_pick_{index}"
+        used_elsewhere = _attrs_used_by_other_traits(index, traits)
+        filtered_labels = _filtered_suggestion_labels(
+            suggestions,
+            used_elsewhere,
+            current_pick=st.session_state.get(pick_key),
+        )
+
         if pick_key not in st.session_state:
-            st.session_state[pick_key] = _trait_pick_label(traits[index], suggestions)
+            initial = _trait_pick_label(traits[index], suggestions)
+            if initial not in filtered_labels:
+                initial = "— custom —"
+            st.session_state[pick_key] = initial
             _apply_trait_suggestion(index, suggestions, suggestion_labels)
+        elif st.session_state[pick_key] not in filtered_labels:
+            st.session_state[pick_key] = "— custom —"
 
         cols[0].selectbox(
             f"Suggestion##{index}",
-            suggestion_labels,
+            filtered_labels,
             label_visibility="collapsed",
             key=pick_key,
             on_change=_apply_trait_suggestion,
             args=(index, suggestions, suggestion_labels),
         )
+
+        current_plus = st.session_state.get(f"trait_plus_{index}", traits[index].get("plus", ATTRIBUTES[0]))
+        current_minus = st.session_state.get(f"trait_minus_{index}", traits[index].get("minus", ATTRIBUTES[1]))
+        plus_options = _filtered_attributes(used_elsewhere, exclude=current_minus, current=current_plus)
+        minus_options = _filtered_attributes(used_elsewhere, exclude=current_plus, current=current_minus)
+
+        plus_key = f"trait_plus_{index}"
+        minus_key = f"trait_minus_{index}"
+        if plus_key in st.session_state and st.session_state[plus_key] not in plus_options and plus_options:
+            st.session_state[plus_key] = plus_options[0]
+            current_plus = plus_options[0]
+        if minus_key in st.session_state and st.session_state[minus_key] not in minus_options and minus_options:
+            st.session_state[minus_key] = minus_options[0]
+            current_minus = minus_options[0]
 
         traits[index]["name"] = cols[1].text_input(
             "Name",
@@ -117,14 +195,14 @@ def step_traits(character: dict[str, Any]) -> None:
         )
         traits[index]["plus"] = cols[2].selectbox(
             "+1",
-            ATTRIBUTES,
-            index=ATTRIBUTES.index(traits[index].get("plus", ATTRIBUTES[0])),
+            plus_options,
+            index=plus_options.index(current_plus) if current_plus in plus_options else 0,
             key=f"trait_plus_{index}",
         )
         traits[index]["minus"] = cols[3].selectbox(
             "−1",
-            ATTRIBUTES,
-            index=ATTRIBUTES.index(traits[index].get("minus", ATTRIBUTES[1])),
+            minus_options,
+            index=minus_options.index(current_minus) if current_minus in minus_options else 0,
             key=f"trait_minus_{index}",
         )
 
