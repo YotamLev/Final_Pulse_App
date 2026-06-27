@@ -153,6 +153,23 @@ hr {
     border: 1px solid #4a2030 !important;
     color: #d4c8b8 !important;
 }
+
+/* Skill pool grid: compact number inputs inside columns */
+div[data-testid="column"] div[data-testid="stNumberInput"] {
+    max-width: 8rem;
+}
+
+div[data-testid="column"] div[data-testid="stNumberInput"] input {
+    padding: 0.35rem 0.5rem !important;
+    min-height: 2rem !important;
+}
+
+div[data-testid="column"] div[data-testid="stNumberInput"] label {
+    font-size: 0.92rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>
 """
 

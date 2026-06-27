@@ -14,7 +14,7 @@ from pulse.constants import (
     SKILL_POOLS,
     TOTAL_SKILL_DOTS,
 )
-from pulse.data_loader import load_language_suggestions, load_skills, load_trait_suggestions, skill_category_map
+from pulse.data_loader import load_language_suggestions, load_skills, load_trait_suggestions
 from pulse.models import ensure_skill, recompute_skill_dots
 from pulse.validation import pool_total, total_skill_dots, validate_step
 
@@ -155,23 +155,31 @@ def _render_skill_pool_step(character: dict[str, Any], pool: str) -> None:
     assigned = pool_total(character, pool)
     st.progress(min(assigned / budget, 1.0), text=f"{label}: {assigned} / {budget} dots")
 
-    categories = skill_category_map()
     filter_cat = st.selectbox("Filter by category", ["All", "Physical", "Social", "Mental"], key=f"filter_{pool}")
 
-    for skill in load_skills():
-        if filter_cat != "All" and skill["category"] != filter_cat:
-            continue
-        entry = ensure_skill(character, skill["name"], skill["category"])
-        current = int(entry["pools"].get(pool, 0))
-        new_val = st.number_input(
-            skill["name"],
-            min_value=0,
-            max_value=5,
-            value=current,
-            key=f"skill_{pool}_{skill['name']}",
-        )
-        entry["pools"][pool] = new_val
-        recompute_skill_dots(entry)
+    filtered = [
+        skill
+        for skill in load_skills()
+        if filter_cat == "All" or skill["category"] == filter_cat
+    ]
+
+    columns_per_row = 3
+    for row_start in range(0, len(filtered), columns_per_row):
+        row_skills = filtered[row_start : row_start + columns_per_row]
+        cols = st.columns(columns_per_row)
+        for col, skill in zip(cols, row_skills):
+            with col:
+                entry = ensure_skill(character, skill["name"], skill["category"])
+                current = int(entry["pools"].get(pool, 0))
+                new_val = st.number_input(
+                    skill["name"],
+                    min_value=0,
+                    max_value=5,
+                    value=current,
+                    key=f"skill_{pool}_{skill['name']}",
+                )
+                entry["pools"][pool] = new_val
+                recompute_skill_dots(entry)
 
     with st.expander("Add custom skill"):
         custom_name = st.text_input("Custom skill name", key=f"custom_name_{pool}")
