@@ -214,5 +214,653 @@
     "plus": "Manipulation",
     "minus": "Resolve",
     "blurb": "Skilled at steering others, but inclined to seek shortcuts instead of enduring hardship."
+  },
+  {
+    "name": "Heavy-Handed",
+    "plus": "Strength",
+    "minus": "Dexterity",
+    "blurb": "Brings exceptional physical power to direct action, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Explosive",
+    "plus": "Strength",
+    "minus": "Stamina",
+    "blurb": "Brings exceptional physical power to direct action, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Overmuscled",
+    "plus": "Strength",
+    "minus": "Stamina",
+    "blurb": "Brings exceptional physical power to direct action; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Intimidating",
+    "plus": "Strength",
+    "minus": "Charisma",
+    "blurb": "Brings exceptional physical power to direct action, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Blunt",
+    "plus": "Strength",
+    "minus": "Manipulation",
+    "blurb": "Brings exceptional physical power to direct action, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Hot-Blooded",
+    "plus": "Strength",
+    "minus": "Composure",
+    "blurb": "Brings exceptional physical power to direct action, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Volatile",
+    "plus": "Strength",
+    "minus": "Composure",
+    "blurb": "Brings exceptional physical power to direct action; however, this comes with a tendency that shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Musclebound",
+    "plus": "Strength",
+    "minus": "Intelligence",
+    "blurb": "Brings exceptional physical power to direct action, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Unreflective",
+    "plus": "Strength",
+    "minus": "Intelligence",
+    "blurb": "Brings exceptional physical power to direct action; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Plodding",
+    "plus": "Strength",
+    "minus": "Wits",
+    "blurb": "Brings exceptional physical power to direct action, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Bull-Headed",
+    "plus": "Strength",
+    "minus": "Wits",
+    "blurb": "Brings exceptional physical power to direct action; however, this comes with a tendency that is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Fierce",
+    "plus": "Strength",
+    "minus": "Resolve",
+    "blurb": "Brings exceptional physical power to direct action, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Unsustained",
+    "plus": "Strength",
+    "minus": "Resolve",
+    "blurb": "Brings exceptional physical power to direct action; however, this comes with a tendency that has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Light-Footed",
+    "plus": "Dexterity",
+    "minus": "Strength",
+    "blurb": "Moves with exceptional precision and grace, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Fragile",
+    "plus": "Dexterity",
+    "minus": "Stamina",
+    "blurb": "Moves with exceptional precision and grace, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Furtive",
+    "plus": "Dexterity",
+    "minus": "Charisma",
+    "blurb": "Moves with exceptional precision and grace, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Self-Effacing",
+    "plus": "Dexterity",
+    "minus": "Charisma",
+    "blurb": "Moves with exceptional precision and grace; however, this comes with a tendency that often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Artless",
+    "plus": "Dexterity",
+    "minus": "Manipulation",
+    "blurb": "Moves with exceptional precision and grace, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Straightforward",
+    "plus": "Dexterity",
+    "minus": "Manipulation",
+    "blurb": "Moves with exceptional precision and grace; however, this comes with a tendency that struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Fidgety",
+    "plus": "Dexterity",
+    "minus": "Composure",
+    "blurb": "Moves with exceptional precision and grace, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Skittish",
+    "plus": "Dexterity",
+    "minus": "Composure",
+    "blurb": "Moves with exceptional precision and grace; however, this comes with a tendency that shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Slick",
+    "plus": "Dexterity",
+    "minus": "Intelligence",
+    "blurb": "Moves with exceptional precision and grace, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Unstudied",
+    "plus": "Dexterity",
+    "minus": "Intelligence",
+    "blurb": "Moves with exceptional precision and grace; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Deliberate",
+    "plus": "Dexterity",
+    "minus": "Wits",
+    "blurb": "Moves with exceptional precision and grace, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Mercurial",
+    "plus": "Dexterity",
+    "minus": "Resolve",
+    "blurb": "Moves with exceptional precision and grace, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Inconstant",
+    "plus": "Dexterity",
+    "minus": "Resolve",
+    "blurb": "Moves with exceptional precision and grace; however, this comes with a tendency that has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Wiry",
+    "plus": "Stamina",
+    "minus": "Strength",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Long-Winded",
+    "plus": "Stamina",
+    "minus": "Strength",
+    "blurb": "Endures exertion, pain, and deprivation unusually well; however, this comes with a tendency that lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Sturdy",
+    "plus": "Stamina",
+    "minus": "Dexterity",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Lumbering",
+    "plus": "Stamina",
+    "minus": "Dexterity",
+    "blurb": "Endures exertion, pain, and deprivation unusually well; however, this comes with a tendency that is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Weathered",
+    "plus": "Stamina",
+    "minus": "Charisma",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Plainspoken",
+    "plus": "Stamina",
+    "minus": "Manipulation",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Unsubtle",
+    "plus": "Stamina",
+    "minus": "Manipulation",
+    "blurb": "Endures exertion, pain, and deprivation unusually well; however, this comes with a tendency that struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Pugnacious",
+    "plus": "Stamina",
+    "minus": "Composure",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Indefatigable",
+    "plus": "Stamina",
+    "minus": "Intelligence",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Slow-Burning",
+    "plus": "Stamina",
+    "minus": "Wits",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Unhurried",
+    "plus": "Stamina",
+    "minus": "Wits",
+    "blurb": "Endures exertion, pain, and deprivation unusually well; however, this comes with a tendency that is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Tireless",
+    "plus": "Stamina",
+    "minus": "Resolve",
+    "blurb": "Endures exertion, pain, and deprivation unusually well, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Aimless",
+    "plus": "Stamina",
+    "minus": "Resolve",
+    "blurb": "Endures exertion, pain, and deprivation unusually well; however, this comes with a tendency that has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Magnetic",
+    "plus": "Charisma",
+    "minus": "Strength",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Soft-Powered",
+    "plus": "Charisma",
+    "minus": "Strength",
+    "blurb": "Naturally attracts trust, attention, and goodwill; however, this comes with a tendency that lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Warm",
+    "plus": "Charisma",
+    "minus": "Dexterity",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Ungraceful",
+    "plus": "Charisma",
+    "minus": "Dexterity",
+    "blurb": "Naturally attracts trust, attention, and goodwill; however, this comes with a tendency that is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Vivacious",
+    "plus": "Charisma",
+    "minus": "Stamina",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Frail-Spirited",
+    "plus": "Charisma",
+    "minus": "Stamina",
+    "blurb": "Naturally attracts trust, attention, and goodwill; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Candid",
+    "plus": "Charisma",
+    "minus": "Manipulation",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Personable",
+    "plus": "Charisma",
+    "minus": "Intelligence",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Shallow",
+    "plus": "Charisma",
+    "minus": "Intelligence",
+    "blurb": "Naturally attracts trust, attention, and goodwill; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Self-Assured",
+    "plus": "Charisma",
+    "minus": "Wits",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Winsome",
+    "plus": "Charisma",
+    "minus": "Resolve",
+    "blurb": "Naturally attracts trust, attention, and goodwill, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Scheming",
+    "plus": "Manipulation",
+    "minus": "Strength",
+    "blurb": "Reads motives and applies social pressure with skill, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Physically-Timid",
+    "plus": "Manipulation",
+    "minus": "Strength",
+    "blurb": "Reads motives and applies social pressure with skill; however, this comes with a tendency that lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Devious",
+    "plus": "Manipulation",
+    "minus": "Dexterity",
+    "blurb": "Reads motives and applies social pressure with skill, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Clumsy-Handed",
+    "plus": "Manipulation",
+    "minus": "Dexterity",
+    "blurb": "Reads motives and applies social pressure with skill; however, this comes with a tendency that is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Opportunistic",
+    "plus": "Manipulation",
+    "minus": "Stamina",
+    "blurb": "Reads motives and applies social pressure with skill, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Short-Winded",
+    "plus": "Manipulation",
+    "minus": "Stamina",
+    "blurb": "Reads motives and applies social pressure with skill; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Insinuating",
+    "plus": "Manipulation",
+    "minus": "Charisma",
+    "blurb": "Reads motives and applies social pressure with skill, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Streetwise",
+    "plus": "Manipulation",
+    "minus": "Intelligence",
+    "blurb": "Reads motives and applies social pressure with skill, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Anti-Intellectual",
+    "plus": "Manipulation",
+    "minus": "Intelligence",
+    "blurb": "Reads motives and applies social pressure with skill; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Plotting",
+    "plus": "Manipulation",
+    "minus": "Wits",
+    "blurb": "Reads motives and applies social pressure with skill, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Slow-to-React",
+    "plus": "Manipulation",
+    "minus": "Wits",
+    "blurb": "Reads motives and applies social pressure with skill; however, this comes with a tendency that is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Expedient",
+    "plus": "Manipulation",
+    "minus": "Resolve",
+    "blurb": "Reads motives and applies social pressure with skill, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Serene",
+    "plus": "Composure",
+    "minus": "Strength",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Unforceful",
+    "plus": "Composure",
+    "minus": "Strength",
+    "blurb": "Keeps emotions controlled and remains calm under pressure; however, this comes with a tendency that lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Still",
+    "plus": "Composure",
+    "minus": "Dexterity",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Wooden",
+    "plus": "Composure",
+    "minus": "Dexterity",
+    "blurb": "Keeps emotions controlled and remains calm under pressure; however, this comes with a tendency that is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Economical",
+    "plus": "Composure",
+    "minus": "Stamina",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Low-Energy",
+    "plus": "Composure",
+    "minus": "Stamina",
+    "blurb": "Keeps emotions controlled and remains calm under pressure; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Aloof",
+    "plus": "Composure",
+    "minus": "Charisma",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Forthright",
+    "plus": "Composure",
+    "minus": "Manipulation",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Untroubled",
+    "plus": "Composure",
+    "minus": "Intelligence",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Uncurious",
+    "plus": "Composure",
+    "minus": "Intelligence",
+    "blurb": "Keeps emotions controlled and remains calm under pressure; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Cool-Headed",
+    "plus": "Composure",
+    "minus": "Wits",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Laid-Back",
+    "plus": "Composure",
+    "minus": "Resolve",
+    "blurb": "Keeps emotions controlled and remains calm under pressure, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Cerebral",
+    "plus": "Intelligence",
+    "minus": "Strength",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Theoretical",
+    "plus": "Intelligence",
+    "minus": "Dexterity",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Contemplative",
+    "plus": "Intelligence",
+    "minus": "Stamina",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Sedentary",
+    "plus": "Intelligence",
+    "minus": "Stamina",
+    "blurb": "Excels at memory, analysis, and complex problem-solving; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Erudite",
+    "plus": "Intelligence",
+    "minus": "Charisma",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Literal-Minded",
+    "plus": "Intelligence",
+    "minus": "Manipulation",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Principled",
+    "plus": "Intelligence",
+    "minus": "Manipulation",
+    "blurb": "Excels at memory, analysis, and complex problem-solving; however, this comes with a tendency that struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Overthinking",
+    "plus": "Intelligence",
+    "minus": "Composure",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Anxious-Analyst",
+    "plus": "Intelligence",
+    "minus": "Composure",
+    "blurb": "Excels at memory, analysis, and complex problem-solving; however, this comes with a tendency that shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Ponderous",
+    "plus": "Intelligence",
+    "minus": "Wits",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but is slow to notice sudden changes or respond in the moment."
+  },
+  {
+    "name": "Brilliant",
+    "plus": "Intelligence",
+    "minus": "Resolve",
+    "blurb": "Excels at memory, analysis, and complex problem-solving, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Easily-Bored",
+    "plus": "Intelligence",
+    "minus": "Resolve",
+    "blurb": "Excels at memory, analysis, and complex problem-solving; however, this comes with a tendency that has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Elusive",
+    "plus": "Wits",
+    "minus": "Strength",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Improvisational",
+    "plus": "Wits",
+    "minus": "Dexterity",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Slapdash",
+    "plus": "Wits",
+    "minus": "Dexterity",
+    "blurb": "Notices changes quickly and makes effective snap judgments; however, this comes with a tendency that is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Quick",
+    "plus": "Wits",
+    "minus": "Stamina",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Short-Breathed",
+    "plus": "Wits",
+    "minus": "Stamina",
+    "blurb": "Notices changes quickly and makes effective snap judgments; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Watchful",
+    "plus": "Wits",
+    "minus": "Charisma",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Reactive",
+    "plus": "Wits",
+    "minus": "Manipulation",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Transparent",
+    "plus": "Wits",
+    "minus": "Manipulation",
+    "blurb": "Notices changes quickly and makes effective snap judgments; however, this comes with a tendency that struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "High-Strung",
+    "plus": "Wits",
+    "minus": "Composure",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Intuitive",
+    "plus": "Wits",
+    "minus": "Intelligence",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Easily-Stimulated",
+    "plus": "Wits",
+    "minus": "Resolve",
+    "blurb": "Notices changes quickly and makes effective snap judgments, but has difficulty persisting through boredom, delay, or repeated setbacks."
+  },
+  {
+    "name": "Iron-Willed",
+    "plus": "Resolve",
+    "minus": "Strength",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Physically-Meek",
+    "plus": "Resolve",
+    "minus": "Strength",
+    "blurb": "Sustains effort and commitment through tedious or difficult work; however, this comes with a tendency that lacks force, stability, and raw physical power."
+  },
+  {
+    "name": "Rigid",
+    "plus": "Resolve",
+    "minus": "Dexterity",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but is awkward with delicate, precise, or graceful movement."
+  },
+  {
+    "name": "Ascetic",
+    "plus": "Resolve",
+    "minus": "Stamina",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Self-Denying",
+    "plus": "Resolve",
+    "minus": "Stamina",
+    "blurb": "Sustains effort and commitment through tedious or difficult work; however, this comes with a tendency that tires easily and handles prolonged hardship poorly."
+  },
+  {
+    "name": "Single-Minded",
+    "plus": "Resolve",
+    "minus": "Charisma",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but often seems unappealing, distant, or difficult to trust."
+  },
+  {
+    "name": "Incorruptible",
+    "plus": "Resolve",
+    "minus": "Manipulation",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but struggles to read hidden motives or influence people indirectly."
+  },
+  {
+    "name": "Intense",
+    "plus": "Resolve",
+    "minus": "Composure",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but shows stress readily and reacts poorly to emotional pressure."
+  },
+  {
+    "name": "Diligent",
+    "plus": "Resolve",
+    "minus": "Intelligence",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Narrow-Minded",
+    "plus": "Resolve",
+    "minus": "Intelligence",
+    "blurb": "Sustains effort and commitment through tedious or difficult work; however, this comes with a tendency that neglects careful analysis, memory, and abstract problem-solving."
+  },
+  {
+    "name": "Steadfast",
+    "plus": "Resolve",
+    "minus": "Wits",
+    "blurb": "Sustains effort and commitment through tedious or difficult work, but is slow to notice sudden changes or respond in the moment."
   }
 ]
