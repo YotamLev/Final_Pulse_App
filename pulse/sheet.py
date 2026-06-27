@@ -6,7 +6,48 @@ from typing import Any
 
 from pulse.caps import get_attribute_values, get_skill_dots
 from pulse.constants import ATTRIBUTE_GROUPS, INNATE_VAMPIRE_ABILITIES, SCHEMA_VERSION, SKILL_POOLS
+from pulse.powers import power_by_id
 from pulse.vampire import clan_by_id
+
+
+def _esc(text: str) -> str:
+    return html.escape(text)
+
+
+def format_power_html(chosen: dict, power_def: dict | None = None) -> str:
+    """Render one character power with full rulebook text for print/export."""
+    if power_def is None and chosen.get("id"):
+        power_def = power_by_id(chosen["id"])
+    power_def = power_def or {}
+
+    title = f"{chosen.get('name', '?')} ({chosen.get('source', '')})"
+    if chosen.get("is_predator_power"):
+        title += " — predator"
+
+    chunks = [f'<div class="power-block"><h3>{_esc(title)}</h3>']
+    for field in ("cost", "duration", "roll"):
+        value = power_def.get(field)
+        if value:
+            chunks.append(f'<p class="power-mechanics">{_esc(str(value))}</p>')
+
+    description = power_def.get("description_text") or power_def.get("summary") or ""
+    if description:
+        paragraphs = str(description).split("\n\n") if "\n\n" in str(description) else [str(description)]
+        for paragraph in paragraphs:
+            paragraph = paragraph.strip()
+            if paragraph:
+                chunks.append(f'<p class="power-text">{_esc(paragraph)}</p>')
+
+    if chosen.get("is_predator_power") and power_def.get("predator_bonus_text"):
+        chunks.append(f'<p class="power-predator">{_esc(str(power_def["predator_bonus_text"]))}</p>')
+
+    prereq = power_def.get("prerequisites") or {}
+    raw_prereq = prereq.get("raw") if isinstance(prereq, dict) else None
+    if raw_prereq:
+        chunks.append(f'<p class="power-prereq"><strong>Requirements:</strong> {_esc(str(raw_prereq))}</p>')
+
+    chunks.append("</div>")
+    return "".join(chunks)
 
 
 def render_character_sheet(character: dict[str, Any]) -> str:
@@ -65,9 +106,8 @@ def render_character_sheet(character: dict[str, Any]) -> str:
     if vampire:
         clan = clan_by_id(vampire.get("clan", ""))
         clan_name = html.escape(clan["name"]) if clan else "—"
-        power_rows = "".join(
-            f"<li>{html.escape(p['name'])} ({html.escape(p['source'])})"
-            f"{' — predator' if p.get('is_predator_power') else ''}</li>"
+        power_blocks = "".join(
+            format_power_html(p, power_by_id(p.get("id", "")))
             for p in vampire.get("powers", [])
         )
         disc_rows = "".join(
@@ -86,7 +126,7 @@ def render_character_sheet(character: dict[str, Any]) -> str:
   <h2>Disciplines</h2>
   <ul>{disc_rows or '<li>—</li>'}</ul>
   <h2>Powers</h2>
-  <ul>{power_rows or '<li>—</li>'}</ul>
+  {power_blocks or '<p><em>No powers</em></p>'}
   <h2>Innate abilities</h2>
   <ul>{innate}</ul>
 """
@@ -103,7 +143,16 @@ def render_character_sheet(character: dict[str, Any]) -> str:
     th, td {{ border: 1px solid #ccc; padding: 0.35rem 0.5rem; text-align: left; }}
     th {{ background: #f4f4f4; }}
     .meta {{ color: #555; font-size: 0.9rem; }}
-    @media print {{ body {{ margin: 0.5in; }} }}
+    .power-block {{ margin: 1.25rem 0 1.75rem; padding-bottom: 1rem; border-bottom: 1px solid #ddd; }}
+    .power-block h3 {{ color: #8b1a1a; margin-bottom: 0.5rem; font-size: 1.05rem; }}
+    .power-mechanics {{ margin: 0.25rem 0; font-size: 0.95rem; }}
+    .power-text {{ margin: 0.5rem 0; line-height: 1.45; }}
+    .power-predator {{ margin: 0.5rem 0; font-style: italic; color: #5a3030; }}
+    .power-prereq {{ margin: 0.5rem 0 0; font-size: 0.9rem; color: #444; }}
+    @media print {{
+      body {{ margin: 0.5in; max-width: none; }}
+      .power-block {{ page-break-inside: avoid; break-inside: avoid; }}
+    }}
   </style>
 </head>
 <body>

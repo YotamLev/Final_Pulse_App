@@ -41,6 +41,7 @@ SORCERY_PATHS = [
 ]
 
 REQ_LINE = re.compile(r"^Requirements?:\s*(.+)$", re.IGNORECASE)
+META_LINE = re.compile(r"^(Roll|Cost|Duration):\s*(.+)$", re.IGNORECASE)
 PREDATOR_BONUS_LINE = re.compile(
     r"^If chosen as predator(?: type)? power:\s*(.+)$",
     re.IGNORECASE,
@@ -267,12 +268,51 @@ def parse_prerequisites(raw: str, source: str, source_type: str, power_name: str
     return result
 
 
-def detect_predator_bonus(body_paragraphs: list[str]) -> tuple[bool, str | None]:
-    """Detect predator-type bonus lines in full power body text."""
+def parse_power_body(body_paragraphs: list[str]) -> dict[str, object]:
+    """Split rulebook paragraphs into description, mechanics lines, and predator bonus."""
+    description: list[str] = []
+    cost: str | None = None
+    roll: str | None = None
+    duration: str | None = None
+    predator_bonus_text: str | None = None
+
     for text in body_paragraphs:
         stripped = text.strip()
+        if not stripped:
+            continue
         if PREDATOR_BONUS_LINE.match(stripped):
-            return True, stripped
+            predator_bonus_text = stripped
+            continue
+        meta = META_LINE.match(stripped)
+        if meta:
+            label = meta.group(1).lower()
+            if label == "cost":
+                cost = stripped
+            elif label == "roll":
+                roll = stripped
+            elif label == "duration":
+                duration = stripped
+            continue
+        description.append(stripped)
+
+    description_text = "\n\n".join(description) if description else None
+    return {
+        "description": description,
+        "description_text": description_text,
+        "summary": description[0] if description else None,
+        "cost": cost,
+        "roll": roll,
+        "duration": duration,
+        "predator_bonus": predator_bonus_text is not None,
+        "predator_bonus_text": predator_bonus_text,
+    }
+
+
+def detect_predator_bonus(body_paragraphs: list[str]) -> tuple[bool, str | None]:
+    """Detect predator-type bonus lines in full power body text."""
+    parsed = parse_power_body(body_paragraphs)
+    if parsed["predator_bonus_text"]:
+        return True, str(parsed["predator_bonus_text"])
     return False, None
 
 
@@ -337,7 +377,6 @@ def extract_powers() -> dict:
         source = current_parent if st != "amalgam" else "Amalgams"
 
         prereq_raw: str | None = None
-        summary: str | None = None
         body_paragraphs: list[str] = []
 
         for j in range(i + 1, len(doc.paragraphs)):
@@ -352,10 +391,10 @@ def extract_powers() -> dict:
                 prereq_raw = req_match.group(1).strip()
                 continue
             body_paragraphs.append(body)
-            if summary is None:
-                summary = body
 
         predator_bonus, predator_bonus_text = detect_predator_bonus(body_paragraphs)
+        parsed_body = parse_power_body(body_paragraphs)
+        summary = parsed_body.get("summary")
 
         base_id = slugify(power_name)
         parent_slug = slugify(current_parent)
@@ -374,6 +413,16 @@ def extract_powers() -> dict:
         }
         if summary:
             entry["summary"] = summary
+        if parsed_body.get("description_text"):
+            entry["description_text"] = parsed_body["description_text"]
+        if parsed_body.get("description"):
+            entry["description"] = parsed_body["description"]
+        if parsed_body.get("cost"):
+            entry["cost"] = parsed_body["cost"]
+        if parsed_body.get("roll"):
+            entry["roll"] = parsed_body["roll"]
+        if parsed_body.get("duration"):
+            entry["duration"] = parsed_body["duration"]
         if predator_bonus_text:
             entry["predator_bonus_text"] = predator_bonus_text
         if prereq_raw:
