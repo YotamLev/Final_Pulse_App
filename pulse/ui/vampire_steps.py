@@ -15,8 +15,7 @@ from pulse.caps import (
     skills_with_predator_room,
 )
 from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
-from pulse.data_loader import load_clans, load_predator_types, skill_category_map
-from pulse.models import ensure_skill
+from pulse.data_loader import load_clans, load_predator_types
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
 from pulse.ui.mortal_steps import render_errors
 from pulse.vampire import (
@@ -237,6 +236,67 @@ def step_l1_discipline_power(character: dict[str, Any]) -> None:
     sync_non_predator_power(v, 1, power, 1)
 
 
+def _predator_branch_hints(pdef: dict) -> str:
+    parts: list[str] = []
+    for branch in pdef.get("skill_branches") or []:
+        skills = branch.get("skills") or []
+        examples = branch.get("specialty_examples") or []
+        if not skills:
+            continue
+        hint = " / ".join(skills)
+        if examples and examples[0]:
+            hint += f" ({examples[0]})"
+        parts.append(hint)
+    return " · ".join(parts)
+
+
+def _predator_specialty_placeholder(pdef: dict | None, skill: str) -> str:
+    if not pdef or not skill:
+        return ""
+    for branch in pdef.get("skill_branches") or []:
+        if skill in (branch.get("skills") or []):
+            examples = branch.get("specialty_examples") or []
+            return examples[0] if examples else ""
+    return ""
+
+
+def _predator_skill_and_specialty(
+    character: dict[str, Any],
+    predator: dict[str, Any],
+    *,
+    skill_key: str,
+    spec_key: str,
+    pdef: dict | None = None,
+) -> None:
+    eligible = skills_with_predator_room(character)
+    saved_sk = (predator.get("skill_choice") or {}).get("skill", "")
+    if saved_sk and saved_sk not in eligible:
+        eligible = [saved_sk] + [s for s in eligible if s != saved_sk]
+    if not eligible:
+        st.error("No skill has room for +2 predator dots (max 5 per skill). Remove dots elsewhere first.")
+        skill = ""
+    else:
+        skill = st.selectbox(
+            "Skill for +2 dots",
+            eligible,
+            index=eligible.index(saved_sk) if saved_sk in eligible else 0,
+            key=skill_key,
+        )
+    predator["skill_choice"] = {"skill": skill, "dots": PREDATOR_SKILL_DOTS}
+    saved_spec = predator.get("specialty") or {}
+    spec_default = saved_spec.get("text", "") if saved_spec.get("skill") == skill else ""
+    placeholder = _predator_specialty_placeholder(pdef, skill) or "Specialty for this skill"
+    predator["specialty"] = {
+        "skill": skill,
+        "text": st.text_input(
+            "Specialty",
+            value=spec_default,
+            placeholder=placeholder,
+            key=spec_key,
+        ),
+    }
+
+
 def step_predator(character: dict[str, Any]) -> None:
     st.subheader("Level 1 — Predator type")
     st.caption(
@@ -263,57 +323,29 @@ def step_predator(character: dict[str, Any]) -> None:
             value=predator.get("custom_description", ""),
         )
         predator["type"] = "custom"
-        eligible = skills_with_predator_room(character)
-        saved_sk = (predator.get("skill_choice") or {}).get("skill", "")
-        if saved_sk and saved_sk not in eligible:
-            eligible = [saved_sk] + [s for s in eligible if s != saved_sk]
-        if not eligible:
-            st.error("No skill has room for +2 predator dots (max 5 per skill). Remove dots elsewhere first.")
-            sk = ""
-        else:
-            sk = st.selectbox(
-                "Skill for +2 dots",
-                eligible,
-                index=eligible.index(saved_sk) if saved_sk in eligible else 0,
-                key="pred_custom_skill",
-            )
-        predator["skill_choice"] = {"skill": sk, "dots": PREDATOR_SKILL_DOTS}
-        predator["specialty"] = {
-            "skill": sk,
-            "text": st.text_input("Specialty", value=(predator.get("specialty") or {}).get("text", "")),
-        }
+        _predator_skill_and_specialty(
+            character,
+            predator,
+            skill_key="pred_custom_skill",
+            spec_key="pred_custom_spec",
+        )
         sources = disciplines_list() + sorcery_paths_list()
     else:
         predator["source"] = "curated"
         pdef = next(t for t in types if t["id"] == pick)
         st.markdown(f"*{pdef['description']}*")
         if pdef.get("status") == "tbd":
-            st.warning("This type has no curated skill list — assign freely.")
-        branches = pdef.get("skill_branches") or [{"skills": list(skill_category_map().keys())[:5], "specialty_examples": [""]}]
-        branch_idx = st.radio("Skill branch", range(len(branches)), format_func=lambda i: " or ".join(branches[i]["skills"]), key="pred_branch")
-        branch = branches[branch_idx]
-        eligible = skills_with_predator_room(character, branch["skills"])
-        saved_sk = (predator.get("skill_choice") or {}).get("skill", "")
-        if saved_sk and saved_sk in branch["skills"] and saved_sk not in eligible:
-            eligible = [saved_sk] + eligible
-        if not eligible:
-            st.error(
-                f"No skill in this branch has room for +{PREDATOR_SKILL_DOTS} dots (max 5 per skill)."
-            )
-            skill = ""
-        else:
-            skill = st.selectbox(
-                "Skill (+2 dots)",
-                eligible,
-                index=eligible.index(saved_sk) if saved_sk in eligible else 0,
-                key="pred_skill",
-            )
-        predator["skill_choice"] = {"skill": skill, "dots": PREDATOR_SKILL_DOTS}
-        ex = branch.get("specialty_examples", [""])
-        predator["specialty"] = {
-            "skill": skill,
-            "text": st.text_input("Specialty", value=ex[0] if ex else "", key="pred_spec"),
-        }
+            st.warning("This predator type is not fully curated — power suggestions may be incomplete.")
+        hints = _predator_branch_hints(pdef)
+        if hints:
+            st.caption(f"Suggested skills (any skill allowed): {hints}")
+        _predator_skill_and_specialty(
+            character,
+            predator,
+            skill_key="pred_skill",
+            spec_key="pred_spec",
+            pdef=pdef,
+        )
         sources = pdef.get("relevant_disciplines") or disciplines_list()
         if not sources:
             sources = disciplines_list()

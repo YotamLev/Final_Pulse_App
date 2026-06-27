@@ -114,6 +114,27 @@ class TestPredatorValidation(unittest.TestCase):
         errors = validate_wizard_step(character, 13)
         self.assertTrue(any("exceeds maximum" in e for e in errors))
 
+    def test_predator_skill_any_skill_with_room_valid(self) -> None:
+        character = minimal_mortal_character()
+        level_1_ready_character(character)
+        v = character["vampire"]
+        v["predator"] = {
+            "source": "curated",
+            "type": "alleycat",
+            "skill_choice": {"skill": "Firearms", "dots": 2},
+            "specialty": {"skill": "Firearms", "text": "concealed carry"},
+        }
+        v["powers"].append(
+            {
+                "id": "potence_vigor",
+                "name": "Vigor",
+                "source": "Potence",
+                "acquired_at_level": 1,
+                "is_predator_power": True,
+            }
+        )
+        self.assertEqual(validate_wizard_step(character, 13), [])
+
     def test_leech_requires_two_powers_same_discipline(self) -> None:
         character = minimal_mortal_character()
         predator_ready_character(character)
