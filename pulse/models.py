@@ -6,16 +6,34 @@ from typing import Any
 
 from pulse.attributes import sync_mortal_attributes
 from pulse.constants import APP_VERSION, ATTRIBUTES, BASE_ATTRIBUTE_VALUE, SCHEMA_VERSION, SKILL_POOLS
+from pulse.skills import (
+    base_for_skill,
+    base_skill_max,
+    is_base_skill,
+    is_specialty_skill,
+    skill_kind,
+    specialty_category,
+    specialty_skill_max,
+)
 
 EMPTY_POOLS = {pool: 0 for pool in SKILL_POOLS}
 
 
-def _empty_skill_entry(category: str = "Mental", custom: bool = False) -> dict[str, Any]:
+def _empty_skill_entry(
+    *,
+    kind: str = "specialty",
+    category: str = "Mental",
+    base_skill: str | None = None,
+    custom: bool = False,
+) -> dict[str, Any]:
     entry: dict[str, Any] = {
         "dots": 0,
+        "kind": kind,
         "pools": dict(EMPTY_POOLS),
         "category": category,
     }
+    if base_skill:
+        entry["base_skill"] = base_skill
     if custom:
         entry["custom"] = True
     return entry
@@ -64,17 +82,40 @@ def ensure_skill(
     skill_name: str,
     category: str = "Mental",
     custom: bool = False,
+    *,
+    kind: str | None = None,
+    base_skill: str | None = None,
 ) -> dict[str, Any]:
     mortal = character.setdefault("mortal", {})
     skills = mortal.setdefault("skills", {})
     if skill_name not in skills:
-        skills[skill_name] = _empty_skill_entry(category=category, custom=custom)
-    return skills[skill_name]
+        if kind is None:
+            if is_base_skill(skill_name):
+                kind = "base"
+            else:
+                kind = "specialty"
+        if kind == "specialty" and not base_skill and not custom:
+            base_skill = base_for_skill(skill_name)
+        if kind == "specialty" and not custom:
+            category = specialty_category(skill_name)
+        skills[skill_name] = _empty_skill_entry(
+            kind=kind,
+            category=category,
+            base_skill=base_skill,
+            custom=custom,
+        )
+    entry = skills[skill_name]
+    if base_skill and not entry.get("base_skill"):
+        entry["base_skill"] = base_skill
+    if kind and not entry.get("kind"):
+        entry["kind"] = kind
+    return entry
 
 
-def assign_skill_dots(skill_entry: dict[str, Any], dots: int) -> None:
-    """Set total dots on a skill (pools are cleared; legacy JSON may still carry pool data)."""
-    skill_entry["dots"] = max(0, min(int(dots), 5))
+def assign_skill_dots(skill_entry: dict[str, Any], dots: int, *, skill_name: str = "") -> None:
+    kind = skill_kind(skill_name, skill_entry)
+    cap = base_skill_max() if kind == "base" else specialty_skill_max()
+    skill_entry["dots"] = max(0, min(int(dots), cap))
     skill_entry["pools"] = dict(EMPTY_POOLS)
 
 
@@ -97,12 +138,36 @@ def character_to_json(character: dict[str, Any]) -> str:
     return json.dumps(character, indent=2, ensure_ascii=False)
 
 
+def _migrate_skills_v2(character: dict[str, Any]) -> None:
+    from pulse.skills import specialty_to_base_map
+
+    mapping = specialty_to_base_map()
+    mortal = character.setdefault("mortal", {})
+    skills = mortal.get("skills", {})
+    migrated: dict[str, Any] = {}
+    for name, entry in skills.items():
+        entry = dict(entry)
+        if is_base_skill(name):
+            entry["kind"] = "base"
+        elif name in mapping or entry.get("custom"):
+            entry.setdefault("kind", "specialty")
+            entry.setdefault("base_skill", mapping.get(name))
+            entry.setdefault("category", specialty_category(name) if name in mapping else entry.get("category", "Mental"))
+        else:
+            entry.setdefault("kind", "specialty")
+        migrated[name] = entry
+    mortal["skills"] = migrated
+
+
 def character_from_json(text: str) -> dict[str, Any]:
     data = json.loads(text)
     if data.get("schema_version", 1) > SCHEMA_VERSION:
         raise ValueError(f"Unsupported schema version {data.get('schema_version')}.")
     merged = new_character()
     _deep_merge(merged, data)
+    if int(merged.get("schema_version", 1)) < SCHEMA_VERSION:
+        _migrate_skills_v2(merged)
+        merged["schema_version"] = SCHEMA_VERSION
     merged["wizard_step"] = _migrate_wizard_step(int(merged.get("wizard_step", 1)))
     for entry in merged.get("mortal", {}).get("skills", {}).values():
         recompute_skill_dots(entry)
@@ -111,16 +176,17 @@ def character_from_json(text: str) -> dict[str, Any]:
 
 
 def _migrate_wizard_step(step: int) -> int:
-    """Map wizard_step from older 20-step layout to current 17-step layout."""
+    """Map wizard_step from older layouts to current 16-step layout."""
     if step <= 3:
         return step
     if step <= 7:
         return 4
     if step <= 11:
         return step - 3
-    if step <= 20:
-        return step - 3
-    return step
+    step = step - 3
+    if step >= 15:
+        step -= 1
+    return min(step, 16)
 
 
 def _deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> None:

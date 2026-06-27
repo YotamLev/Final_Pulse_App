@@ -2,10 +2,19 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 from pulse.constants import DATA_DIR, PREDATOR_SKILL_DOTS
+from pulse.skills import (
+    base_for_skill,
+    base_skill_names,
+    effective_specialty_rating,
+    is_base_skill,
+    max_raw_specialty_dots,
+    raw_skill_dots,
+    skills_with_room_for_dots,
+    specialty_names,
+)
 
 CAP_PATH = DATA_DIR / "cap_extensions.json"
 POWERS_PATH = DATA_DIR / "powers.json"
@@ -47,6 +56,10 @@ def effective_attribute_max(character: dict[str, Any], attribute: str) -> int:
 
 
 def effective_skill_max(character: dict[str, Any], skill: str) -> int:
+    if is_base_skill(skill):
+        from pulse.skills import base_skill_max
+
+        return base_skill_max()
     data = _cap_data()
     maximum = data["defaults"]["skill_max"]
     vampire = character.get("vampire") or {}
@@ -56,8 +69,6 @@ def effective_skill_max(character: dict[str, Any], skill: str) -> int:
             maximum += 2
         elif masterwork.get("mode") == "two_skills_plus_one" and skill in masterwork.get("skills", []):
             maximum += 1
-    if "Masterwork" in known_power_names(character) and not masterwork:
-        pass
     return maximum
 
 
@@ -104,22 +115,6 @@ def mortal_skill_dots(character: dict[str, Any], skill: str) -> int:
     return int(entry.get("dots", 0))
 
 
-def skills_with_predator_room(
-    character: dict[str, Any],
-    candidates: list[str] | None = None,
-    *,
-    grant: int = PREDATOR_SKILL_DOTS,
-) -> list[str]:
-    from pulse.data_loader import skill_category_map
-
-    names = candidates if candidates is not None else sorted(skill_category_map().keys())
-    return [
-        skill
-        for skill in names
-        if mortal_skill_dots(character, skill) + grant <= effective_skill_max(character, skill)
-    ]
-
-
 def _mortal_skill_dots_map(character: dict[str, Any]) -> dict[str, int]:
     skills: dict[str, int] = {}
     for name, entry in character.get("mortal", {}).get("skills", {}).items():
@@ -135,7 +130,8 @@ def _apply_predator_skill_bonus(character: dict[str, Any], skills: dict[str, int
         dots = int(predator["skill_choice"].get("dots", 0))
         if sk:
             cap = effective_skill_max(character, sk)
-            skills[sk] = min(cap, skills.get(sk, 0) + dots)
+            current = effective_specialty_rating(character, sk, raw=skills)
+            skills[sk] = skills.get(sk, 0) + min(dots, max(0, cap - current))
 
 
 def _apply_skill_adjustments(
@@ -160,18 +156,61 @@ def _apply_skill_level_ups(skills: dict[str, int], vampire: dict[str, Any]) -> N
                 skills[name] = skills.get(name, 0) + int(delta)
 
 
+def _effective_skill_map(character: dict[str, Any], raw: dict[str, int]) -> dict[str, int]:
+    result: dict[str, int] = {}
+    for base in base_skill_names():
+        dots = int(raw.get(base, 0))
+        if dots > 0:
+            result[base] = dots
+
+    for specialty in specialty_names():
+        base = base_for_skill(specialty)
+        effective = int(raw.get(specialty, 0)) + int(raw.get(base or "", 0))
+        if effective > 0:
+            result[specialty] = effective
+
+    for name, entry in character.get("mortal", {}).get("skills", {}).items():
+        if not entry.get("custom") or name in result:
+            continue
+        base = base_for_skill(name, entry)
+        effective = int(raw.get(name, 0)) + int(raw.get(base or "", 0))
+        if effective > 0:
+            result[name] = effective
+    return result
+
+
+def skills_with_predator_room(
+    character: dict[str, Any],
+    candidates: list[str] | None = None,
+    *,
+    grant: int = PREDATOR_SKILL_DOTS,
+) -> list[str]:
+    if candidates is not None:
+        return [
+            skill
+            for skill in candidates
+            if effective_specialty_rating(character, skill) + grant
+            <= effective_skill_max(character, skill)
+        ]
+    return skills_with_room_for_dots(
+        character,
+        grant=grant,
+        effective_cap_fn=effective_skill_max,
+    )
+
+
 SKILL_REMOVAL_BUDGET = 2
 SKILL_LEVEL_UP_BUDGET = 2
 
 
 def skill_dots_before_removal(character: dict[str, Any], level: int = 2) -> dict[str, int]:
-    """Skill totals before forget-step removals at level are applied."""
+    """Legacy: skill totals before forget-step removals at level 2."""
     skills = _mortal_skill_dots_map(character)
     _apply_predator_skill_bonus(character, skills)
     vampire = character.get("vampire") or {}
     _apply_skill_adjustments(skills, vampire, skip_removed_at_level=level)
     _apply_skill_level_ups(skills, vampire)
-    return skills
+    return _effective_skill_map(character, skills)
 
 
 def skill_removal_bounds(
@@ -182,7 +221,7 @@ def skill_removal_bounds(
     level: int = 2,
     budget: int = SKILL_REMOVAL_BUDGET,
 ) -> tuple[int, int, int]:
-    """Return (dots_before_removal, max_removable, clamped_removal)."""
+    """Legacy forget-step bounds (effective ratings)."""
     available = int(skill_dots_before_removal(character, level).get(skill, 0))
     assigned = int(removed.get(skill, 0))
     other_total = sum(int(v) for v in removed.values()) - assigned
@@ -198,14 +237,21 @@ def skill_addition_bounds(
     *,
     budget: int = SKILL_LEVEL_UP_BUDGET,
 ) -> tuple[int, int, int, int]:
-    """Return (current_dots, cap, max_addable, clamped_assigned) for level-up skill dots."""
+    """Return (current_effective, cap, max_addable, clamped_assigned) for level-up skill dots."""
     current = int(get_skill_dots(character).get(skill, 0))
     cap = effective_skill_max(character, skill)
     assigned = int(additions.get(skill, 0))
     other_total = sum(int(v) for v in additions.values()) - assigned
     room_to_cap = max(0, cap - current)
     room_in_budget = max(0, budget - other_total)
-    max_addable = min(room_to_cap, room_in_budget)
+    raw = raw_skill_dots(character)
+    vampire = character.get("vampire") or {}
+    temp = dict(raw)
+    _apply_predator_skill_bonus(character, temp)
+    _apply_skill_adjustments(temp, vampire)
+    _apply_skill_level_ups(temp, vampire)
+    room_on_entry = max_raw_specialty_dots(character, skill) - int(temp.get(skill, 0))
+    max_addable = min(room_to_cap, room_in_budget, max(0, room_on_entry))
     return current, cap, max_addable, min(assigned, max_addable)
 
 
@@ -215,4 +261,4 @@ def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:
     vampire = character.get("vampire") or {}
     _apply_skill_adjustments(skills, vampire)
     _apply_skill_level_ups(skills, vampire)
-    return skills
+    return _effective_skill_map(character, skills)

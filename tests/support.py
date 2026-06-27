@@ -136,7 +136,6 @@ def predator_ready_character(character: dict) -> dict:
 def level_2_ready_character(character: dict) -> dict:
     predator_ready_character(character)
     v = character["vampire"]
-    v["skill_adjustments"] = [{"level": 2, "removed": {"Athletics": 2}}]
     v["attribute_adjustments"].append({"level": 2, "changes": {"Stamina": 1, "Resolve": 1}})
     v["disciplines"].append({"name": "Fortitude", "source": "clan", "acquired_at_level": 2})
     v["powers"].append(

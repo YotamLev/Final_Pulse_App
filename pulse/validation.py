@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 from pulse.attributes import compute_attributes, distribution_valid
-from pulse.constants import (
-    MORTAL_STEP_COUNT,
-    SKILL_MAX_DEFAULT,
-    TOTAL_SKILL_DOTS,
+from pulse.constants import MORTAL_STEP_COUNT, TOTAL_SKILL_DOTS
+from pulse.skills import (
+    effective_specialty_rating,
+    total_assigned_skill_dots,
+    validate_skill_allocation,
 )
 
 
@@ -65,24 +66,11 @@ def _validate_attributes(character: dict[str, Any]) -> list[str]:
 
 
 def total_skill_dots(character: dict[str, Any]) -> int:
-    return sum(int(entry.get("dots", 0)) for entry in character.get("mortal", {}).get("skills", {}).values())
+    return total_assigned_skill_dots(character)
 
 
 def _validate_skills(character: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
-    assigned = total_skill_dots(character)
-    if assigned != TOTAL_SKILL_DOTS:
-        errors.append(f"Assign exactly {TOTAL_SKILL_DOTS} skill dots ({assigned}/{TOTAL_SKILL_DOTS}).")
-
-    for skill_name, entry in character.get("mortal", {}).get("skills", {}).items():
-        dots = int(entry.get("dots", 0))
-        if dots > SKILL_MAX_DEFAULT:
-            errors.append(f"{skill_name} cannot exceed {SKILL_MAX_DEFAULT} dots (has {dots}).")
-        if entry.get("custom") and not skill_name.strip():
-            errors.append("Custom skills need a name.")
-        if entry.get("custom") and not entry.get("category"):
-            errors.append(f"Custom skill '{skill_name}' needs a category.")
-    return errors
+    return validate_skill_allocation(character)
 
 
 def _validate_languages(character: dict[str, Any]) -> list[str]:
@@ -105,7 +93,6 @@ def _validate_specialties(character: dict[str, Any]) -> list[str]:
         errors.append("Add exactly 2 specialties.")
         return errors
 
-    skills = character.get("mortal", {}).get("skills", {})
     chosen_skills: list[str] = []
     for index, spec in enumerate(specialties, start=1):
         skill = spec.get("skill", "").strip()
@@ -115,8 +102,8 @@ def _validate_specialties(character: dict[str, Any]) -> list[str]:
         if skill in chosen_skills:
             errors.append("Specialties must be on two different skills.")
         chosen_skills.append(skill)
-        if skill and skills.get(skill, {}).get("dots", 0) < 1:
-            errors.append(f"Specialty {index}: {skill} needs at least 1 dot.")
+        if skill and effective_specialty_rating(character, skill) < 1:
+            errors.append(f"Specialty {index}: {skill} needs at least 1 effective dot.")
 
     errors.extend(_validate_languages(character))
     return errors

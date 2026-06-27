@@ -3,7 +3,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 APP_VERSION = "0.1.0"
 
 ATTRIBUTES = [
@@ -40,8 +40,12 @@ BASE_ATTRIBUTE_VALUE = 2
 TARGET_DISTRIBUTION = {3: 3, 2: 3, 1: 3}
 
 SKILL_MAX_DEFAULT = 5
+BASE_SKILL_MAX = 2
 ATTRIBUTE_MAX_DEFAULT = 5
 
+TOTAL_SKILL_DOTS = 18
+
+# Legacy pool fields kept for old JSON compatibility only.
 SKILL_POOLS = ("professional", "life_event", "leisure", "natural")
 POOL_BUDGETS = {
     "professional": 10,
@@ -49,7 +53,6 @@ POOL_BUDGETS = {
     "leisure": 3,
     "natural": 4,
 }
-TOTAL_SKILL_DOTS = sum(POOL_BUDGETS.values())
 
 POOL_LABELS = {
     "professional": "Professional Skills",
@@ -84,10 +87,9 @@ VAMPIRE_STEPS = {
     11: "Level 1 — Attributes (+2)",
     12: "Level 1 — Second Discipline & Power",
     13: "Level 1 — Predator Type",
-    14: "Level 2 — Forget Skills (−2)",
-    15: "Level 2 — Attributes (+2)",
-    16: "Level 2 — Third Discipline & Power",
-    17: "Character Complete",
+    14: "Level 2 — Attributes (+2)",
+    15: "Level 2 — Third Discipline & Power",
+    16: "Character Complete",
 }
 
 PREDATOR_SKILL_DOTS = 2

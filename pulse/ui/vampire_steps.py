@@ -8,13 +8,10 @@ from pulse.caps import (
     attribute_adjustment_bounds,
     effective_attribute_max,
     get_attribute_values,
-    get_skill_dots,
-    skill_dots_before_removal,
-    skill_removal_bounds,
-    SKILL_REMOVAL_BUDGET,
     skills_with_predator_room,
 )
 from pulse.constants import ATTRIBUTES, INNATE_VAMPIRE_ABILITIES, PREDATOR_SKILL_DOTS
+from pulse.data_loader import load_clans, load_predator_types
 from pulse.models import export_filename
 from pulse.sheet import render_character_sheet
 from pulse.powers import available_powers, has_predator_bonus, power_by_id, disciplines_list, sorcery_paths_list
@@ -274,7 +271,7 @@ def _predator_skill_and_specialty(
     if saved_sk and saved_sk not in eligible:
         eligible = [saved_sk] + [s for s in eligible if s != saved_sk]
     if not eligible:
-        st.error("No skill has room for +2 predator dots (max 5 per skill). Remove dots elsewhere first.")
+        st.error("No specialty has room for +2 predator dots (max 5 effective). Remove dots elsewhere first.")
         skill = ""
     else:
         skill = st.selectbox(
@@ -302,7 +299,7 @@ def step_predator(character: dict[str, Any]) -> None:
     st.subheader("Level 1 — Predator type")
     st.caption(
         f"Your feeding style grants {PREDATOR_SKILL_DOTS} skill dots, a specialty, and a predator power. "
-        f"Skill dots cannot exceed 5 per skill at creation."
+        f"Skill dots cannot exceed 5 effective rating per specialty at creation."
     )
 
     v = ensure_vampire(character)
@@ -380,54 +377,6 @@ def step_predator(character: dict[str, Any]) -> None:
         st.caption("Feeding restriction: vampires only (like Ventrue bane).")
 
     v["level"] = 1
-
-
-def step_l2_skill_removal(character: dict[str, Any]) -> None:
-    st.subheader("Level 2 — Forgotten skills")
-    st.caption("Lose 2 skill dots you forgot.")
-
-    v = ensure_vampire(character)
-    block = next((b for b in v["skill_adjustments"] if b.get("level") == 2), None)
-    if not block:
-        block = {"level": 2, "removed": {}}
-        v["skill_adjustments"].append(block)
-    removed = block["removed"]
-    base_skills = {
-        name: dots for name, dots in skill_dots_before_removal(character, 2).items() if dots > 0
-    }
-    if not base_skills:
-        st.warning("No skills to remove.")
-        return
-
-    for skill_name in sorted(base_skills):
-        available, max_removable, value = skill_removal_bounds(
-            character, skill_name, removed=removed
-        )
-        if int(removed.get(skill_name, 0)) != value:
-            if value:
-                removed[skill_name] = value
-            elif skill_name in removed:
-                del removed[skill_name]
-        widget_key = f"rm_{skill_name}"
-        if widget_key in st.session_state and int(st.session_state[widget_key]) > max_removable:
-            st.session_state[widget_key] = value
-        val = st.number_input(
-            f"Remove from {skill_name} ({available} dots)",
-            min_value=0,
-            max_value=max_removable,
-            value=value,
-            key=widget_key,
-        )
-        if val:
-            removed[skill_name] = val
-        elif skill_name in removed:
-            del removed[skill_name]
-
-    total_removed = sum(int(v) for v in removed.values())
-    st.progress(
-        min(total_removed / SKILL_REMOVAL_BUDGET, 1.0),
-        text=f"Removed {total_removed} / {SKILL_REMOVAL_BUDGET}",
-    )
 
 
 def step_l2_attributes(character: dict[str, Any]) -> None:
@@ -511,10 +460,9 @@ VAMPIRE_STEP_RENDERERS = {
     11: step_l1_attributes,
     12: step_l1_discipline_power,
     13: step_predator,
-    14: step_l2_skill_removal,
-    15: step_l2_attributes,
-    16: step_l2_discipline_power,
-    17: step_complete,
+    14: step_l2_attributes,
+    15: step_l2_discipline_power,
+    16: step_complete,
 }
 
 

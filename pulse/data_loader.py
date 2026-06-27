@@ -2,14 +2,23 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
-from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+from pulse.constants import DATA_DIR
+
+
+@lru_cache
+def load_skill_tree() -> dict:
+    return json.loads((DATA_DIR / "skill_tree.json").read_text(encoding="utf-8"))
 
 
 @lru_cache
 def load_skills() -> list[dict[str, str]]:
-    return json.loads((DATA_DIR / "skills.json").read_text(encoding="utf-8"))
+    """Flat specialty list with categories (legacy helper)."""
+    tree = load_skill_tree()
+    return [
+        {"name": name, "category": category}
+        for name, category in tree["specialty_categories"].items()
+    ]
 
 
 @lru_cache
@@ -40,4 +49,8 @@ def predator_type_by_id(type_id: str) -> dict | None:
 
 
 def skill_category_map() -> dict[str, str]:
-    return {item["name"]: item["category"] for item in load_skills()}
+    from pulse.skills import base_skill_names
+
+    mapping = {name: "General" for name in base_skill_names()}
+    mapping.update(load_skill_tree()["specialty_categories"])
+    return mapping

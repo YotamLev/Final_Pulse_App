@@ -5,8 +5,9 @@ from datetime import datetime, timezone
 from typing import Any
 
 from pulse.caps import get_attribute_values, get_skill_dots
-from pulse.constants import ATTRIBUTE_GROUPS, INNATE_VAMPIRE_ABILITIES, SCHEMA_VERSION, SKILL_POOLS
+from pulse.constants import ATTRIBUTE_GROUPS, INNATE_VAMPIRE_ABILITIES, SCHEMA_VERSION
 from pulse.powers import power_by_id
+from pulse.skills import base_for_skill, is_base_skill, raw_skill_dots
 from pulse.vampire import clan_by_id
 
 
@@ -120,16 +121,24 @@ def render_character_sheet(character: dict[str, Any]) -> str:
         )
         attr_sections.append(f"<h3>{group}</h3><table><tr><th>Attribute</th><th>Rating</th></tr>{rows}</table>")
 
+    raw = raw_skill_dots(character)
     skill_rows = []
-    for skill_name, dots in sorted(skill_dots.items()):
-        if int(dots) <= 0:
+    for skill_name, effective in sorted(skill_dots.items()):
+        if int(effective) <= 0:
             continue
         entry = mortal.get("skills", {}).get(skill_name, {})
-        pools = entry.get("pools", {})
-        pool_bits = ", ".join(f"{p[:4]}:{pools.get(p, 0)}" for p in SKILL_POOLS if pools.get(p, 0))
+        if is_base_skill(skill_name):
+            detail = f"base {effective}"
+        else:
+            specialty_raw = int(raw.get(skill_name, 0))
+            base_name = base_for_skill(skill_name, entry) or "—"
+            base_part = int(raw.get(base_name, 0)) if base_name != "—" else 0
+            detail = f"{specialty_raw} + {base_part} {base_name}" if base_part else str(specialty_raw)
+            if entry.get("base_skill"):
+                detail += f" ({entry['base_skill']})"
         skill_rows.append(
-            f"<tr><td>{html.escape(skill_name)}</td><td>{dots}</td>"
-            f"<td>{html.escape(entry.get('category', ''))}</td><td>{html.escape(pool_bits)}</td></tr>"
+            f"<tr><td>{html.escape(skill_name)}</td><td>{effective}</td>"
+            f"<td>{html.escape(entry.get('category', ''))}</td><td>{html.escape(detail)}</td></tr>"
         )
     skills_table = "".join(skill_rows) or "<tr><td colspan='4'><em>No skills</em></td></tr>"
 
@@ -213,7 +222,7 @@ def render_character_sheet(character: dict[str, Any]) -> str:
   <h2>Traits</h2>
   <table><tr><th>Trait</th><th>+1</th><th>−1</th></tr>{trait_rows}</table>
   <h2>Skills</h2>
-  <table><tr><th>Skill</th><th>Dots</th><th>Category</th><th>Pools</th></tr>{skills_table}</table>
+  <table><tr><th>Skill</th><th>Rating</th><th>Category</th><th>Breakdown</th></tr>{skills_table}</table>
   <h2>Languages</h2>
   <ul>{lang_items or "<li>—</li>"}</ul>
   <h2>Specialties</h2>

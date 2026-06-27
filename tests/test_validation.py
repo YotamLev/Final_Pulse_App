@@ -10,7 +10,7 @@ from pulse.validation import validate_step
 
 
 class TestSkillValidation(unittest.TestCase):
-    def test_skills_require_exactly_22_dots(self) -> None:
+    def test_skills_require_exactly_18_dots(self) -> None:
         character = new_character()
         character["chronicle"]["time_and_place"] = "Test"
         entry = ensure_skill(character, "Athletics", "Physical")

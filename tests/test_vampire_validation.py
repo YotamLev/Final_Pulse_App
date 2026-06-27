@@ -164,16 +164,16 @@ class TestPredatorValidation(unittest.TestCase):
 
 
 class TestLevel2Validation(unittest.TestCase):
-    def test_skill_removal_must_total_two(self) -> None:
+    def test_l2_attributes_must_total_two(self) -> None:
         character = minimal_mortal_character()
         predator_ready_character(character)
         errors = validate_wizard_step(character, 14)
-        self.assertTrue(any("Remove exactly 2 skill dots" in e for e in errors))
+        self.assertTrue(any("Assign exactly 2 attribute dots for Level 2" in e for e in errors))
 
     def test_complete_creation_valid(self) -> None:
         character = minimal_mortal_character()
         level_2_ready_character(character)
-        self.assertEqual(validate_wizard_step(character, 17), [])
+        self.assertEqual(validate_wizard_step(character, 16), [])
 
 
 class TestLevelUpValidation(unittest.TestCase):

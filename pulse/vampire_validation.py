@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from pulse.caps import effective_attribute_max, effective_skill_max, get_attribute_values, get_skill_dots, mortal_skill_dots
+from pulse.caps import effective_attribute_max, effective_skill_max, get_attribute_values, get_skill_dots
 from pulse.constants import PREDATOR_SKILL_DOTS
 from pulse.data_loader import load_predator_types
 from pulse.powers import power_by_id, prerequisites_met
 from pulse.constants import MORTAL_STEP_COUNT
+from pulse.skills import effective_specialty_rating
 from pulse.validation import validate_step as validate_mortal_step
 from pulse.vampire import clan_by_id, get_clan_disciplines
 
@@ -20,10 +21,9 @@ def validate_wizard_step(character: dict[str, Any], step: int) -> list[str]:
         11: _validate_l1_attributes,
         12: _validate_l1_discipline_power,
         13: _validate_predator,
-        14: _validate_l2_skill_removal,
-        15: _validate_l2_attributes,
-        16: _validate_l2_discipline_power,
-        17: _validate_complete,
+        14: _validate_l2_attributes,
+        15: _validate_l2_discipline_power,
+        16: _validate_complete,
     }
     fn = validators.get(step)
     if fn:
@@ -140,29 +140,19 @@ def _validate_predator(character: dict) -> list[str]:
     sc = predator.get("skill_choice") or {}
     skill = sc.get("skill")
     if skill:
-        total = mortal_skill_dots(character, skill) + int(sc.get("dots", 0))
+        current = effective_specialty_rating(character, skill)
+        total = current + int(sc.get("dots", 0))
         cap = effective_skill_max(character, skill)
         if total > cap:
             errors.append(
                 f"{skill} exceeds maximum ({total} > {cap}). "
-                f"Choose a skill with room for +{PREDATOR_SKILL_DOTS} dots."
+                f"Choose a specialty with room for +{PREDATOR_SKILL_DOTS} dots."
             )
     return errors
 
 
-def _validate_l2_skill_removal(character: dict) -> list[str]:
-    errors = _validate_predator(character)
-    removed = 0
-    for block in _vampire(character).get("skill_adjustments", []):
-        if block.get("level") == 2:
-            removed += sum(int(v) for v in block.get("removed", {}).values())
-    if removed != 2:
-        errors.append(f"Remove exactly 2 skill dots ({removed}/2).")
-    return errors
-
-
 def _validate_l2_attributes(character: dict) -> list[str]:
-    errors = _validate_l2_skill_removal(character)
+    errors = _validate_predator(character)
     total = _attr_adjustment_total(character, 2)
     if total != 2:
         errors.append(f"Assign exactly 2 attribute dots for Level 2 ({total}/2).")

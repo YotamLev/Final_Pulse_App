@@ -4,16 +4,24 @@ from typing import Any
 
 import streamlit as st
 
+from pulse.caps import get_skill_dots
 from pulse.constants import (
     ATTRIBUTE_DESCRIPTIONS,
     ATTRIBUTE_GROUPS,
     ATTRIBUTES,
-    POOL_PROMPTS,
+    BASE_SKILL_MAX,
     SKILL_MAX_DEFAULT,
     TOTAL_SKILL_DOTS,
 )
-from pulse.data_loader import load_language_suggestions, load_skills, load_trait_suggestions
+from pulse.data_loader import load_language_suggestions, load_skill_tree, load_trait_suggestions
 from pulse.models import assign_skill_dots, ensure_skill
+from pulse.skills import (
+    base_skill_max,
+    effective_specialty_rating,
+    is_base_skill,
+    max_raw_specialty_dots,
+    specialty_category,
+)
 from pulse.validation import total_skill_dots, validate_step
 
 
@@ -232,53 +240,67 @@ def step_attributes(character: dict[str, Any]) -> None:
 def step_skills(character: dict[str, Any]) -> None:
     st.subheader("Skills")
     st.caption(
-        f"Assign {TOTAL_SKILL_DOTS} dots across your skills (max {SKILL_MAX_DEFAULT} per skill). "
-        "Consider your profession, life events, hobbies, and natural talents."
+        f"Assign {TOTAL_SKILL_DOTS} dots across six base skills (max {BASE_SKILL_MAX} each) "
+        f"and their specialties (max {SKILL_MAX_DEFAULT} effective rating per specialty). "
+        "Effective rating = base dots + specialty dots (e.g. 2 Reaction + 1 Athletics = 3 Athletics)."
     )
-    for prompt in POOL_PROMPTS.values():
-        st.markdown(f"- {prompt}")
 
     assigned = total_skill_dots(character)
     st.progress(min(assigned / TOTAL_SKILL_DOTS, 1.0), text=f"Skills: {assigned} / {TOTAL_SKILL_DOTS} dots")
 
-    filter_cat = st.selectbox("Filter by category", ["All", "Physical", "Social", "Mental"], key="filter_skills")
+    tree = load_skill_tree()
+    for base_entry in tree["bases"]:
+        base_name = base_entry["name"]
+        st.markdown(f"**{base_name}**")
+        base_skill = ensure_skill(character, base_name, kind="base", category="General")
+        base_current = int(base_skill.get("dots", 0))
+        base_val = st.number_input(
+            f"{base_name} (base, max {base_skill_max()})",
+            min_value=0,
+            max_value=base_skill_max(),
+            value=base_current,
+            key=f"base_dots_{base_name}",
+        )
+        assign_skill_dots(base_skill, base_val, skill_name=base_name)
 
-    filtered = [
-        skill
-        for skill in load_skills()
-        if filter_cat == "All" or skill["category"] == filter_cat
-    ]
-
-    columns_per_row = 3
-    for row_start in range(0, len(filtered), columns_per_row):
-        row_skills = filtered[row_start : row_start + columns_per_row]
-        cols = st.columns(columns_per_row)
-        for col, skill in zip(cols, row_skills):
+        cols = st.columns(min(3, len(base_entry["specialties"])))
+        for col, specialty in zip(cols, base_entry["specialties"]):
             with col:
-                entry = ensure_skill(character, skill["name"], skill["category"])
+                entry = ensure_skill(character, specialty, kind="specialty", category=specialty_category(specialty))
                 current = int(entry.get("dots", 0))
+                effective = effective_specialty_rating(character, specialty)
+                max_raw = max_raw_specialty_dots(character, specialty)
                 new_val = st.number_input(
-                    skill["name"],
+                    f"{specialty} ({effective} effective)",
                     min_value=0,
-                    max_value=SKILL_MAX_DEFAULT,
-                    value=current,
-                    key=f"skill_dots_{skill['name']}",
+                    max_value=max_raw,
+                    value=min(current, max_raw),
+                    key=f"skill_dots_{specialty}",
                 )
-                assign_skill_dots(entry, new_val)
+                assign_skill_dots(entry, new_val, skill_name=specialty)
 
-    with st.expander("Add custom skill"):
+    with st.expander("Add custom specialty"):
         custom_name = st.text_input("Custom skill name", key="custom_name_skills")
+        custom_base = st.selectbox("Base skill", [""] + [b["name"] for b in tree["bases"]], key="custom_base_skills")
         custom_cat = st.selectbox("Category", ["Physical", "Social", "Mental"], key="custom_cat_skills")
         custom_dots = st.number_input(
-            "Dots",
+            "Specialty dots",
             min_value=0,
             max_value=SKILL_MAX_DEFAULT,
             value=0,
             key="custom_dots_skills",
         )
-        if custom_name.strip():
-            entry = ensure_skill(character, custom_name.strip(), custom_cat, custom=True)
-            assign_skill_dots(entry, custom_dots)
+        if custom_name.strip() and custom_base:
+            entry = ensure_skill(
+                character,
+                custom_name.strip(),
+                custom_cat,
+                custom=True,
+                kind="specialty",
+                base_skill=custom_base,
+            )
+            max_raw = max_raw_specialty_dots(character, custom_name.strip())
+            assign_skill_dots(entry, min(custom_dots, max_raw), skill_name=custom_name.strip())
 
 
 def step_languages(character: dict[str, Any]) -> None:
@@ -313,12 +335,12 @@ def step_languages(character: dict[str, Any]) -> None:
 
 def step_specialties(character: dict[str, Any]) -> None:
     st.subheader("Specialties")
-    st.caption("Two specialties on two different skills (each skill needs at least 1 dot).")
+    st.caption("Two specialties on two different skills (each skill needs at least 1 effective dot).")
 
     mortal = character.setdefault("mortal", {})
     specialties = mortal.setdefault("specialties", [{"skill": "", "text": ""}, {"skill": "", "text": ""}])
     skill_names = sorted(
-        name for name, entry in mortal.get("skills", {}).items() if int(entry.get("dots", 0)) > 0
+        name for name, rating in get_skill_dots(character).items() if rating > 0 and not is_base_skill(name)
     )
     options = [""] + skill_names
 
