@@ -7,11 +7,12 @@ import unittest
 from pulse.caps import (
     attribute_adjustment_bounds,
     get_skill_dots,
+    skill_addition_bounds,
     skill_dots_before_removal,
     skill_removal_bounds,
     SKILL_REMOVAL_BUDGET,
 )
-from tests.support import level_1_ready_character, minimal_mortal_character, predator_ready_character
+from tests.support import level_1_ready_character, level_2_ready_character, minimal_mortal_character, predator_ready_character
 
 
 class TestAttributeAdjustmentBounds(unittest.TestCase):
@@ -106,6 +107,24 @@ class TestSkillRemovalBounds(unittest.TestCase):
                 self.character, skill, removed=removed
             )
             self.assertLessEqual(value, max_removable, msg=f"{skill} value above max")
+
+
+class TestSkillAdditionBounds(unittest.TestCase):
+    def test_cannot_add_dots_when_at_cap(self) -> None:
+        character = minimal_mortal_character()
+        level_2_ready_character(character)
+        character["mortal"]["skills"]["Stealth"] = {"dots": 5, "category": "Physical", "pools": {}}
+        current, cap, max_add, assigned = skill_addition_bounds(character, "Stealth", {"Stealth": 2})
+        self.assertEqual(current, 5)
+        self.assertEqual(cap, 5)
+        self.assertEqual(max_add, 0)
+        self.assertEqual(assigned, 0)
+
+    def test_budget_limits_second_skill(self) -> None:
+        character = minimal_mortal_character()
+        level_2_ready_character(character)
+        _, _, max_add, _ = skill_addition_bounds(character, "Stealth", {"Athletics": 1})
+        self.assertEqual(max_add, 1)
 
 
 if __name__ == "__main__":

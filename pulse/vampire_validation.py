@@ -212,8 +212,11 @@ def validate_level_up(character: dict, choice: str, details: dict) -> list[str]:
         if sum(int(v) for v in details.values()) != 2:
             errors.append("Assign exactly 2 skill dots.")
         for skill, dots in details.items():
-            if get_skill_dots(character).get(skill, 0) + int(dots) > effective_skill_max(character, skill):
-                errors.append(f"{skill} would exceed its maximum.")
+            current = get_skill_dots(character).get(skill, 0)
+            cap = effective_skill_max(character, skill)
+            total = int(current) + int(dots)
+            if total > cap:
+                errors.append(f"{skill} would exceed maximum ({total} > {cap}).")
     elif choice == "specialties":
         specs = details.get("specialties", [])
         if len(specs) != 3:

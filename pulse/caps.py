@@ -161,6 +161,7 @@ def _apply_skill_level_ups(skills: dict[str, int], vampire: dict[str, Any]) -> N
 
 
 SKILL_REMOVAL_BUDGET = 2
+SKILL_LEVEL_UP_BUDGET = 2
 
 
 def skill_dots_before_removal(character: dict[str, Any], level: int = 2) -> dict[str, int]:
@@ -188,6 +189,24 @@ def skill_removal_bounds(
     room_in_budget = max(0, budget - other_total)
     max_removable = min(available, room_in_budget)
     return available, max_removable, min(assigned, max_removable)
+
+
+def skill_addition_bounds(
+    character: dict[str, Any],
+    skill: str,
+    additions: dict[str, int],
+    *,
+    budget: int = SKILL_LEVEL_UP_BUDGET,
+) -> tuple[int, int, int, int]:
+    """Return (current_dots, cap, max_addable, clamped_assigned) for level-up skill dots."""
+    current = int(get_skill_dots(character).get(skill, 0))
+    cap = effective_skill_max(character, skill)
+    assigned = int(additions.get(skill, 0))
+    other_total = sum(int(v) for v in additions.values()) - assigned
+    room_to_cap = max(0, cap - current)
+    room_in_budget = max(0, budget - other_total)
+    max_addable = min(room_to_cap, room_in_budget)
+    return current, cap, max_addable, min(assigned, max_addable)
 
 
 def get_skill_dots(character: dict[str, Any]) -> dict[str, int]:

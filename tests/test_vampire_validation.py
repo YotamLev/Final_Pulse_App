@@ -203,6 +203,13 @@ class TestLevelUpValidation(unittest.TestCase):
         errors = validate_level_up(character, "skills", {"Occult": 1, "Politics": 1})
         self.assertEqual(errors, [])
 
+    def test_skill_level_up_over_cap_blocked(self) -> None:
+        character = minimal_mortal_character()
+        level_2_ready_character(character)
+        character["mortal"]["skills"]["Stealth"] = {"dots": 5, "category": "Physical", "pools": {}}
+        errors = validate_level_up(character, "skills", {"Stealth": 2})
+        self.assertTrue(any("Stealth would exceed maximum (7 > 5)" in e for e in errors))
+
 
 if __name__ == "__main__":
     unittest.main()
