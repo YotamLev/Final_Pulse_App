@@ -7,7 +7,7 @@ import streamlit as st
 from pulse.constants import WIZARD_STEP_COUNT, WIZARD_STEPS
 from pulse.models import character_from_json, character_to_json, export_filename, new_character
 from pulse.sheet import render_character_sheet
-from pulse.ui.mortal_steps import render_step as render_mortal_step
+from pulse.ui.mortal_steps import clear_trait_widget_state, render_step as render_mortal_step
 from pulse.ui.theme import apply_theme, render_hero, render_step_badge
 from pulse.ui.vampire_steps import render_vampire_step
 from pulse.vampire_validation import validate_wizard_step
@@ -47,12 +47,14 @@ def render_sidebar(character: dict[str, Any]) -> None:
 
     st.sidebar.divider()
     if st.sidebar.button("New character", use_container_width=True):
+        clear_trait_widget_state()
         st.session_state.character = new_character()
         st.rerun()
 
     uploaded = st.sidebar.file_uploader("Load character JSON", type=["json"])
     if uploaded is not None:
         try:
+            clear_trait_widget_state()
             st.session_state.character = character_from_json(uploaded.getvalue().decode("utf-8"))
             st.sidebar.success("Character loaded.")
             st.rerun()

@@ -24,6 +24,37 @@ def render_errors(errors: list[str]) -> None:
         st.error(error)
 
 
+def _trait_suggestion_labels(suggestions: list[dict]) -> list[str]:
+    return ["— custom —"] + [f"{s['name']} (+{s['plus']}/−{s['minus']})" for s in suggestions]
+
+
+def _trait_pick_label(trait: dict, suggestions: list[dict]) -> str:
+    for suggestion in suggestions:
+        if (
+            suggestion["name"] == trait.get("name")
+            and suggestion["plus"] == trait.get("plus")
+            and suggestion["minus"] == trait.get("minus")
+        ):
+            return f"{suggestion['name']} (+{suggestion['plus']}/−{suggestion['minus']})"
+    return "— custom —"
+
+
+def _apply_trait_suggestion(index: int, suggestions: list[dict], labels: list[str]) -> None:
+    pick = st.session_state.get(f"trait_pick_{index}", "— custom —")
+    if pick == "— custom —":
+        return
+    chosen = suggestions[labels.index(pick) - 1]
+    st.session_state[f"trait_name_{index}"] = chosen["name"]
+    st.session_state[f"trait_plus_{index}"] = chosen["plus"]
+    st.session_state[f"trait_minus_{index}"] = chosen["minus"]
+
+
+def clear_trait_widget_state() -> None:
+    for key in list(st.session_state.keys()):
+        if key.startswith(("trait_pick_", "trait_name_", "trait_plus_", "trait_minus_")):
+            del st.session_state[key]
+
+
 def step_chronicle(character: dict[str, Any]) -> None:
     st.subheader("Chronicle & Concept")
     st.caption("Create a human born in a time and place appropriate to your chronicle.")
@@ -60,23 +91,24 @@ def step_traits(character: dict[str, Any]) -> None:
     mortal = character.setdefault("mortal", {})
     traits = mortal.setdefault("traits", [{}, {}, {}])
     suggestions = load_trait_suggestions()
-    suggestion_labels = ["— custom —"] + [f"{s['name']} (+{s['plus']}/−{s['minus']})" for s in suggestions]
+    suggestion_labels = _trait_suggestion_labels(suggestions)
 
     for index in range(3):
         st.markdown(f"**Trait {index + 1}**")
         cols = st.columns([2, 1, 1, 1])
-        pick = cols[0].selectbox(
+        pick_key = f"trait_pick_{index}"
+        if pick_key not in st.session_state:
+            st.session_state[pick_key] = _trait_pick_label(traits[index], suggestions)
+            _apply_trait_suggestion(index, suggestions, suggestion_labels)
+
+        cols[0].selectbox(
             f"Suggestion##{index}",
             suggestion_labels,
-            index=0,
             label_visibility="collapsed",
-            key=f"trait_pick_{index}",
+            key=pick_key,
+            on_change=_apply_trait_suggestion,
+            args=(index, suggestions, suggestion_labels),
         )
-        if pick != "— custom —":
-            chosen = suggestions[suggestion_labels.index(pick) - 1]
-            traits[index]["name"] = chosen["name"]
-            traits[index]["plus"] = chosen["plus"]
-            traits[index]["minus"] = chosen["minus"]
 
         traits[index]["name"] = cols[1].text_input(
             "Name",
