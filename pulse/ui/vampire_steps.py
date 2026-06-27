@@ -385,15 +385,15 @@ def step_complete(character: dict[str, Any]) -> None:
 
 
 VAMPIRE_STEP_RENDERERS = {
-    12: step_embrace,
-    13: step_level_0,
-    14: step_l1_attributes,
-    15: step_l1_discipline_power,
-    16: step_predator,
-    17: step_l2_skill_removal,
-    18: step_l2_attributes,
-    19: step_l2_discipline_power,
-    20: step_complete,
+    9: step_embrace,
+    10: step_level_0,
+    11: step_l1_attributes,
+    12: step_l1_discipline_power,
+    13: step_predator,
+    14: step_l2_skill_removal,
+    15: step_l2_attributes,
+    16: step_l2_discipline_power,
+    17: step_complete,
 }
 
 

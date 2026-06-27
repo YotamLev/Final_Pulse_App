@@ -8,15 +8,13 @@ from pulse.constants import (
     ATTRIBUTE_DESCRIPTIONS,
     ATTRIBUTE_GROUPS,
     ATTRIBUTES,
-    MORTAL_STEPS,
-    POOL_BUDGETS,
     POOL_PROMPTS,
-    SKILL_POOLS,
+    SKILL_MAX_DEFAULT,
     TOTAL_SKILL_DOTS,
 )
 from pulse.data_loader import load_language_suggestions, load_skills, load_trait_suggestions
-from pulse.models import ensure_skill, recompute_skill_dots
-from pulse.validation import pool_total, total_skill_dots, validate_step
+from pulse.models import assign_skill_dots, ensure_skill
+from pulse.validation import total_skill_dots, validate_step
 
 
 def render_errors(errors: list[str]) -> None:
@@ -104,6 +102,12 @@ def _apply_trait_suggestion(index: int, suggestions: list[dict], labels: list[st
 def clear_trait_widget_state() -> None:
     for key in list(st.session_state.keys()):
         if key.startswith(("trait_pick_", "trait_name_", "trait_plus_", "trait_minus_")):
+            del st.session_state[key]
+
+
+def clear_skill_widget_state() -> None:
+    for key in list(st.session_state.keys()):
+        if key.startswith(("skill_dots_", "filter_skills", "custom_name_skills", "custom_cat_skills", "custom_dots_skills")):
             del st.session_state[key]
 
 
@@ -225,15 +229,19 @@ def step_attributes(character: dict[str, Any]) -> None:
             col.caption(ATTRIBUTE_DESCRIPTIONS.get(name, ""))
 
 
-def _render_skill_pool_step(character: dict[str, Any], pool: str) -> None:
-    label = pool.replace("_", " ").title()
-    st.subheader(POOL_PROMPTS[pool].split(".")[0].replace("Add", label + " — add"))
-    st.caption(POOL_PROMPTS[pool])
-    budget = POOL_BUDGETS[pool]
-    assigned = pool_total(character, pool)
-    st.progress(min(assigned / budget, 1.0), text=f"{label}: {assigned} / {budget} dots")
+def step_skills(character: dict[str, Any]) -> None:
+    st.subheader("Skills")
+    st.caption(
+        f"Assign {TOTAL_SKILL_DOTS} dots across your skills (max {SKILL_MAX_DEFAULT} per skill). "
+        "Consider your profession, life events, hobbies, and natural talents."
+    )
+    for prompt in POOL_PROMPTS.values():
+        st.markdown(f"- {prompt}")
 
-    filter_cat = st.selectbox("Filter by category", ["All", "Physical", "Social", "Mental"], key=f"filter_{pool}")
+    assigned = total_skill_dots(character)
+    st.progress(min(assigned / TOTAL_SKILL_DOTS, 1.0), text=f"Skills: {assigned} / {TOTAL_SKILL_DOTS} dots")
+
+    filter_cat = st.selectbox("Filter by category", ["All", "Physical", "Social", "Mental"], key="filter_skills")
 
     filtered = [
         skill
@@ -248,43 +256,29 @@ def _render_skill_pool_step(character: dict[str, Any], pool: str) -> None:
         for col, skill in zip(cols, row_skills):
             with col:
                 entry = ensure_skill(character, skill["name"], skill["category"])
-                current = int(entry["pools"].get(pool, 0))
+                current = int(entry.get("dots", 0))
                 new_val = st.number_input(
                     skill["name"],
                     min_value=0,
-                    max_value=5,
+                    max_value=SKILL_MAX_DEFAULT,
                     value=current,
-                    key=f"skill_{pool}_{skill['name']}",
+                    key=f"skill_dots_{skill['name']}",
                 )
-                entry["pools"][pool] = new_val
-                recompute_skill_dots(entry)
+                assign_skill_dots(entry, new_val)
 
     with st.expander("Add custom skill"):
-        custom_name = st.text_input("Custom skill name", key=f"custom_name_{pool}")
-        custom_cat = st.selectbox("Category", ["Physical", "Social", "Mental"], key=f"custom_cat_{pool}")
-        custom_dots = st.number_input("Dots in this pool", min_value=0, max_value=5, value=0, key=f"custom_dots_{pool}")
+        custom_name = st.text_input("Custom skill name", key="custom_name_skills")
+        custom_cat = st.selectbox("Category", ["Physical", "Social", "Mental"], key="custom_cat_skills")
+        custom_dots = st.number_input(
+            "Dots",
+            min_value=0,
+            max_value=SKILL_MAX_DEFAULT,
+            value=0,
+            key="custom_dots_skills",
+        )
         if custom_name.strip():
             entry = ensure_skill(character, custom_name.strip(), custom_cat, custom=True)
-            entry["pools"][pool] = custom_dots
-            recompute_skill_dots(entry)
-
-    st.caption(f"Total skill dots so far: {total_skill_dots(character)} / {TOTAL_SKILL_DOTS}")
-
-
-def step_professional_skills(character: dict[str, Any]) -> None:
-    _render_skill_pool_step(character, "professional")
-
-
-def step_life_event_skills(character: dict[str, Any]) -> None:
-    _render_skill_pool_step(character, "life_event")
-
-
-def step_leisure_skills(character: dict[str, Any]) -> None:
-    _render_skill_pool_step(character, "leisure")
-
-
-def step_natural_skills(character: dict[str, Any]) -> None:
-    _render_skill_pool_step(character, "natural")
+            assign_skill_dots(entry, custom_dots)
 
 
 def step_languages(character: dict[str, Any]) -> None:
@@ -373,7 +367,7 @@ def step_mortal_complete(character: dict[str, Any]) -> None:
     c2.metric("Languages", len(character.get("mortal", {}).get("languages", [])))
     c3.metric("Top attribute", max(attrs, key=attrs.get) if attrs else "—")
 
-    errors = validate_step(character, 11)
+    errors = validate_step(character, 8)
     if errors:
         st.warning("Some steps still need attention before this milestone is fully valid:")
         render_errors(errors)
@@ -383,14 +377,11 @@ STEP_RENDERERS = {
     1: step_chronicle,
     2: step_traits,
     3: step_attributes,
-    4: step_professional_skills,
-    5: step_life_event_skills,
-    6: step_leisure_skills,
-    7: step_natural_skills,
-    8: step_languages,
-    9: step_specialties,
-    10: step_beliefs,
-    11: step_mortal_complete,
+    4: step_skills,
+    5: step_languages,
+    6: step_specialties,
+    7: step_beliefs,
+    8: step_mortal_complete,
 }
 
 

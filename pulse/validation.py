@@ -5,9 +5,7 @@ from typing import Any
 from pulse.attributes import compute_attributes, distribution_valid
 from pulse.constants import (
     MORTAL_STEP_COUNT,
-    POOL_BUDGETS,
     SKILL_MAX_DEFAULT,
-    SKILL_POOLS,
     TOTAL_SKILL_DOTS,
 )
 
@@ -17,14 +15,11 @@ def validate_step(character: dict[str, Any], step: int) -> list[str]:
         1: _validate_chronicle,
         2: _validate_traits,
         3: _validate_attributes,
-        4: lambda c: _validate_skill_pool(c, "professional"),
-        5: lambda c: _validate_skill_pool(c, "life_event"),
-        6: lambda c: _validate_skill_pool(c, "leisure"),
-        7: lambda c: _validate_skill_pool(c, "natural"),
-        8: _validate_languages,
-        9: _validate_specialties,
-        10: _validate_beliefs,
-        11: _validate_mortal_complete,
+        4: _validate_skills,
+        5: _validate_languages,
+        6: _validate_specialties,
+        7: _validate_beliefs,
+        8: _validate_mortal_complete,
     }
     if step < 1 or step > MORTAL_STEP_COUNT:
         return []
@@ -69,24 +64,15 @@ def _validate_attributes(character: dict[str, Any]) -> list[str]:
     return _validate_traits(character)
 
 
-def pool_total(character: dict[str, Any], pool: str) -> int:
-    total = 0
-    for entry in character.get("mortal", {}).get("skills", {}).values():
-        total += int(entry.get("pools", {}).get(pool, 0))
-    return total
-
-
 def total_skill_dots(character: dict[str, Any]) -> int:
     return sum(int(entry.get("dots", 0)) for entry in character.get("mortal", {}).get("skills", {}).values())
 
 
-def _validate_skill_pool(character: dict[str, Any], pool: str) -> list[str]:
+def _validate_skills(character: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    budget = POOL_BUDGETS[pool]
-    assigned = pool_total(character, pool)
-    if assigned != budget:
-        label = pool.replace("_", " ").title()
-        errors.append(f"{label}: {assigned}/{budget} dots assigned.")
+    assigned = total_skill_dots(character)
+    if assigned != TOTAL_SKILL_DOTS:
+        errors.append(f"Assign exactly {TOTAL_SKILL_DOTS} skill dots ({assigned}/{TOTAL_SKILL_DOTS}).")
 
     for skill_name, entry in character.get("mortal", {}).get("skills", {}).items():
         dots = int(entry.get("dots", 0))
@@ -96,12 +82,6 @@ def _validate_skill_pool(character: dict[str, Any], pool: str) -> list[str]:
             errors.append("Custom skills need a name.")
         if entry.get("custom") and not entry.get("category"):
             errors.append(f"Custom skill '{skill_name}' needs a category.")
-
-    prior_pools = [p for p in SKILL_POOLS if SKILL_POOLS.index(p) < SKILL_POOLS.index(pool)]
-    for prior in prior_pools:
-        if pool_total(character, prior) != POOL_BUDGETS[prior]:
-            label = prior.replace("_", " ").title()
-            errors.append(f"Complete {label} first ({pool_total(character, prior)}/{POOL_BUDGETS[prior]}).")
     return errors
 
 
@@ -114,7 +94,7 @@ def _validate_languages(character: dict[str, Any]) -> list[str]:
     for index, language in enumerate(languages, start=1):
         if not str(language).strip():
             errors.append(f"Language {index} must be named.")
-    errors.extend(_validate_skill_pool(character, "natural"))
+    errors.extend(_validate_skills(character))
     return errors
 
 

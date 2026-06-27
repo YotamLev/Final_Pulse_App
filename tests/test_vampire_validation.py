@@ -36,19 +36,19 @@ class TestPredatorBonusFlag(unittest.TestCase):
 class TestEmbraceValidation(unittest.TestCase):
     def test_step_12_requires_mortal_complete_and_clan(self) -> None:
         character = minimal_mortal_character()
-        errors = validate_wizard_step(character, 12)
+        errors = validate_wizard_step(character, 9)
         self.assertIn("Choose a clan.", errors)
 
     def test_step_12_valid_veneris(self) -> None:
         character = minimal_mortal_character()
         embrace_character(character, "veneris")
-        errors = validate_wizard_step(character, 12)
+        errors = validate_wizard_step(character, 9)
         self.assertEqual(errors, [])
 
     def test_step_12_ventrue_requires_bane_fields(self) -> None:
         character = minimal_mortal_character()
         embrace_character(character, "ventrue")
-        errors = validate_wizard_step(character, 12)
+        errors = validate_wizard_step(character, 9)
         self.assertTrue(any("bane field" in e.lower() for e in errors))
 
 
@@ -56,21 +56,21 @@ class TestLevel0Validation(unittest.TestCase):
     def test_requires_discipline_and_power(self) -> None:
         character = minimal_mortal_character()
         embrace_character(character)
-        errors = validate_wizard_step(character, 13)
+        errors = validate_wizard_step(character, 10)
         self.assertIn("Choose your first Discipline.", errors)
         self.assertIn("Choose your first Discipline power.", errors)
 
     def test_valid_level_0(self) -> None:
         character = minimal_mortal_character()
         level_0_character(character)
-        self.assertEqual(validate_wizard_step(character, 13), [])
+        self.assertEqual(validate_wizard_step(character, 10), [])
 
 
 class TestLevel1Validation(unittest.TestCase):
     def test_attributes_must_total_two(self) -> None:
         character = minimal_mortal_character()
         level_0_character(character)
-        errors = validate_wizard_step(character, 14)
+        errors = validate_wizard_step(character, 11)
         self.assertTrue(any("exactly 2 attribute dots" in e for e in errors))
 
     def test_second_discipline_must_differ(self) -> None:
@@ -79,26 +79,26 @@ class TestLevel1Validation(unittest.TestCase):
         v = character["vampire"]
         v["attribute_adjustments"] = [{"level": 1, "changes": {"Strength": 2}}]
         v["disciplines"].append({"name": "Dominate", "source": "clan", "acquired_at_level": 1})
-        errors = validate_wizard_step(character, 15)
+        errors = validate_wizard_step(character, 12)
         self.assertIn("Second Discipline must differ from the first.", errors)
 
     def test_valid_level_1_discipline_step(self) -> None:
         character = minimal_mortal_character()
         level_1_ready_character(character)
-        self.assertEqual(validate_wizard_step(character, 15), [])
+        self.assertEqual(validate_wizard_step(character, 12), [])
 
 
 class TestPredatorValidation(unittest.TestCase):
     def test_predator_requires_package(self) -> None:
         character = minimal_mortal_character()
         level_1_ready_character(character)
-        errors = validate_wizard_step(character, 16)
+        errors = validate_wizard_step(character, 13)
         self.assertIn("Choose a predator type.", errors)
 
     def test_valid_predator(self) -> None:
         character = minimal_mortal_character()
         predator_ready_character(character)
-        self.assertEqual(validate_wizard_step(character, 16), [])
+        self.assertEqual(validate_wizard_step(character, 13), [])
 
     def test_leech_requires_two_powers_same_discipline(self) -> None:
         character = minimal_mortal_character()
@@ -124,7 +124,7 @@ class TestPredatorValidation(unittest.TestCase):
                 },
             ]
         )
-        errors = validate_wizard_step(character, 16)
+        errors = validate_wizard_step(character, 13)
         self.assertIn("Leech predator powers must be from the same Discipline.", errors)
 
 
@@ -132,13 +132,13 @@ class TestLevel2Validation(unittest.TestCase):
     def test_skill_removal_must_total_two(self) -> None:
         character = minimal_mortal_character()
         predator_ready_character(character)
-        errors = validate_wizard_step(character, 17)
+        errors = validate_wizard_step(character, 14)
         self.assertTrue(any("Remove exactly 2 skill dots" in e for e in errors))
 
     def test_complete_creation_valid(self) -> None:
         character = minimal_mortal_character()
         level_2_ready_character(character)
-        self.assertEqual(validate_wizard_step(character, 20), [])
+        self.assertEqual(validate_wizard_step(character, 17), [])
 
 
 class TestLevelUpValidation(unittest.TestCase):

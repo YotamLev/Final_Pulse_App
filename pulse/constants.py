@@ -69,28 +69,25 @@ MORTAL_STEPS = {
     1: "Chronicle & Concept",
     2: "Traits",
     3: "Attributes",
-    4: "Professional Skills",
-    5: "Life Event Skills",
-    6: "Leisure Skills",
-    7: "Natural Skills",
-    8: "Languages",
-    9: "Specialties",
-    10: "Beliefs & Relations",
-    11: "Mortal Complete",
+    4: "Skills",
+    5: "Languages",
+    6: "Specialties",
+    7: "Beliefs & Relations",
+    8: "Mortal Complete",
 }
 
 MORTAL_STEP_COUNT = len(MORTAL_STEPS)
 
 VAMPIRE_STEPS = {
-    12: "Embrace — Clan & Bane",
-    13: "Level 0 — First Discipline",
-    14: "Level 1 — Attributes (+2)",
-    15: "Level 1 — Second Discipline & Power",
-    16: "Level 1 — Predator Type",
-    17: "Level 2 — Forget Skills (−2)",
-    18: "Level 2 — Attributes (+2)",
-    19: "Level 2 — Third Discipline & Power",
-    20: "Character Complete",
+    9: "Embrace — Clan & Bane",
+    10: "Level 0 — First Discipline",
+    11: "Level 1 — Attributes (+2)",
+    12: "Level 1 — Second Discipline & Power",
+    13: "Level 1 — Predator Type",
+    14: "Level 2 — Forget Skills (−2)",
+    15: "Level 2 — Attributes (+2)",
+    16: "Level 2 — Third Discipline & Power",
+    17: "Character Complete",
 }
 
 WIZARD_STEPS = {**MORTAL_STEPS, **VAMPIRE_STEPS}

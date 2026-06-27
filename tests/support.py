@@ -3,33 +3,30 @@
 from __future__ import annotations
 
 from pulse.attributes import sync_mortal_attributes
-from pulse.constants import POOL_BUDGETS, SKILL_POOLS
-from pulse.models import ensure_skill, new_character, recompute_skill_dots
+from pulse.constants import TOTAL_SKILL_DOTS
+from pulse.models import assign_skill_dots, ensure_skill, new_character
 from pulse.vampire import ensure_vampire, new_vampire_state
 
 
-def _assign_pool_dots(character: dict, pool: str, budget: int, skill_names: list[str]) -> None:
+def _assign_skill_dots(character: dict, budget: int, skill_names: list[str]) -> None:
     remaining = budget
     index = 0
     while remaining > 0:
         name = skill_names[index % len(skill_names)]
         entry = ensure_skill(character, name, category="Physical")
-        current = int(entry.get("pools", {}).get(pool, 0))
-        room = min(5 - int(entry.get("dots", 0)), 5 - current, remaining)
+        room = min(5 - int(entry.get("dots", 0)), remaining)
         if room <= 0:
             index += 1
             if index > len(skill_names) * 6:
-                raise RuntimeError(f"Could not assign {budget} dots to pool {pool}")
+                raise RuntimeError(f"Could not assign {budget} skill dots")
             continue
-        entry.setdefault("pools", {p: 0 for p in SKILL_POOLS})
-        entry["pools"][pool] = current + room
-        recompute_skill_dots(entry)
+        assign_skill_dots(entry, int(entry.get("dots", 0)) + room)
         remaining -= room
         index += 1
 
 
 def minimal_mortal_character() -> dict:
-    """Mortal character that passes validation through step 11."""
+    """Mortal character that passes validation through step 8."""
     character = new_character()
     character["chronicle"]["time_and_place"] = "Chicago, 1990s"
     character["mortal"]["traits"] = [
@@ -56,8 +53,7 @@ def minimal_mortal_character() -> dict:
         "Streetwise",
         "Subterfuge",
     ]
-    for pool, budget in POOL_BUDGETS.items():
-        _assign_pool_dots(character, pool, budget, skill_names)
+    _assign_skill_dots(character, TOTAL_SKILL_DOTS, skill_names)
 
     intelligence = character["mortal"]["attributes"]["Intelligence"]
     character["mortal"]["languages"] = ["English", "Latin", "French"][:intelligence]
@@ -66,7 +62,7 @@ def minimal_mortal_character() -> dict:
         {"skill": "Brawl", "text": "street fights"},
     ]
     character["mortal"]["beliefs"] = "Survive at any cost."
-    character["wizard_step"] = 11
+    character["wizard_step"] = 8
     return character
 
 

@@ -72,9 +72,19 @@ def ensure_skill(
     return skills[skill_name]
 
 
+def assign_skill_dots(skill_entry: dict[str, Any], dots: int) -> None:
+    """Set total dots on a skill (pools are cleared; legacy JSON may still carry pool data)."""
+    skill_entry["dots"] = max(0, min(int(dots), 5))
+    skill_entry["pools"] = dict(EMPTY_POOLS)
+
+
 def recompute_skill_dots(skill_entry: dict[str, Any]) -> None:
     pools = skill_entry.get("pools", EMPTY_POOLS)
-    skill_entry["dots"] = sum(int(pools.get(pool, 0)) for pool in SKILL_POOLS)
+    pool_sum = sum(int(pools.get(pool, 0)) for pool in SKILL_POOLS)
+    if pool_sum > 0:
+        skill_entry["dots"] = pool_sum
+    elif "dots" not in skill_entry:
+        skill_entry["dots"] = 0
 
 
 def touch_meta(character: dict[str, Any]) -> None:
@@ -93,8 +103,24 @@ def character_from_json(text: str) -> dict[str, Any]:
         raise ValueError(f"Unsupported schema version {data.get('schema_version')}.")
     merged = new_character()
     _deep_merge(merged, data)
+    merged["wizard_step"] = _migrate_wizard_step(int(merged.get("wizard_step", 1)))
+    for entry in merged.get("mortal", {}).get("skills", {}).values():
+        recompute_skill_dots(entry)
     touch_meta(merged)
     return merged
+
+
+def _migrate_wizard_step(step: int) -> int:
+    """Map wizard_step from older 20-step layout to current 17-step layout."""
+    if step <= 3:
+        return step
+    if step <= 7:
+        return 4
+    if step <= 11:
+        return step - 3
+    if step <= 20:
+        return step - 3
+    return step
 
 
 def _deep_merge(base: dict[str, Any], overlay: dict[str, Any]) -> None:

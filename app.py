@@ -4,10 +4,10 @@ from typing import Any
 
 import streamlit as st
 
-from pulse.constants import WIZARD_STEP_COUNT, WIZARD_STEPS
+from pulse.constants import MORTAL_STEP_COUNT, WIZARD_STEP_COUNT, WIZARD_STEPS
 from pulse.models import character_from_json, character_to_json, export_filename, new_character
 from pulse.sheet import render_character_sheet
-from pulse.ui.mortal_steps import clear_trait_widget_state, render_step as render_mortal_step
+from pulse.ui.mortal_steps import clear_skill_widget_state, clear_trait_widget_state, render_step as render_mortal_step
 from pulse.ui.theme import apply_theme, render_hero, render_step_badge
 from pulse.ui.vampire_steps import render_vampire_step
 from pulse.vampire_validation import validate_wizard_step
@@ -48,6 +48,7 @@ def render_sidebar(character: dict[str, Any]) -> None:
     st.sidebar.divider()
     if st.sidebar.button("New character", use_container_width=True):
         clear_trait_widget_state()
+        clear_skill_widget_state()
         st.session_state.character = new_character()
         st.rerun()
 
@@ -55,6 +56,7 @@ def render_sidebar(character: dict[str, Any]) -> None:
     if uploaded is not None:
         try:
             clear_trait_widget_state()
+            clear_skill_widget_state()
             st.session_state.character = character_from_json(uploaded.getvalue().decode("utf-8"))
             st.sidebar.success("Character loaded.")
             st.rerun()
@@ -78,7 +80,7 @@ def render_sidebar(character: dict[str, Any]) -> None:
 
 
 def render_step(character: dict[str, Any], step: int) -> None:
-    if step <= 11:
+    if step <= MORTAL_STEP_COUNT:
         render_mortal_step(character, step)
     else:
         render_vampire_step(character, step)
@@ -98,7 +100,7 @@ def main() -> None:
     render_step(character, step)
 
     errors = validate_wizard_step(character, step)
-    if errors and step != 20:
+    if errors and step != WIZARD_STEP_COUNT:
         st.divider()
         render_errors(errors)
 

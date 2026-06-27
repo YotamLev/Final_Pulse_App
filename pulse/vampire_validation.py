@@ -5,23 +5,24 @@ from typing import Any
 from pulse.caps import effective_attribute_max, effective_skill_max, get_attribute_values, get_skill_dots
 from pulse.data_loader import load_predator_types
 from pulse.powers import power_by_id, prerequisites_met
+from pulse.constants import MORTAL_STEP_COUNT
 from pulse.validation import validate_step as validate_mortal_step
 from pulse.vampire import clan_by_id, get_clan_disciplines
 
 
 def validate_wizard_step(character: dict[str, Any], step: int) -> list[str]:
-    if step <= 11:
+    if step <= MORTAL_STEP_COUNT:
         return validate_mortal_step(character, step)
     validators = {
-        12: _validate_embrace,
-        13: _validate_level_0,
-        14: _validate_l1_attributes,
-        15: _validate_l1_discipline_power,
-        16: _validate_predator,
-        17: _validate_l2_skill_removal,
-        18: _validate_l2_attributes,
-        19: _validate_l2_discipline_power,
-        20: _validate_complete,
+        9: _validate_embrace,
+        10: _validate_level_0,
+        11: _validate_l1_attributes,
+        12: _validate_l1_discipline_power,
+        13: _validate_predator,
+        14: _validate_l2_skill_removal,
+        15: _validate_l2_attributes,
+        16: _validate_l2_discipline_power,
+        17: _validate_complete,
     }
     fn = validators.get(step)
     if fn:
@@ -41,7 +42,7 @@ def _attr_adjustment_total(character: dict, level: int) -> int:
 
 
 def _validate_embrace(character: dict) -> list[str]:
-    errors = list(validate_mortal_step(character, 11))
+    errors = list(validate_mortal_step(character, MORTAL_STEP_COUNT))
     v = _vampire(character)
     if not v.get("clan"):
         errors.append("Choose a clan.")
