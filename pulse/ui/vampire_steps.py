@@ -31,6 +31,7 @@ from pulse.vampire import (
     predator_powers,
     set_discipline_slot,
     set_predator_powers,
+    sync_non_predator_power,
     upsert_non_predator_power,
 )
 
@@ -65,7 +66,15 @@ def _power_select(
         character,
         allowed_sources=allowed_sources,
         include_amalgams=include_amalgams,
+        keep_power_id=saved_power_id,
     )
+    if saved_power_id:
+        saved_def = power_by_id(saved_power_id)
+        if saved_def and not any(p["id"] == saved_power_id for p in options):
+            options = sorted(
+                [saved_def] + [p for p in options if p["id"] != saved_power_id],
+                key=lambda p: (p["source"], p["name"]),
+            )
     if not options:
         st.warning("No powers available. Check prerequisites or Disciplines.")
         return None
@@ -149,8 +158,7 @@ def step_level_0(character: dict[str, Any]) -> None:
         label="First power",
         saved_power_id=saved_power,
     )
-    if power:
-        upsert_non_predator_power(v, 0, power_entry_from_def(power, 0))
+    sync_non_predator_power(v, 0, power, 0)
     if v.get("disciplines") and (non_predator_powers(v) or predator_powers(v)):
         v["level"] = max(int(v.get("level", 0)), 0)
 
@@ -226,8 +234,7 @@ def step_l1_discipline_power(character: dict[str, Any]) -> None:
         label="Second power (from your known Disciplines)",
         saved_power_id=saved_power,
     )
-    if power:
-        upsert_non_predator_power(v, 1, power_entry_from_def(power, 1))
+    sync_non_predator_power(v, 1, power, 1)
 
 
 def step_predator(character: dict[str, Any]) -> None:
@@ -423,8 +430,7 @@ def step_l2_discipline_power(character: dict[str, Any]) -> None:
         label="Fourth power (from your known Disciplines)",
         saved_power_id=saved_power,
     )
-    if power:
-        upsert_non_predator_power(v, 2, power_entry_from_def(power, 2))
+    sync_non_predator_power(v, 2, power, 2)
     v["level"] = max(int(v.get("level", 0)), 2)
 
 

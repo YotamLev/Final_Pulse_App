@@ -105,22 +105,24 @@ def available_powers(
     allowed_sources: list[str] | None = None,
     include_amalgams: bool = False,
     exclude_known: bool = True,
+    keep_power_id: str | None = None,
 ) -> list[dict]:
     results: list[dict] = []
     known_ids = known_power_ids(character)
     sources = set(allowed_sources or [])
 
     for power in all_powers():
-        if exclude_known and power["id"] in known_ids:
+        if exclude_known and power["id"] in known_ids and power["id"] != keep_power_id:
             continue
         if power.get("source_type") == "amalgam":
             if not include_amalgams:
                 continue
-            if not amalgam_eligible(power, character):
+            if power["id"] != keep_power_id and not amalgam_eligible(power, character):
                 continue
         elif allowed_sources is not None and power["source"] not in sources:
-            continue
-        if prerequisites_met(power, character):
+            if power["id"] != keep_power_id:
+                continue
+        if prerequisites_met(power, character) or power["id"] == keep_power_id:
             results.append(power)
     return sorted(results, key=lambda p: (p["source"], p["name"]))
 

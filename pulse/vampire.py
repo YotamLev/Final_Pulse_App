@@ -129,15 +129,41 @@ def power_entry_from_def(power: dict, level: int, *, is_predator_power: bool = F
 
 
 def upsert_non_predator_power(vampire: dict[str, Any], index: int, entry: dict) -> None:
-    non_pred = non_predator_powers(vampire)
+    non_pred = list(non_predator_powers(vampire))
     if index < len(non_pred):
         non_pred[index] = entry
     elif index == len(non_pred):
         non_pred.append(entry)
     else:
-        non_pred.append(entry)
+        raise ValueError(
+            f"Cannot set non-predator power slot {index + 1} before slot {index} is filled "
+            f"({len(non_pred)} non-predator power(s) present)."
+        )
     vampire["powers"] = non_pred + predator_powers(vampire)
 
 
+def sync_non_predator_power(
+    vampire: dict[str, Any],
+    index: int,
+    power: dict | None,
+    level: int,
+) -> None:
+    """Update a wizard power slot only when a power is selected."""
+    if not power:
+        return
+    entry = power_entry_from_def(power, level)
+    existing = non_predator_powers(vampire)
+    if index < len(existing) and existing[index].get("id") == entry["id"]:
+        return
+    upsert_non_predator_power(vampire, index, entry)
+
+
 def set_predator_powers(vampire: dict[str, Any], entries: list[dict]) -> None:
-    vampire["powers"] = non_predator_powers(vampire) + entries
+    existing = predator_powers(vampire)
+    merged: list[dict] = []
+    for i in range(max(len(entries), len(existing))):
+        if i < len(entries):
+            merged.append(entries[i])
+        elif i < len(existing):
+            merged.append(existing[i])
+    vampire["powers"] = non_predator_powers(vampire) + merged
