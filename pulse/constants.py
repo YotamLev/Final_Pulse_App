@@ -80,3 +80,25 @@ MORTAL_STEPS = {
 }
 
 MORTAL_STEP_COUNT = len(MORTAL_STEPS)
+
+VAMPIRE_STEPS = {
+    12: "Embrace — Clan & Bane",
+    13: "Level 0 — First Discipline",
+    14: "Level 1 — Attributes (+2)",
+    15: "Level 1 — Second Discipline & Power",
+    16: "Level 1 — Predator Type",
+    17: "Level 2 — Forget Skills (−2)",
+    18: "Level 2 — Attributes (+2)",
+    19: "Level 2 — Third Discipline & Power",
+    20: "Character Complete",
+}
+
+WIZARD_STEPS = {**MORTAL_STEPS, **VAMPIRE_STEPS}
+WIZARD_STEP_COUNT = len(WIZARD_STEPS)
+CREATION_STEP_COUNT = WIZARD_STEP_COUNT
+
+INNATE_VAMPIRE_ABILITIES = [
+    "Blush of Life — appear human for a scene (1 Liter)",
+    "Blood Surge — add red dice to rolls (1 Liter per die, up to 5)",
+    "Vampiric Healing — heal 1 HP per Liter",
+]

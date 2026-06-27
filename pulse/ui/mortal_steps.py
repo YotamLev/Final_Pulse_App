@@ -247,7 +247,7 @@ def step_beliefs(character: dict[str, Any]) -> None:
 
 def step_mortal_complete(character: dict[str, Any]) -> None:
     st.subheader("You have now created a human!")
-    st.success("Mortal creation is complete. Save your character or continue to Embrace (coming soon).")
+    st.success("You have now created a human! Continue to the Embrace when ready.")
 
     attrs = character.get("mortal", {}).get("attributes", {})
     c1, c2, c3 = st.columns(3)
