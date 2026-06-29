@@ -83,6 +83,7 @@ def _render_hero(char: dict) -> None:
     wp_cur = char.get("willpower_current", BASE_WILLPOWER)
     bl_cur = char.get("blood_current", BASE_BLOOD)
 
+    blood_neg = f"  <span style='color:#c41e3a'>(Blood {bl_cur})</span>" if bl_cur < 0 else ""
     st.markdown(
         f"<div style='background:linear-gradient(135deg,#0c080e,#1a0812);border:1px solid #5c1a28;"
         f"border-radius:4px;padding:1rem 1.5rem;margin-bottom:0.5rem'>"
@@ -91,8 +92,7 @@ def _render_hero(char: dict) -> None:
         f"<div style='margin-top:0.6rem;font-size:1.2rem;letter-spacing:0.06em'>"
         f"HP {dots(max(0, hp_cur), hp_max)} &nbsp; "
         f"WP {dots(max(0, wp_cur), BASE_WILLPOWER)} &nbsp; "
-        f"Blood {dots(max(0, bl_cur), BASE_BLOOD)}"
-        f"{'  <span style=\\'color:#c41e3a\\'>(Blood ' + str(bl_cur) + ')</span>' if bl_cur < 0 else ''}"
+        f"Blood {dots(max(0, bl_cur), BASE_BLOOD)}{blood_neg}"
         f"</div></div>",
         unsafe_allow_html=True,
     )
