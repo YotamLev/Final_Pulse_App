@@ -127,7 +127,7 @@ def _tab_background(char: dict) -> None:
     st.divider()
     section_header("Default Vampire Powers")
     powers = [
-        ("Blood Surge", "Pay 1 Blood, get +1 to a roll."),
+        ("Blood Surge", "Pay 1 or more Blood, add 1 red die per Blood spent to a roll."),
         ("Blood Heal", "Pay 1 Blood, heal 1 HP. Max once per turn."),
         ("Blush of Life", "Pay 1 Blood, become warm and able to blush for a scene."),
         ("Blood Bond", "Makes mortals Ghouls, makes vampires supernaturally like you."),
