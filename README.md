@@ -1,4 +1,4 @@
-# Final Pulse — Character Creation
+# Final Pulse
 
 Streamlit app for *Final Pulse* tabletop character creation.
 
@@ -11,14 +11,4 @@ streamlit run app.py
 
 ## Status
 
-- **Steps 1–11:** Mortal creation (traits, skills, languages, specialties)
-- **Steps 12–20:** Vampire creation (planned)
-- **Level 3+:** Level-up mode (planned)
-
-## Data
-
-Game data lives in `data/` (`skills.json`, `powers.json`, `trait_suggestions.json`, etc.). Regenerate powers from the rulebook docx:
-
-```bash
-python scripts/extract_powers.py
-```
+App and data are being overhauled. The Masquerade-inspired theme and Streamlit shell are preserved.

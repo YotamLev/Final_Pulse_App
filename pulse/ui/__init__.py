@@ -1,1 +1,1 @@
-"""Mortal creation wizard steps."""
+"""Streamlit UI components."""

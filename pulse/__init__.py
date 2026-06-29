@@ -1,1 +1,1 @@
-"""Final Pulse character creation — core package."""
+"""Final Pulse — core package."""
