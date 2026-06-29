@@ -196,6 +196,24 @@ ALL_DISCIPLINE_NAMES: list[str] = list(DISCIPLINES.keys())
 MAX_DISCIPLINE_LEVEL: int = 5
 MAX_DISCIPLINES: int = 3
 
+DISC_SHORT_DESC: dict[str, str] = {
+    "Animalism":      "Control animals, act on your inner animal.",
+    "Auspex":         "Enhance senses, peer into other dimensions, telepathy.",
+    "Arrete":         "Supernatural intelligence.",
+    "Celerity":       "Superhuman speed and agility.",
+    "Dominate":       "Puppeteer others, wipe memories.",
+    "Fortitude":      "Heal, absorb damage, enhance your capacity.",
+    "Necromancy":     "Decay, raise lesser undead.",
+    "Nightmare":      "Scare, unsettle, put to sleep.",
+    "Obfuscate":      "Hide, appear differently.",
+    "Potence":        "Strength, brutality.",
+    "Presence":       "Enrapture, charm, control masses.",
+    "Protean":        "Shapeshift.",
+    "Blood Sorcery":  "Bend blood.",
+    "Druidic":        "Control plants.",
+    "Shadow Sorcery": "Grab others by their shadow, spy through shadows.",
+}
+
 
 def get_available_powers(disc_name: str, new_level: int, acquired_powers: list[str]) -> list[dict]:
     """Powers available to pick when raising a discipline to new_level."""

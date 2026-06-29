@@ -19,6 +19,7 @@ from pulse.data.disciplines import (
     DISCIPLINES,
     ALL_DISCIPLINE_NAMES,
     MAX_DISCIPLINES,
+    DISC_SHORT_DESC,
     get_available_powers,
     total_disc_xp,
     xp_cost_for_disc_level,
@@ -722,8 +723,9 @@ def _select_disciplines(char: dict) -> None:
             else:
                 st.image(img, width=48)
 
+            desc = DISC_SHORT_DESC.get(disc_name, "")
             if already:
-                if st.button(f"✓ {disc_name}", key=f"unsel_disc_{disc_name}", type="secondary"):
+                if st.button(f"✓ {disc_name}", key=f"unsel_disc_{disc_name}", type="secondary", help=desc):
                     unlocked.remove(disc_name)
                     # Remove level & powers too
                     char["discipline_levels"].pop(disc_name, None)
@@ -731,7 +733,7 @@ def _select_disciplines(char: dict) -> None:
                     st.rerun()
             else:
                 disabled = remaining_slots == 0
-                if st.button(disc_name, key=f"sel_disc_{disc_name}", disabled=disabled):
+                if st.button(disc_name, key=f"sel_disc_{disc_name}", disabled=disabled, help=desc):
                     unlocked.append(disc_name)
                     char["discipline_levels"][disc_name] = 0
                     char["discipline_powers"][disc_name] = []
