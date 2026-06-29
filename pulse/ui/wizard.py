@@ -71,7 +71,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Dominate", "Fortitude", "Presence"],
         "discipline_levels": {"Dominate": 2, "Fortitude": 1, "Presence": 1},
         "discipline_powers": {
-            "Dominate": ["Draw On Instinct", "Cloud Mind", "Mesmerize"],
+            "Dominate": ["Draw On Instinct", "Mesmerize"],
             "Fortitude": ["Toughness"],
             "Presence": ["Awe"],
         },
@@ -99,7 +99,7 @@ QUICKSTARTS: dict[str, dict] = {
         "discipline_levels": {"Dominate": 1, "Protean": 2, "Potence": 1},
         "discipline_powers": {
             "Dominate": ["Draw On Instinct"],
-            "Protean": ["Feral Weapons", "Bone Armor", "Bone Bullets"],
+            "Protean": ["Feral Weapons", "Bone Bullets"],
             "Potence": ["Vigor"],
         },
         "skill_dots": {
@@ -125,7 +125,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Presence", "Auspex", "Celerity"],
         "discipline_levels": {"Presence": 2, "Auspex": 1, "Celerity": 1},
         "discipline_powers": {
-            "Presence": ["Awe", "Summon", "Affect Mood"],
+            "Presence": ["Awe", "Affect Mood"],
             "Auspex": ["Impulse"],
             "Celerity": ["Speed"],
         },
@@ -152,7 +152,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Obfuscate", "Nightmare", "Shadow Sorcery"],
         "discipline_levels": {"Obfuscate": 2, "Nightmare": 1, "Shadow Sorcery": 1},
         "discipline_powers": {
-            "Obfuscate": ["Fade", "Cloak of Shadows", "Vanish"],
+            "Obfuscate": ["Fade", "Vanish"],
             "Nightmare": ["Haunt Dream"],
             "Shadow Sorcery": ["Dim the Lights"],
         },
@@ -206,7 +206,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Animalism", "Protean", "Fortitude"],
         "discipline_levels": {"Animalism": 2, "Protean": 1, "Fortitude": 1},
         "discipline_powers": {
-            "Animalism": ["Ghoul Animal", "Confront the Beast", "Borrowed Wisdom"],
+            "Animalism": ["Ghoul Animal", "Borrowed Wisdom"],
             "Protean": ["Feral Weapons"],
             "Fortitude": ["Rapid Healing"],
         },
@@ -233,7 +233,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Auspex", "Nightmare", "Arrete"],
         "discipline_levels": {"Auspex": 2, "Nightmare": 1, "Arrete": 1},
         "discipline_powers": {
-            "Auspex": ["Sense The Unseen", "Impulse", "Read Aura"],
+            "Auspex": ["Impulse", "Read Aura"],
             "Nightmare": ["Haunt Dream"],
             "Arrete": ["Calculating"],
         },
@@ -260,7 +260,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Blood Sorcery", "Auspex", "Arrete"],
         "discipline_levels": {"Blood Sorcery": 2, "Auspex": 1, "Arrete": 1},
         "discipline_powers": {
-            "Blood Sorcery": ["Bend Blood", "A Taste for Blood", "Bend Veins"],
+            "Blood Sorcery": ["Bend Blood", "Bend Veins"],
             "Auspex": ["Enhance Senses"],
             "Arrete": ["Calculating"],
         },
@@ -287,7 +287,7 @@ QUICKSTARTS: dict[str, dict] = {
         "disciplines": ["Necromancy", "Fortitude", "Potence"],
         "discipline_levels": {"Necromancy": 2, "Fortitude": 1, "Potence": 1},
         "discipline_powers": {
-            "Necromancy": ["Touch of Oblivion", "Ashes to Ashes", "Raise Corpse"],
+            "Necromancy": ["Touch of Oblivion", "Raise Corpse"],
             "Fortitude": ["Rapid Healing"],
             "Potence": ["Vigor"],
         },
