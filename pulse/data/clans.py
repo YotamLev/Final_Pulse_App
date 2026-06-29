@@ -26,7 +26,7 @@ CLANS: dict[str, dict] = {
         "description": "The main competitors of the Ventrue, fiercely stubborn. Known to ruin potential Embracees' lives to 'test' whether they are cut out for the Clan.",
         "recruitment": "Crusaders, Fierce Nationalists, Merchant Princes",
         "requirements": {
-            "trait_any": ["territorial", "archaic"],
+            "trait_any": ["territorial", "archaic", "folkloric_bane"],
         },
         "bonus": "Vengeful — you can Blood Surge and pay only half when pursuing vengeance against one target at a time, once per scene.",
         "suggested_disciplines": ["Dominate", "Protean", "Potence"],
