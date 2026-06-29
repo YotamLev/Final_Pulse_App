@@ -96,9 +96,11 @@ def render_skill_row(
         st.markdown(label, unsafe_allow_html=True)
         st.caption(skill["description"])
     with col2:
-        display = f"{dot_str}  (/{max_d})"
-        if own_dots_value > 0:
-            display += f"  eff. **{effective_level}**"
+        base = effective_level - own_dots_value
+        if base > 0:
+            display = f"{'●' * base} + {dot_str}  `/{max_d}`"
+        else:
+            display = f"{dot_str}  `/{max_d}`"
         st.markdown(display)
     with col3:
         st.caption(f"Next: {xp_next} XP" if can_add else "—")

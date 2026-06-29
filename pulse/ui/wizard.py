@@ -598,8 +598,12 @@ def _render_skill_tree(char: dict, tree_name: str, budget_remaining: int) -> Non
             )
             st.caption(f"{skill['description']}")
         with col2:
-            eff_label = f"  eff. **{eff}**" if d > 0 else ""
-            st.markdown(f"{dot_str} `/{skill['max_dots']}`{eff_label}")
+            base = get_static_base(skill_name, tree_name)
+            if base > 0:
+                level_str = f"{'●' * base} + {dot_str}  `/{skill['max_dots']}`"
+            else:
+                level_str = f"{dot_str}  `/{skill['max_dots']}`"
+            st.markdown(level_str)
             if can_add:
                 st.caption(f"Next: {xp_next} XP")
         with col3:

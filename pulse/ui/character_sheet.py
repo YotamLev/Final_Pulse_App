@@ -259,8 +259,13 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
             st.markdown(f"{indent}{lock_icon}**{skill_name}**{b_info}", unsafe_allow_html=True)
             st.caption(skill["description"])
         with col2:
-            eff_label = f"  eff. **{eff}**" if d > 0 else ""
-            st.markdown(f"{dots(d, skill['max_dots'])} `/{skill['max_dots']}`{eff_label}")
+            base = get_static_base(skill_name, tree_name)
+            own_str = dots(d, skill['max_dots'])
+            if base > 0:
+                level_str = f"{'●' * base} + {own_str}  `/{skill['max_dots']}`"
+            else:
+                level_str = f"{own_str}  `/{skill['max_dots']}`"
+            st.markdown(level_str)
             if can_add:
                 st.caption(f"Next: {xp_next} XP")
         with col3:
@@ -620,7 +625,7 @@ def _tab_export(char: dict) -> None:
 
 def _generate_html(char: dict) -> str:
     from pulse.models.character import get_hp_max
-    from pulse.data.skill_trees import get_effective_level, total_skill_xp
+    from pulse.data.skill_trees import get_effective_level, get_static_base, total_skill_xp
     from pulse.data.disciplines import total_disc_xp
     from pulse.data.traits import MORTAL_TRAITS, VAMPIRE_TRAITS
 
@@ -661,12 +666,14 @@ def _generate_html(char: dict) -> str:
             d = own.get(skill_name, 0)
             if d == 0:
                 continue
-            eff = get_effective_level(skill_name, tree_name, own)
+            base = get_static_base(skill_name, tree_name)
             desc = skill.get("description", "")
             skill_cell = f"{skill_name}"
             if desc:
                 skill_cell += f"<br><small style='color:#9a8f82'>{desc}</small>"
-            skill_rows += f"<tr><td>{tree_name}</td><td>{skill_cell}</td><td>{dot_html(d, skill['max_dots'])} (eff. {eff})</td></tr>"
+            own_dots_html = dot_html(d, skill['max_dots'])
+            level_cell = f"{'●' * base} + {own_dots_html}" if base > 0 else own_dots_html
+            skill_rows += f"<tr><td>{tree_name}</td><td>{skill_cell}</td><td>{level_cell}</td></tr>"
     for cs in char.get("custom_skills", []):
         d = own.get(cs["name"], 0)
         if d > 0:
