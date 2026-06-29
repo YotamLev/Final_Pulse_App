@@ -374,7 +374,7 @@ def _sheet_disc_editor(char: dict, disc_name: str) -> None:
         img = disc["image"]
         if not img.startswith("http"):
             try:
-                st.image(img, width=60)
+                st.image(img, use_container_width=True)
             except Exception:
                 pass
         else:

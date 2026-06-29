@@ -466,9 +466,8 @@ def _select_disciplines(char: dict) -> None:
             already = disc_name in unlocked
             img = DISCIPLINES[disc_name]["image"]
             if not img.startswith("http"):
-                # local image
                 try:
-                    st.image(img, width=48)
+                    st.image(img, use_container_width=True)
                 except Exception:
                     pass
             else:
@@ -524,7 +523,7 @@ def _render_discipline_editor(char: dict, disc_name: str, budget_remaining: int)
         img = disc["image"]
         if not img.startswith("http"):
             try:
-                st.image(img, width=60)
+                st.image(img, use_container_width=True)
             except Exception:
                 pass
         else:
@@ -641,10 +640,11 @@ def _stage_clan(char: dict) -> None:
         ):
             col_img, col_info = st.columns([1, 4])
             with col_img:
-                try:
-                    st.image(clan["image"], width=80)
-                except Exception:
-                    pass
+                st.markdown(
+                    f"<img src='{clan['image']}' style='width:80px;height:80px;"
+                    f"object-fit:contain;filter:invert(1)'>",
+                    unsafe_allow_html=True,
+                )
             with col_info:
                 st.markdown(f"*{clan['description']}*")
                 st.markdown(f"**Recruitment:** {clan['recruitment']}")
