@@ -132,6 +132,7 @@ def _tab_background(char: dict) -> None:
         ("Blush of Life", "Pay 1 Blood, become warm and able to blush for a scene."),
         ("Blood Bond", "Makes mortals Ghouls, makes vampires supernaturally like you."),
         ("The Kiss", "Mortals experience ecstasy when bitten. You can close wounds by licking."),
+        ("Willpower Reroll", "Spend 1 Willpower to reroll up to 3 black dice."),
     ]
     for name, desc in powers:
         st.markdown(f"**{name}** — {desc}")
