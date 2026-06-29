@@ -166,6 +166,8 @@ def _apply_quickstart(char: dict, key: str) -> None:
     qs = QUICKSTARTS[key]
     char["clan"] = qs["clan"]
     char["unlocked_disciplines"] = list(qs["disciplines"])
+    char["discipline_levels"] = {}
+    char["discipline_powers"] = {}
     char["skill_dots"] = dict(qs["skill_dots"])
     if qs.get("mortal_trait"):
         t = qs["mortal_trait"]
