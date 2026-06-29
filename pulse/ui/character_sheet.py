@@ -12,6 +12,7 @@ from pulse.data.skill_trees import (
     can_remove_dot,
     get_effective_level,
     get_static_base,
+    get_achieved_base,
     xp_cost_for_next_dot,
     total_skill_xp,
 )
@@ -262,7 +263,8 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
             base = get_static_base(skill_name, tree_name)
             own_str = dots(d, skill['max_dots'])
             if base > 0:
-                base_str = "●" * base if unlocked else "○" * base
+                achieved = get_achieved_base(skill_name, tree_name, own)
+                base_str = "●" * achieved + "○" * (base - achieved)
                 level_str = f"{base_str} + {own_str}  `/{skill['max_dots']}`"
             else:
                 level_str = f"{own_str}  `/{skill['max_dots']}`"

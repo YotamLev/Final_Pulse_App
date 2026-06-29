@@ -269,6 +269,32 @@ def get_static_base(skill_name: str, tree_name: str) -> int:
     return get_static_base(parent_name, tree_name) + threshold
 
 
+def get_achieved_base(skill_name: str, tree_name: str, own_dots: dict[str, int]) -> int:
+    """
+    How many of the static base dots are currently filled by actual parent investment.
+    Mirrors get_static_base but clamps each parent's contribution to min(own, threshold).
+    Used to render partially-filled base dots like ●○ + ○○○○○.
+    """
+    skill = SKILL_TREES.get(tree_name, {}).get(skill_name)
+    if skill is None:
+        return 0
+    branch = skill.get("branches_from")
+    if branch is None:
+        return 0
+
+    if skill.get("branches_or", False):
+        # OR: use whichever parent contributes most toward unlocking
+        best = 0
+        for parent_name, threshold in branch:
+            contrib = min(own_dots.get(parent_name, 0), threshold)
+            best = max(best, get_achieved_base(parent_name, tree_name, own_dots) + contrib)
+        return best
+    else:
+        parent_name, threshold = branch
+        contrib = min(own_dots.get(parent_name, 0), threshold)
+        return get_achieved_base(parent_name, tree_name, own_dots) + contrib
+
+
 def get_effective_level(skill_name: str, tree_name: str, own_dots: dict[str, int]) -> int:
     """Effective (practical) level = static_base + own_dots invested."""
     return get_static_base(skill_name, tree_name) + own_dots.get(skill_name, 0)

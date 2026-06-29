@@ -98,8 +98,11 @@ def render_skill_row(
     with col2:
         base = effective_level - own_dots_value
         if base > 0:
-            prereq_met = can_add or own_dots_value > 0
-            base_str = "●" * base if prereq_met else "○" * base
+            # achieved_base must be passed via effective_level; caller should use
+            # get_achieved_base() to compute the real filled portion.
+            # Here effective_level already reflects actual parent investment.
+            achieved = min(effective_level - own_dots_value, base)
+            base_str = "●" * achieved + "○" * (base - achieved)
             display = f"{base_str} + {dot_str}  `/{max_d}`"
         else:
             display = f"{dot_str}  `/{max_d}`"
