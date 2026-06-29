@@ -91,7 +91,7 @@ def _render_stage_nav(char: dict, current: int) -> None:
                 )
 
 
-def _nav_buttons(char: dict, stage: int) -> None:
+def _nav_buttons(char: dict, stage: int, next_disabled: bool = False) -> None:
     col_back, col_space, col_next = st.columns([2, 4, 2])
     with col_back:
         if stage > 1:
@@ -100,7 +100,7 @@ def _nav_buttons(char: dict, stage: int) -> None:
                 st.rerun()
     with col_next:
         label = "Continue →" if stage < 5 else "Complete Character ✓"
-        if st.button(label, key=f"next_{stage}", type="primary"):
+        if st.button(label, key=f"next_{stage}", type="primary", disabled=next_disabled):
             if stage < 5:
                 char["wizard_stage"] = stage + 1
             else:
@@ -144,8 +144,6 @@ def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: 
         max_times = trait_def.get("max_times", 1)
 
         warnings = []
-        if new_cost > MAX_TRAIT_COST:
-            warnings.append(f"Total trait cost would be **{new_cost}** (max {MAX_TRAIT_COST}).")
         if current_count >= MAX_TRAITS:
             warnings.append(f"Already at maximum of {MAX_TRAITS} traits.")
         if times_taken >= max_times:
@@ -219,9 +217,10 @@ def _stage_mortal(char: dict) -> None:
     count = get_trait_count(char)
     sign = "+" if total_cost >= 0 else ""
     st.markdown(
-        f"**Combined trait cost:** {sign}{total_cost} / +{MAX_TRAIT_COST} max &nbsp;|&nbsp; "
+        f"**Current trait cost:** {sign}{total_cost} &nbsp;|&nbsp; "
         f"**Traits:** {count} / {MAX_TRAITS} (recommended ≤ 6)"
     )
+    st.caption(f"The combined mortal + vampire cost must be ≤ +{MAX_TRAIT_COST} by the end of Stage 2. You can go higher here and balance it with negative vampire traits.")
 
     _render_trait_list(char, "mortal_traits", "Mortal")
     st.markdown("")
@@ -258,19 +257,20 @@ def _stage_vampire(char: dict) -> None:
     total_cost = get_total_trait_cost(char)
     count = get_trait_count(char)
     sign = "+" if total_cost >= 0 else ""
+    over_budget = total_cost > MAX_TRAIT_COST
     st.markdown(
         f"**Combined trait cost (mortal + vampire):** {sign}{total_cost} / +{MAX_TRAIT_COST} max &nbsp;|&nbsp; "
         f"**Traits:** {count} / {MAX_TRAITS}"
     )
-    if total_cost > MAX_TRAIT_COST:
-        st.error(f"Total trait cost exceeds the +{MAX_TRAIT_COST} limit. Please remove some positive traits or add negative ones.")
+    if over_budget:
+        st.error(f"Combined cost is {sign}{total_cost} — must be ≤ +{MAX_TRAIT_COST} to continue. Add negative vampire traits or remove positive mortal traits.")
 
     _render_trait_list(char, "vampire_traits", "Vampire")
     st.markdown("")
     _trait_form(char, "vampire_traits", VAMPIRE_TRAITS, "v2")
 
     st.divider()
-    _nav_buttons(char, 2)
+    _nav_buttons(char, 2, next_disabled=over_budget)
 
 
 # ── Stage 3: Skills ───────────────────────────────────────────────────────────
