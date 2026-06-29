@@ -86,8 +86,8 @@ def render_struggle(char: dict) -> None:
         "Draw a card to see what the session brings."
     )
 
-    tab_cards, tab_schemes, tab_assets, tab_graveyard = st.tabs(
-        ["🃏 Card Events", "📋 Schemes", "🏛 Assets", "⚰ Graveyard"]
+    tab_cards, tab_schemes, tab_assets, tab_graveyard, tab_rules = st.tabs(
+        ["🃏 Card Events", "📋 Schemes", "🏛 Assets", "⚰ Graveyard", "📖 Rules"]
     )
 
     with tab_cards:
@@ -98,6 +98,8 @@ def render_struggle(char: dict) -> None:
         _tab_assets(char)
     with tab_graveyard:
         _tab_graveyard(char)
+    with tab_rules:
+        _tab_rules()
 
 
 # ── Card Events ───────────────────────────────────────────────────────────────
@@ -373,3 +375,133 @@ def _tab_graveyard(char: dict) -> None:
                     asset["in_graveyard"] = False
                     asset["damage"] = 0
                     st.rerun()
+
+
+# ── Rules Reference ───────────────────────────────────────────────────────────
+
+def _box(content: str, border_color: str = "#4a2030") -> None:
+    st.markdown(
+        f"<div style='background:#120810;border:1px solid {border_color};"
+        f"border-radius:4px;padding:0.9rem 1.2rem;margin:0.5rem 0'>{content}</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def _tab_rules() -> None:
+    section_header("Struggle Rules")
+
+    # ── Turn Overview ─────────────────────────────────────────────────────────
+    st.markdown("#### Each Turn")
+    _box(
+        "<ol style='margin:0;padding-left:1.4rem;line-height:2'>"
+        "<li><b>Draw a card.</b> If you now hold more than 3, discard down to 3.</li>"
+        "<li><b>Scheme action</b> (choose one): <em>Start a new scheme</em> or <em>Advance an existing scheme</em>.</li>"
+        "<li><b>Direct action</b> (choose one): <em>Bolster</em>, <em>Investigate</em>, <em>Attack</em>, or <em>Feed</em>.</li>"
+        "</ol>",
+        border_color="#5c2a1a",
+    )
+
+    # ── Assets ────────────────────────────────────────────────────────────────
+    st.markdown("#### Assets")
+    st.markdown(
+        "Each side starts with their assets. Assets range from **1 to 5 dots** and fall into one of six types:"
+    )
+    col1, col2, col3 = st.columns(3)
+    for col, label in zip([col1, col2, col1, col2, col3, col3],
+                           ["🏛 Institutions", "👤 Servants", "📦 Objects",
+                            "📜 Debts", "🏠 Haven", "🐑 Herd"]):
+        with col:
+            st.markdown(f"- {label}")
+
+    st.divider()
+
+    # ── Schemes ───────────────────────────────────────────────────────────────
+    st.markdown("#### Schemes")
+    st.markdown(
+        "Schemes are represented as pieces of paper. "
+        "A **secret scheme** is placed face-down (harder to advance). "
+        "Other players may contribute to your schemes."
+    )
+
+    with st.expander("Creating or Reforming an Asset"):
+        st.markdown(
+            "Place red tokens on the scheme to track progress. "
+            "The Storyteller sets the number of **required tasks** based on the desired asset size and control. "
+            "Tasks can be assigned to different domains."
+        )
+        st.markdown(
+            "When enough tokens are placed, the scheme resolves and the asset enters play. "
+            "Dot value reflects size and control — agree with the Storyteller before starting."
+        )
+        _box(
+            "<em>Example: A vampire wants to create a 'cult of the faithful' — medium size, strong control, "
+            "roughly 6 families. The Storyteller rules this a 2-dot Institution and requires 3 tasks: "
+            "1 for recruitment, 2 for incentive / dogma / resources.</em>",
+            border_color="#2a3a1a",
+        )
+
+    with st.expander("Schemes Against a Rival Asset"):
+        st.markdown(
+            "Describe the plan and the desired damage. The Storyteller sets the number of tasks. "
+            "As the scheme advances, **cards** equal to the desired damage are placed on it. "
+            "When complete, those cards slide under the target asset — damaging it. "
+            "A small scheme can be a single card."
+        )
+        st.markdown(
+            "A **Trap** is a secret scheme that, when triggered, joins a battle as though it were an asset."
+        )
+
+    with st.expander("Advancing a Scheme"):
+        st.markdown(
+            "Spend your scheme action to define a task and roll against a difficulty. "
+            "Success places a red token. Once the required number of tokens is reached, the scheme resolves."
+        )
+
+    st.divider()
+
+    # ── Direct Actions ────────────────────────────────────────────────────────
+    st.markdown("#### Direct Actions")
+
+    with st.expander("⬆ Bolster an Asset"):
+        st.markdown(
+            "Grant a temporary advantage to one asset — extra weapons, a surge of cash, etc. "
+            "The bonus lasts until that asset's **next roll**. "
+            "Bolstering can also **repair one point of damage**. "
+            "For a *permanent* improvement, start a scheme to reform the asset instead."
+        )
+
+    with st.expander("🔍 Investigate a Rival"):
+        st.markdown("Roll to **reveal a hidden (face-down) scheme**.")
+
+    with st.expander("⚔ Attack a Rival Asset"):
+        st.markdown(
+            "The only way to **destroy** an asset. Attacks can be Mental, Social, Physical, or a combination — "
+            "and must be described concretely. "
+            "You use a **primary asset** to lead the attack, and may add supporting assets if relevant. "
+            "Adding irrelevant assets gives diminishing returns. Attacking alone is possible but dangerous."
+        )
+        _box(
+            "<b>Mental:</b> tipping off police, lawsuits, covert money siphoning<br>"
+            "<b>Social:</b> persuading people to quit or boycott, bribing guards<br>"
+            "<b>Physical:</b> showing up and blowing it up",
+            border_color="#1a2838",
+        )
+        st.markdown("The defender may add assets under the same relevance rules.")
+
+    with st.expander("🩸 Feed"):
+        st.markdown("Seek out prey to replenish Blood.")
+
+    st.divider()
+
+    # ── Combat Resolution ─────────────────────────────────────────────────────
+    st.markdown("#### Combat Resolution (Attacking an Asset)")
+    _box(
+        "<ol style='margin:0;padding-left:1.4rem;line-height:2.1'>"
+        "<li>Each side sums: <b>main asset dots</b> + helper asset bonuses + bolstering − damage cards already on the asset.</li>"
+        "<li>Both sides roll.</li>"
+        "<li>The <b>margin</b> of the winning roll is inflicted as damage on the loser's primary asset.</li>"
+        "<li>Remaining damage spills to other assets that participated, in order.</li>"
+        "<li>An asset is <b>destroyed</b> when its damage equals its dots.</li>"
+        "</ol>",
+        border_color="#5c1a28",
+    )
