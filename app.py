@@ -45,7 +45,7 @@ def _sidebar(char: dict) -> str:
         "Navigate",
         options=["wizard", "sheet", "struggle"],
         format_func=lambda x: {
-            "wizard": "⚡ Character Wizard",
+            "wizard": "⚡ Character Creator",
             "sheet": "📜 Character Sheet",
             "struggle": "♟ Struggle",
         }[x],
@@ -59,7 +59,7 @@ def _sidebar(char: dict) -> str:
     if nav == "wizard":
         from pulse.ui.wizard import STAGES
         st.sidebar.divider()
-        st.sidebar.markdown("<small style='color:#9a8f82'>Wizard Stages</small>", unsafe_allow_html=True)
+        st.sidebar.markdown("<small style='color:#9a8f82'>Creator Stages</small>", unsafe_allow_html=True)
         for num, label in STAGES.items():
             icon = "●" if num == char["wizard_stage"] else ("✓" if num < char["wizard_stage"] else "○")
             if st.sidebar.button(f"{icon} {num}. {label}", key=f"sidebar_stage_{num}", use_container_width=True):

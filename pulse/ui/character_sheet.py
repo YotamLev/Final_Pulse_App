@@ -46,7 +46,7 @@ from pulse.ui.components import dots, section_header, info_box, render_trait_pil
 
 def render_character_sheet(char: dict) -> None:
     if not char.get("wizard_complete") and not char.get("name"):
-        st.info("Complete the Character Creation Wizard to populate the sheet, or upload a saved character below.")
+        st.info("Complete the Character Creator to populate the sheet, or upload a saved character below.")
 
     _render_hero(char)
     st.divider()
@@ -181,8 +181,8 @@ def _tab_traits(char: dict) -> None:
             st.caption("None selected.")
 
     st.divider()
-    with st.expander("Edit Traits (go back to wizard)"):
-        st.info("To add or remove traits, use the Character Wizard stages 1 and 2.")
+    with st.expander("Edit Traits (go back to creator)"):
+        st.info("To add or remove traits, use the Character Creator stages 1 and 2.")
         col1, col2 = st.columns(2)
         with col1:
             if st.button("→ Stage 1: Mortal Traits"):
@@ -363,7 +363,7 @@ def _tab_disciplines(char: dict) -> None:
 
     unlocked = char.get("unlocked_disciplines", [])
     if not unlocked:
-        st.info("No Disciplines unlocked yet. Complete the wizard first.")
+        st.info("No Disciplines unlocked yet. Complete the Character Creator first.")
         return
 
     for disc_name in unlocked:
