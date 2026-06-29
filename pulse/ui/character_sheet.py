@@ -262,7 +262,8 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
             base = get_static_base(skill_name, tree_name)
             own_str = dots(d, skill['max_dots'])
             if base > 0:
-                level_str = f"{'●' * base} + {own_str}  `/{skill['max_dots']}`"
+                base_str = "●" * base if unlocked else "○" * base
+                level_str = f"{base_str} + {own_str}  `/{skill['max_dots']}`"
             else:
                 level_str = f"{own_str}  `/{skill['max_dots']}`"
             st.markdown(level_str)

@@ -600,7 +600,8 @@ def _render_skill_tree(char: dict, tree_name: str, budget_remaining: int) -> Non
         with col2:
             base = get_static_base(skill_name, tree_name)
             if base > 0:
-                level_str = f"{'●' * base} + {dot_str}  `/{skill['max_dots']}`"
+                base_str = "●" * base if unlocked else "○" * base
+                level_str = f"{base_str} + {dot_str}  `/{skill['max_dots']}`"
             else:
                 level_str = f"{dot_str}  `/{skill['max_dots']}`"
             st.markdown(level_str)

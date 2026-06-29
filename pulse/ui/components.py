@@ -98,7 +98,9 @@ def render_skill_row(
     with col2:
         base = effective_level - own_dots_value
         if base > 0:
-            display = f"{'●' * base} + {dot_str}  `/{max_d}`"
+            prereq_met = can_add or own_dots_value > 0
+            base_str = "●" * base if prereq_met else "○" * base
+            display = f"{base_str} + {dot_str}  `/{max_d}`"
         else:
             display = f"{dot_str}  `/{max_d}`"
         st.markdown(display)
