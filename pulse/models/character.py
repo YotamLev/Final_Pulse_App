@@ -116,19 +116,19 @@ def get_earned_xp_available(char: dict) -> int:
 
 
 def can_spend_skill_xp(char: dict, cost: int) -> bool:
-    """True if there is enough XP (creation + earned) to spend on a skill dot."""
+    """True if creation remainder + earned XP can cover the cost."""
     skill_spent = get_creation_skill_xp_spent(char)
-    if skill_spent < CREATION_SKILL_XP:
-        return cost <= (CREATION_SKILL_XP - skill_spent)
-    return cost <= get_earned_xp_available(char)
+    creation_remaining = max(0, CREATION_SKILL_XP - skill_spent)
+    earned = max(0, get_earned_xp_available(char))
+    return cost <= creation_remaining + earned
 
 
 def can_spend_disc_xp(char: dict, cost: int) -> bool:
-    """True if there is enough XP (creation + earned) to spend on a disc level."""
+    """True if creation remainder + earned XP can cover the cost."""
     disc_spent = get_creation_disc_xp_spent(char)
-    if disc_spent < CREATION_DISC_XP:
-        return cost <= (CREATION_DISC_XP - disc_spent)
-    return cost <= get_earned_xp_available(char)
+    creation_remaining = max(0, CREATION_DISC_XP - disc_spent)
+    earned = max(0, get_earned_xp_available(char))
+    return cost <= creation_remaining + earned
 
 
 # ── Log helpers ───────────────────────────────────────────────────────────────
