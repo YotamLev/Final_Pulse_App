@@ -467,9 +467,7 @@ def _select_disciplines(char: dict) -> None:
             img = DISCIPLINES[disc_name]["image"]
             if not img.startswith("http"):
                 try:
-                    # Necromancy.png is 1280×960 landscape; scale width so height ≈ 48px
-                    w = 64 if "Necromancy" in img else 48
-                    st.image(img, width=w)
+                    st.image(img, width=48)
                 except Exception:
                     pass
             else:
@@ -525,9 +523,7 @@ def _render_discipline_editor(char: dict, disc_name: str, budget_remaining: int)
         img = disc["image"]
         if not img.startswith("http"):
             try:
-                # Necromancy.png is 1280×960 landscape; scale width so height ≈ 60px
-                w = 80 if "Necromancy" in img else 60
-                st.image(img, width=w)
+                st.image(img, width=60)
             except Exception:
                 pass
         else:
