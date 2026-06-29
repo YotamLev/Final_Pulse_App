@@ -622,6 +622,7 @@ def _generate_html(char: dict) -> str:
     from pulse.models.character import get_hp_max
     from pulse.data.skill_trees import get_effective_level, total_skill_xp
     from pulse.data.disciplines import total_disc_xp
+    from pulse.data.traits import MORTAL_TRAITS, VAMPIRE_TRAITS
 
     name = char.get("name", "Unnamed")
     clan = char.get("clan") or "Clanless"
@@ -631,17 +632,26 @@ def _generate_html(char: dict) -> str:
     wp_cur = char.get("willpower_current", 10)
     bl_cur = char.get("blood_current", 10)
 
+    _all_traits = {t["key"]: t for t in MORTAL_TRAITS + VAMPIRE_TRAITS}
+
     def dot_html(current: int, maximum: int) -> str:
         c = max(0, min(current, maximum))
         return "●" * c + "○" * (maximum - c)
 
+    def _trait_li(t: dict) -> str:
+        sign = "+" if t["cost"] >= 0 else ""
+        extra = t.get("detail") or t.get("sub_choice") or ""
+        desc = "" if t.get("custom") else _all_traits.get(t["key"], {}).get("description", "")
+        parts = f"<b>{t['name']}</b> ({sign}{t['cost']})"
+        if extra:
+            parts += f" — {extra}"
+        if desc:
+            parts += f"<br><small style='color:#9a8f82'>{desc}</small>"
+        return f"<li>{parts}</li>"
+
     # Traits
-    mortal_t = "".join(f"<li>{t['name']} ({'+' if t['cost']>=0 else ''}{t['cost']})"
-                       f"{' — ' + (t.get('detail') or t.get('sub_choice') or '') if t.get('detail') or t.get('sub_choice') else ''}</li>"
-                       for t in char.get("mortal_traits", []))
-    vampire_t = "".join(f"<li>{t['name']} ({'+' if t['cost']>=0 else ''}{t['cost']})"
-                        f"{' — ' + (t.get('detail') or t.get('sub_choice') or '') if t.get('detail') or t.get('sub_choice') else ''}</li>"
-                        for t in char.get("vampire_traits", []))
+    mortal_t = "".join(_trait_li(t) for t in char.get("mortal_traits", []))
+    vampire_t = "".join(_trait_li(t) for t in char.get("vampire_traits", []))
 
     # Skills
     skill_rows = ""
@@ -652,20 +662,36 @@ def _generate_html(char: dict) -> str:
             if d == 0:
                 continue
             eff = get_effective_level(skill_name, tree_name, own)
-            skill_rows += f"<tr><td>{tree_name}</td><td>{skill_name}</td><td>{dot_html(d, skill['max_dots'])} (eff. {eff})</td></tr>"
+            desc = skill.get("description", "")
+            skill_cell = f"{skill_name}"
+            if desc:
+                skill_cell += f"<br><small style='color:#9a8f82'>{desc}</small>"
+            skill_rows += f"<tr><td>{tree_name}</td><td>{skill_cell}</td><td>{dot_html(d, skill['max_dots'])} (eff. {eff})</td></tr>"
     for cs in char.get("custom_skills", []):
         d = own.get(cs["name"], 0)
         if d > 0:
             skill_rows += f"<tr><td>Custom</td><td>{cs['name']}</td><td>{dot_html(d, cs['max_dots'])}</td></tr>"
 
     # Disciplines
+    _power_lookup = {
+        disc_name: {p["name"]: p for p in disc_data["powers"]}
+        for disc_name, disc_data in DISCIPLINES.items()
+    }
     disc_rows = ""
     for disc_name in char.get("unlocked_disciplines", []):
         level = char.get("discipline_levels", {}).get(disc_name, 0)
         powers_list = char.get("discipline_powers", {}).get(disc_name, [])
+        powers_html = ""
+        for pname in powers_list:
+            pdata = _power_lookup.get(disc_name, {}).get(pname)
+            desc = pdata["description"] if pdata else ""
+            powers_html += f"<li><b>{pname}</b>"
+            if desc:
+                powers_html += f"<br><small style='color:#9a8f82'>{desc}</small>"
+            powers_html += "</li>"
         disc_rows += (
             f"<tr><td>{disc_name}</td><td>{dot_html(level, 5)} (Level {level})</td>"
-            f"<td>{', '.join(powers_list) or '—'}</td></tr>"
+            f"<td><ul style='margin:0;padding-left:1.2rem'>{powers_html or '<li>—</li>'}</ul></td></tr>"
         )
 
     return f"""<!DOCTYPE html>
@@ -711,13 +737,13 @@ def _generate_html(char: dict) -> str:
 
 <div class="section">
 <h2>Skills</h2>
-<table><thead><tr><th>Tree</th><th>Skill</th><th>Level</th></tr></thead>
+<table><thead><tr><th>Tree</th><th>Skill &amp; Description</th><th>Level</th></tr></thead>
 <tbody>{skill_rows or '<tr><td colspan=3>No skills invested</td></tr>'}</tbody></table>
 </div>
 
 <div class="section">
 <h2>Disciplines</h2>
-<table><thead><tr><th>Discipline</th><th>Level</th><th>Powers</th></tr></thead>
+<table><thead><tr><th>Discipline</th><th>Level</th><th>Powers &amp; Descriptions</th></tr></thead>
 <tbody>{disc_rows or '<tr><td colspan=3>No disciplines</td></tr>'}</tbody></table>
 </div>
 

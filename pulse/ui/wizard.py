@@ -113,7 +113,7 @@ def _nav_buttons(char: dict, stage: int, next_disabled: bool = False) -> None:
 
 def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: str) -> None:
     """Generic add-trait form for mortal or vampire traits."""
-    with st.expander("➕ Add a Trait"):
+    with st.expander("➕ Add a Predefined Trait"):
         trait_names = [t["name"] for t in traits_source]
         sel_name = st.selectbox("Select trait", trait_names, key=f"{form_key}_select")
         trait_def = next(t for t in traits_source if t["name"] == sel_name)
@@ -126,6 +126,17 @@ def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: 
             idx = opt_labels.index(chosen_label)
             chosen_cost = trait_def["cost_options"][idx][0]
 
+        # Show cost prominently next to selection
+        sign = "+" if chosen_cost >= 0 else ""
+        color = "#c41e3a" if chosen_cost > 0 else ("#4a9a6a" if chosen_cost < 0 else "#9a8f82")
+        st.markdown(
+            f"<span style='font-size:1.1rem;font-weight:bold;color:{color}'>Cost: {sign}{chosen_cost}</span>"
+            f"<span style='color:#9a8f82;margin-left:0.8rem;font-size:0.9rem'>Combined total would be: "
+            f"{'+' if get_total_trait_cost(char)+chosen_cost >= 0 else ''}"
+            f"{get_total_trait_cost(char)+chosen_cost}</span>",
+            unsafe_allow_html=True,
+        )
+
         # Sub-choice (e.g., Folkloric Bane)
         sub_choice = None
         if trait_def.get("requires_sub_choice"):
@@ -137,9 +148,7 @@ def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: 
             detail = st.text_input(trait_def["detail_prompt"], key=f"{form_key}_detail")
 
         # Validation
-        current_cost = get_total_trait_cost(char)
         current_count = get_trait_count(char)
-        new_cost = current_cost + chosen_cost
         times_taken = sum(1 for t in char[trait_list_key] if t["key"] == trait_def["key"])
         max_times = trait_def.get("max_times", 1)
 
@@ -161,6 +170,47 @@ def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: 
                 "cost": chosen_cost,
                 "detail": detail.strip() or None,
                 "sub_choice": sub_choice,
+            })
+            st.rerun()
+
+    with st.expander("✏️ Add a Custom Trait"):
+        col_name, col_cost = st.columns([3, 1])
+        with col_name:
+            custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
+                                        placeholder="e.g., Notorious Criminal")
+        with col_cost:
+            custom_cost = st.number_input("Cost", min_value=-5, max_value=5, value=-1,
+                                          key=f"{form_key}_custom_cost")
+        custom_detail = st.text_input("Detail (optional)", key=f"{form_key}_custom_detail",
+                                      placeholder="Any clarifying notes")
+
+        sign = "+" if custom_cost >= 0 else ""
+        color = "#c41e3a" if custom_cost > 0 else ("#4a9a6a" if custom_cost < 0 else "#9a8f82")
+        combined = get_total_trait_cost(char) + custom_cost
+        st.markdown(
+            f"<span style='font-size:1.1rem;font-weight:bold;color:{color}'>Cost: {sign}{custom_cost}</span>"
+            f"<span style='color:#9a8f82;margin-left:0.8rem;font-size:0.9rem'>Combined total would be: "
+            f"{'+' if combined >= 0 else ''}{combined}</span>",
+            unsafe_allow_html=True,
+        )
+
+        custom_warnings = []
+        if get_trait_count(char) >= MAX_TRAITS:
+            custom_warnings.append(f"Already at maximum of {MAX_TRAITS} traits.")
+        if not custom_name.strip():
+            custom_warnings.append("Enter a trait name.")
+        for w in custom_warnings:
+            st.warning(w)
+
+        if st.button("Add Custom Trait", key=f"{form_key}_custom_add",
+                     disabled=bool(custom_warnings)):
+            char[trait_list_key].append({
+                "key": f"custom_{custom_name.strip().lower().replace(' ', '_')}",
+                "name": custom_name.strip(),
+                "cost": int(custom_cost),
+                "detail": custom_detail.strip() or None,
+                "sub_choice": None,
+                "custom": True,
             })
             st.rerun()
 
