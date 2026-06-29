@@ -882,11 +882,10 @@ def _stage_clan(char: dict) -> None:
         ):
             col_img, col_info = st.columns([1, 4])
             with col_img:
-                st.markdown(
-                    f"<img src='{clan['image']}' style='width:80px;height:80px;"
-                    f"object-fit:contain;filter:invert(1)'>",
-                    unsafe_allow_html=True,
-                )
+                try:
+                    st.image(clan["image"], width=80)
+                except Exception:
+                    pass
             with col_info:
                 st.markdown(f"*{clan['description']}*")
                 st.markdown(f"**Recruitment:** {clan['recruitment']}")

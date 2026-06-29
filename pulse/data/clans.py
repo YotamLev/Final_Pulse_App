@@ -11,7 +11,7 @@ from pulse.data.traits import MENTAL_ILLNESS_KEYS
 
 CLANS: dict[str, dict] = {
     "Ventrue": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Ventrue_symbol.png&width=1280",
+        "image": "Data/Images/Ventrue_symbol.png",
         "description": "The self-styled rulers of vampire society, masters of control, who believe it is their birthright to lead.",
         "recruitment": "Generals, Lords, Gang Leaders",
         "requirements": {
@@ -22,7 +22,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Fortitude", "Presence"],
     },
     "Dracul": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Tzimisce_symbol.png&width=1280",
+        "image": "Data/Images/Tzimisce_symbol.png",
         "description": "The main competitors of the Ventrue, fiercely stubborn. Known to ruin potential Embracees' lives to 'test' whether they are cut out for the Clan.",
         "recruitment": "Crusaders, Fierce Nationalists, Merchant Princes",
         "requirements": {
@@ -32,7 +32,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Dominate", "Protean", "Potence"],
     },
     "Toreador": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Toreador_symbol.png&width=1280",
+        "image": "Data/Images/Toreador_symbol.png",
         "description": "Connoisseurs of ascendant beauty and emotion, drawn irresistibly to the artistic and the sublime.",
         "recruitment": "Artists, Diplomats, Charismatic Clergy",
         "requirements": {
@@ -43,7 +43,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Auspex", "Celerity"],
     },
     "Nosferatu": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Nosferatu_symbol.png&width=1280",
+        "image": "Data/Images/Nosferatu_symbol.png",
         "description": "Hidden eyes and ears of the vampire world, cursed with a grotesque appearance that separates them from mortal society.",
         "recruitment": "Spymasters, Assassins, Mercenaries",
         "requirements": {
@@ -54,7 +54,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Nightmare", "Shadow Sorcery", "Animalism"],
     },
     "Brujah": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Brujah_symbol.png&width=1280",
+        "image": "Data/Images/Brujah_symbol.png",
         "description": "Philosophers, fighters, rebels, gladiators. A history of great thinkers, generals, and revolutionaries.",
         "recruitment": "Anarchists, Soldiers, Disloyal Knights",
         "requirements": {
@@ -65,7 +65,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Presence", "Potence", "Celerity"],
     },
     "Gangrel": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Gangrel_symbol.png&width=1280",
+        "image": "Data/Images/Gangrel_symbol.png",
         "description": "Wild vampires described as closest to their Beast, who maintain they are simply best at interacting with it.",
         "recruitment": "Survivalists, Conquistadors, Raiders",
         "requirements": {
@@ -76,7 +76,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Animalism", "Protean", "Fortitude"],
     },
     "Malkavian": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Malkavian_symbol.png&width=1280",
+        "image": "Data/Images/Malkavian_symbol.png",
         "description": "Afflicted by a supernatural madness — the clan of seers and oracles. The most heterogeneous clan.",
         "recruitment": "Odd Scientists, Genius Detectives, Shamans",
         "requirements": {
@@ -86,7 +86,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Auspex", "Nightmare", "Arrete"],
     },
     "Tremere": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Tremere_symbol.png&width=1280",
+        "image": "Data/Images/Tremere_symbol.png",
         "description": "Mages who sought immortality. In their greed, they instigated a terrifying magical experiment, damning themselves to a hell of their own making.",
         "recruitment": "Occultists, Pagans, Academics",
         "requirements": {
@@ -97,7 +97,7 @@ CLANS: dict[str, dict] = {
         "suggested_disciplines": ["Auspex", "Arrete"],
     },
     "Hecata": {
-        "image": "https://vtm.paradoxwikis.com/thumb.php?f=Hecata_symbol.png&width=1920",
+        "image": "Data/Images/Hecata_symbol.png",
         "description": "A strange clan steeped in death, practising the arts of necromancy. Favors Embracing from their own mortal family or those with useful outside connections.",
         "recruitment": "Bankers, Arms Dealers, Monks",
         "requirements": {

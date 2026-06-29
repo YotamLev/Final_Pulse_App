@@ -10,7 +10,7 @@ from __future__ import annotations
 
 DISCIPLINES: dict[str, dict] = {
     "Auspex": {
-        "image": "https://vtm.paradoxwikis.com/images/9/93/Auspex_symbol.png",
+        "image": "Data/Images/Auspex_symbol.png",
         "powers": [
             {"name": "Enhance Senses", "level": 1, "description": "Add Auspex level to sensory input: seeing, hearing, etc.", "requires": None},
             {"name": "Sense The Unseen", "level": 1, "description": "Roll Auspex to find hidden and invisible creatures or objects.", "requires": None},
@@ -25,7 +25,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Animalism": {
-        "image": "https://vtm.paradoxwikis.com/images/5/57/Animalism_symbol.png",
+        "image": "Data/Images/Animalism_symbol.png",
         "powers": [
             {"name": "Ghoul Animal", "level": 1, "description": "Pay 1 Blood to ghoul an animal to serve you. Up to Animalism level simultaneously. Wants to serve like a loyal dog but no greater intelligence.", "requires": None},
             {"name": "Mark Territory", "level": 1, "description": "Pay 1 Blood in a place you own to impose difficulty on rivals in it.", "requires": None},
@@ -40,7 +40,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Celerity": {
-        "image": "https://vtm.paradoxwikis.com/images/2/2a/Celerity_symbol.png",
+        "image": "Data/Images/Celerity_symbol.png",
         "powers": [
             {"name": "Speed", "level": 1, "description": "Add Celerity level to rolls involving speed: running, slashing, dodging. Add half Celerity (rounded down) to rolls of precision.", "requires": None},
             {"name": "The Still World", "level": 2, "description": "Pay 1 Blood, move super-fast in your turn: walk on water, on vertical walls, between the blades of a spinning jet engine.", "requires": None},
@@ -50,7 +50,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Dominate": {
-        "image": "https://vtm.paradoxwikis.com/images/1/1b/Dominate_symbol.png",
+        "image": "Data/Images/Dominate_symbol.png",
         "powers": [
             {"name": "Draw On Instinct", "level": 1, "description": "Cause a mortal to Flee, or Fight.", "requires": None},
             {"name": "Cloud Mind", "level": 1, "description": "Cause a mortal to forget the last 5 minutes and the next 2 minutes.", "requires": None},
@@ -63,7 +63,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Fortitude": {
-        "image": "https://vtm.paradoxwikis.com/images/0/06/Fortitude_symbol.png",
+        "image": "Data/Images/Fortitude_symbol.png",
         "powers": [
             {"name": "Rapid Healing", "level": 1, "description": "Each 1 Blood paid allows healing 2 HP instead of 1.", "requires": None},
             {"name": "Toughness", "level": 1, "description": "Add 2 max HP per level of Fortitude.", "requires": None},
@@ -89,7 +89,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Obfuscate": {
-        "image": "https://vtm.paradoxwikis.com/images/a/a8/Obfuscate_symbol.png",
+        "image": "Data/Images/Obfuscate_symbol.png",
         "powers": [
             {"name": "Fade", "level": 1, "description": "Low-level hypnotism makes all mortals avert their eyes and ignore you, seeing you as a forgettable nobody.", "requires": None},
             {"name": "Cloak of Shadows", "level": 1, "description": "Standing still or moving obscured against a backdrop allows you to be totally ignored by mortals — they see you as an object or vegetation.", "requires": None},
@@ -102,7 +102,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Potence": {
-        "image": "https://vtm.paradoxwikis.com/images/a/a8/Potence_symbol.png",
+        "image": "Data/Images/Potence_symbol.png",
         "powers": [
             {"name": "Vigor", "level": 1, "description": "Add Potence to rolls involving strength and muscles: swinging a sword, jumping, bending metal.", "requires": None},
             {"name": "Shockwave", "level": 2, "description": "Pay 1 Blood, your attacks count against all in close-range to you instead of choosing 1 enemy.", "requires": None},
@@ -111,7 +111,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Presence": {
-        "image": "https://vtm.paradoxwikis.com/images/0/02/Presence_symbol.png",
+        "image": "Data/Images/Presence_symbol.png",
         "powers": [
             {"name": "Awe", "level": 1, "description": "Add Presence to Social rolls.", "requires": None},
             {"name": "Summon", "level": 1, "description": "Call a mortal you know to you. They will do all in their power to reach you.", "requires": None},
@@ -123,7 +123,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Protean": {
-        "image": "https://vtm.paradoxwikis.com/images/8/8a/Protean_symbol.png",
+        "image": "Data/Images/Protean_symbol.png",
         "powers": [
             {"name": "Animorph", "level": 1, "description": "Pay 1 Blood, assume the shape of a specific animal (mouse to tiger) for a scene. Choose 1 animal each time you take this power. Transforming takes a turn.", "requires": None},
             {"name": "Feral Weapons", "level": 1, "description": "Extend fangs and claws, add your Protean to close-range physical attacks.", "requires": None},
@@ -137,7 +137,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Arrete": {
-        "image": "https://vtm.paradoxwikis.com/images/6/6e/Alchemy_symbol.png",
+        "image": "Data/Images/Alchemy_symbol.png",
         "powers": [
             {"name": "Calculating", "level": 1, "description": "Add your Arrete to mental actions requiring intelligence, typically in the Scheming Skill Tree.", "requires": None},
             {"name": "Perfect Recall", "level": 1, "description": "Pay 1 Blood, retroactively remember a detail from something you have seen, heard, or read.", "requires": None},
@@ -170,7 +170,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Blood Sorcery": {
-        "image": "https://vtm.paradoxwikis.com/images/8/89/Blood_Sorcery_symbol.png",
+        "image": "Data/Images/Blood_Sorcery_symbol.png",
         "powers": [
             {"name": "Bend Blood", "level": 1, "description": "Control spilled blood, making it flow or float in the air.", "requires": None},
             {"name": "A Taste for Blood", "level": 1, "description": "By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled.", "requires": None},
@@ -180,7 +180,7 @@ DISCIPLINES: dict[str, dict] = {
         ],
     },
     "Shadow Sorcery": {
-        "image": "https://vtm.paradoxwikis.com/images/4/40/Oblivion_symbol.png",
+        "image": "Data/Images/Oblivion_symbol.png",
         "powers": [
             {"name": "Dim the Lights", "level": 1, "description": "Cause lights to dim or flicker, subject to your control.", "requires": None},
             {"name": "Shadow Perspective", "level": 1, "description": "Look into a shadow and see from another shadow nearby.", "requires": None},
