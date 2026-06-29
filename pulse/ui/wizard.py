@@ -46,6 +46,195 @@ STAGES = {
     5: "Clan",
 }
 
+# ── Quick Start archetypes ────────────────────────────────────────────────────
+# Each entry pre-fills a clan, qualifying trait, discipline unlocks, and a
+# small skill seed so the player can dive straight into the biography.
+
+QUICKSTARTS: dict[str, dict] = {
+    "ventrue_commander": {
+        "label": "Ventrue Commander",
+        "clan": "Ventrue",
+        "tagline": "Nobles of the night. Rule through command, wealth, and iron will.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "selective_taste", "name": "Selective Taste",
+            "cost": -1, "detail": "The powerful and well-bred", "sub_choice": None,
+        },
+        "disciplines": ["Dominate", "Fortitude", "Presence"],
+        "skill_dots": {"Basic Analytical": 2, "Basic Manipulation": 2},
+    },
+    "dracul_warlord": {
+        "label": "Dracul Warlord",
+        "clan": "Dracul",
+        "tagline": "Immovable and vengeful. No one trespasses on what is yours.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "territorial", "name": "Territorial",
+            "cost": -2, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Dominate", "Protean", "Potence"],
+        "skill_dots": {"Basic Manipulation": 2, "Brawl": 2},
+    },
+    "toreador_manipulator": {
+        "label": "Toreador Manipulator",
+        "clan": "Toreador",
+        "tagline": "Beauty as a weapon. Emotion as a lever. Every room is a stage.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "infatuation", "name": "Infatuation",
+            "cost": -1, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Presence", "Auspex", "Celerity"],
+        "skill_dots": {"Basic Manipulation": 2, "Insight": 1},
+    },
+    "nosferatu_spymaster": {
+        "label": "Nosferatu Spymaster",
+        "clan": "Nosferatu",
+        "tagline": "Unseen and unavoidable. The city's secrets flow through your hands.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "corpse_like", "name": "Corpse-Like",
+            "cost": -2, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Obfuscate", "Nightmare", "Shadow Sorcery"],
+        "skill_dots": {"Awareness": 2, "Stealth": 1},
+    },
+    "brujah_rebel": {
+        "label": "Brujah Rebel",
+        "clan": "Brujah",
+        "tagline": "Passionate and explosive. Fight for the cause — or just fight.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "prone_to_rage", "name": "Prone to Rage",
+            "cost": -2, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Potence", "Celerity", "Presence"],
+        "skill_dots": {"Brawl": 2, "Athletics": 1},
+    },
+    "gangrel_wanderer": {
+        "label": "Gangrel Wanderer",
+        "clan": "Gangrel",
+        "tagline": "Predator and survivor. The wild is your haven, the beast your compass.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "ravenous", "name": "Ravenous",
+            "cost": -3, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Animalism", "Protean", "Fortitude"],
+        "skill_dots": {"Awareness": 2, "Survival": 1},
+    },
+    "malkavian_oracle": {
+        "label": "Malkavian Oracle",
+        "clan": "Malkavian",
+        "tagline": "Madness and prophecy walk hand in hand. You see what others cannot.",
+        "mortal_trait": {
+            "key": "paranoid", "name": "Paranoid",
+            "cost": -2, "detail": None, "sub_choice": None,
+        },
+        "vampire_trait": None,
+        "disciplines": ["Auspex", "Nightmare", "Arrete"],
+        "skill_dots": {"Basic Analytical": 2, "Insight": 1},
+    },
+    "tremere_warlock": {
+        "label": "Tremere Warlock",
+        "clan": "Tremere",
+        "tagline": "Mages who sought eternity and found damnation. Power has a price.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "infatuation", "name": "Infatuation",
+            "cost": -1, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Blood Sorcery", "Auspex", "Arrete"],
+        "skill_dots": {"Curiosity": 2, "Occult": 1},
+    },
+    "hecata_necromancer": {
+        "label": "Hecata Necromancer",
+        "clan": "Hecata",
+        "tagline": "Death is a doorway. You hold the key — and the business card.",
+        "mortal_trait": None,
+        "vampire_trait": {
+            "key": "painful_bite", "name": "Painful Bite",
+            "cost": -2, "detail": None, "sub_choice": None,
+        },
+        "disciplines": ["Necromancy", "Fortitude", "Potence"],
+        "skill_dots": {"Curiosity": 2, "Occult": 1},
+    },
+}
+
+
+def _apply_quickstart(char: dict, key: str) -> None:
+    qs = QUICKSTARTS[key]
+    char["clan"] = qs["clan"]
+    char["unlocked_disciplines"] = list(qs["disciplines"])
+    char["skill_dots"] = dict(qs["skill_dots"])
+    if qs.get("mortal_trait"):
+        t = qs["mortal_trait"]
+        if not any(x["key"] == t["key"] for x in char["mortal_traits"]):
+            char["mortal_traits"].append(t)
+    if qs.get("vampire_trait"):
+        t = qs["vampire_trait"]
+        if not any(x["key"] == t["key"] for x in char["vampire_traits"]):
+            char["vampire_traits"].append(t)
+
+
+def _render_quickstart_panel(char: dict) -> None:
+    with st.expander("⚡ Quick Start — know your clan? Begin here", expanded=not char.get("clan")):
+        st.caption(
+            "Pick an archetype to pre-fill your clan, a qualifying trait, discipline unlocks, "
+            "and a starter skill seed. You can still customise everything afterwards."
+        )
+
+        options = ["— choose —"] + list(QUICKSTARTS.keys())
+        sel = st.selectbox(
+            "Archetype",
+            options,
+            format_func=lambda k: QUICKSTARTS[k]["label"] if k != "— choose —" else "— choose —",
+            key="qs_select",
+            label_visibility="collapsed",
+        )
+
+        if sel != "— choose —":
+            qs = QUICKSTARTS[sel]
+            traits_preview = []
+            if qs.get("mortal_trait"):
+                t = qs["mortal_trait"]
+                traits_preview.append(f"{t['name']} ({t['cost']:+d}) [mortal]")
+            if qs.get("vampire_trait"):
+                t = qs["vampire_trait"]
+                label = t["name"]
+                if t.get("detail"):
+                    label += f" — {t['detail']}"
+                traits_preview.append(f"{label} ({t['cost']:+d}) [vampire]")
+            skills_preview = ", ".join(
+                f"{s} {d}●" for s, d in qs["skill_dots"].items()
+            )
+            st.markdown(
+                f"<div style='background:#1a0812;border:1px solid #5c1a28;border-radius:4px;"
+                f"padding:0.8rem 1.2rem;margin:0.4rem 0'>"
+                f"<b style='color:#c41e3a;font-size:1.05rem'>{qs['label']}</b><br>"
+                f"<span style='color:#9a8f82;font-style:italic'>{qs['tagline']}</span><br><br>"
+                f"<b>Clan:</b> {qs['clan']}&nbsp;&nbsp;"
+                f"<b>Disciplines:</b> {', '.join(qs['disciplines'])}<br>"
+                f"<b>Trait:</b> {' / '.join(traits_preview) or '—'}<br>"
+                f"<b>Starter skills:</b> {skills_preview}"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
+
+            already_applied = char.get("clan") == qs["clan"]
+            if already_applied:
+                st.success(f"{qs['label']} already applied.")
+            if st.button(
+                "Apply" if not already_applied else "Re-apply",
+                key="qs_apply",
+                type="primary",
+                disabled=already_applied,
+            ):
+                _apply_quickstart(char, sel)
+                st.rerun()
+
+    st.divider()
+
 
 def render_wizard(char: dict) -> None:
     stage = char["wizard_stage"]
@@ -238,6 +427,7 @@ def _stage_mortal(char: dict) -> None:
         "Think about: childhood, adulthood, job, hobbies, life-changing events, "
         "personality, mannerisms, beliefs. All fields are optional — fill in what inspires you."
     )
+    _render_quickstart_panel(char)
 
     col1, col2 = st.columns(2)
     with col1:
