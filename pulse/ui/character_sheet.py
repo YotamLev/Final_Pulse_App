@@ -206,16 +206,15 @@ def _tab_skills(char: dict) -> None:
         f"Earned XP available: **{max(0, earned_avail)}**"
     )
 
-    tree_names = list(SKILL_TREES.keys()) + (["Custom"] if char["custom_skills"] else [])
+    tree_names = list(SKILL_TREES.keys()) + ["Custom"]
     tabs = st.tabs(tree_names)
 
     for i, tree_name in enumerate(SKILL_TREES.keys()):
         with tabs[i]:
             _sheet_skill_tree(char, tree_name, earned_avail)
 
-    if char["custom_skills"]:
-        with tabs[-1]:
-            _sheet_custom_skills(char, earned_avail)
+    with tabs[-1]:
+        _sheet_custom_skills(char, earned_avail)
 
 
 def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
@@ -280,8 +279,14 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
 
 
 def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
+    from pulse.data.skill_trees import SKILL_TREES as _ST
     own = char["skill_dots"]
-    for i, cs in enumerate(char["custom_skills"]):
+    custom_skills = char["custom_skills"]
+
+    if not custom_skills:
+        st.caption("No custom skills yet.")
+
+    for i, cs in enumerate(custom_skills):
         cname = cs["name"]
         d = own.get(cname, 0)
         max_d = cs["max_dots"]
@@ -289,9 +294,11 @@ def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
         can_add = d < max_d and can_spend_skill_xp(char, xp_next)
         can_rem = d > 0
 
-        col1, col2, col3 = st.columns([4, 3, 2])
+        col1, col2, col3, col4 = st.columns([4, 3, 2, 1])
         with col1:
             st.markdown(f"**{cname}**")
+            if can_add:
+                st.caption(f"Next: {xp_next} XP")
         with col2:
             st.markdown(f"{dots(d, max_d)} `/{max_d}`")
         with col3:
@@ -306,6 +313,32 @@ def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
                     log_xp_spend(char, f"{cname} +1 dot", xp_next)
                     own[cname] = d + 1
                     st.rerun()
+        with col4:
+            if st.button("✕", key=f"sheet_del_custom_{i}"):
+                own.pop(cname, None)
+                custom_skills.pop(i)
+                st.rerun()
+
+    st.divider()
+    st.markdown("**Add a Custom Skill**")
+    col_name, col_max, col_add = st.columns([3, 2, 2])
+    with col_name:
+        new_name = st.text_input("Name", key="sheet_custom_skill_name",
+                                 label_visibility="collapsed", placeholder="e.g. Chess")
+    with col_max:
+        new_max = st.number_input("Max dots", min_value=1, max_value=7, value=5,
+                                  key="sheet_custom_skill_max", label_visibility="collapsed")
+    with col_add:
+        if st.button("Add Skill", key="sheet_add_custom_skill_btn"):
+            name = new_name.strip()
+            existing = [cs["name"] for cs in custom_skills] + [s for t in _ST.values() for s in t]
+            if not name:
+                st.error("Enter a skill name.")
+            elif name in existing:
+                st.error(f"'{name}' already exists.")
+            else:
+                custom_skills.append({"name": name, "max_dots": int(new_max)})
+                st.rerun()
 
 
 def _tab_disciplines(char: dict) -> None:
