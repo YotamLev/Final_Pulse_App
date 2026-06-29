@@ -55,137 +55,272 @@ STAGES = {
 QUICKSTARTS: dict[str, dict] = {
     "ventrue_commander": {
         "label": "Ventrue Commander",
+        "name": "Marcus St. Claire",
         "clan": "Ventrue",
         "tagline": "Nobles of the night. Rule through command, wealth, and iron will.",
+        "backstory": (
+            "Chicago's most feared litigator, St. Claire dismantled corporations and careers "
+            "with equal precision from his Loop office. Annalise of Clan Ventrue watched him "
+            "destroy a rival's empire in court and made her offer — eternity in exchange for his talent."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "selective_taste", "name": "Selective Taste",
             "cost": -1, "detail": "The powerful and well-bred", "sub_choice": None,
         },
         "disciplines": ["Dominate", "Fortitude", "Presence"],
-        "skill_dots": {"Basic Analytical": 2, "Basic Manipulation": 2},
+        "discipline_levels": {"Dominate": 2, "Fortitude": 1, "Presence": 1},
+        "discipline_powers": {
+            "Dominate": ["Draw On Instinct", "Cloud Mind", "Mesmerize"],
+            "Fortitude": ["Toughness"],
+            "Presence": ["Awe"],
+        },
+        "skill_dots": {
+            "Basic Analytical": 2, "Finance": 1, "Mortal Politics": 1,
+            "Basic Manipulation": 2, "Court Etiquette": 1, "Persuasion": 1,
+        },
     },
     "dracul_warlord": {
         "label": "Dracul Warlord",
+        "name": "Viktor Harken",
         "clan": "Dracul",
         "tagline": "Immovable and vengeful. No one trespasses on what is yours.",
+        "backstory": (
+            "A Balkan mercenary who made his name in post-war chaos, Harken arrived in "
+            "Chicago in '94 running private security contracts. His Sire found him useful — "
+            "and simply unwilling to die. An appropriate quality for the Clan."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "territorial", "name": "Territorial",
             "cost": -2, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Dominate", "Protean", "Potence"],
-        "skill_dots": {"Basic Manipulation": 2, "Brawl": 2},
+        "discipline_levels": {"Dominate": 1, "Protean": 2, "Potence": 1},
+        "discipline_powers": {
+            "Dominate": ["Draw On Instinct"],
+            "Protean": ["Feral Weapons", "Bone Armor", "Bone Bullets"],
+            "Potence": ["Vigor"],
+        },
+        "skill_dots": {
+            "Basic Manipulation": 2, "Intimidation": 1,
+            "Brawl": 2, "Martial Arts": 1, "Athletics": 2,
+        },
     },
     "toreador_manipulator": {
         "label": "Toreador Manipulator",
+        "name": "Celeste Vane",
         "clan": "Toreador",
         "tagline": "Beauty as a weapon. Emotion as a lever. Every room is a stage.",
+        "backstory": (
+            "Celeste built Chicago's River North into a scene by sheer force of taste and charm. "
+            "She was Embraced in 1987 by a mid-century Toreador who grew obsessed with her eye "
+            "for beauty, and now navigates Elysium with the same precision as a gallery opening."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "infatuation", "name": "Infatuation",
             "cost": -1, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Presence", "Auspex", "Celerity"],
-        "skill_dots": {"Basic Manipulation": 2, "Insight": 1},
+        "discipline_levels": {"Presence": 2, "Auspex": 1, "Celerity": 1},
+        "discipline_powers": {
+            "Presence": ["Awe", "Summon", "Affect Mood"],
+            "Auspex": ["Impulse"],
+            "Celerity": ["Speed"],
+        },
+        "skill_dots": {
+            "Basic Manipulation": 2, "Persuasion": 2, "Deception": 1, "Court Etiquette": 1,
+            "Insight": 2,
+        },
     },
     "nosferatu_spymaster": {
         "label": "Nosferatu Spymaster",
+        "name": "Grim",
         "clan": "Nosferatu",
         "tagline": "Unseen and unavoidable. The city's secrets flow through your hands.",
+        "backstory": (
+            "A disgraced NSA analyst who learned too much about the undead world and was "
+            "consequently Embraced rather than silenced. Grim runs intelligence from Chicago's "
+            "tunnel network, selling information to anyone worth knowing."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "corpse_like", "name": "Corpse-Like",
             "cost": -2, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Obfuscate", "Nightmare", "Shadow Sorcery"],
-        "skill_dots": {"Awareness": 2, "Stealth": 1},
+        "discipline_levels": {"Obfuscate": 2, "Nightmare": 1, "Shadow Sorcery": 1},
+        "discipline_powers": {
+            "Obfuscate": ["Fade", "Cloak of Shadows", "Vanish"],
+            "Nightmare": ["Haunt Dream"],
+            "Shadow Sorcery": ["Dim the Lights"],
+        },
+        "skill_dots": {
+            "Basic Analytical": 2, "Investigation": 2,
+            "Awareness": 2, "Stealth": 2, "Streetwise": 1,
+        },
     },
     "brujah_rebel": {
         "label": "Brujah Rebel",
+        "name": "Dex Malone",
         "clan": "Brujah",
         "tagline": "Passionate and explosive. Fight for the cause — or just fight.",
+        "backstory": (
+            "A union organizer and fixture of Chicago's punk circuit, Dex fought systems "
+            "before he had the strength to break them. His Brujah Sire caught him mid-brawl "
+            "outside a Bridgeport tavern and decided the city needed his fire."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "prone_to_rage", "name": "Prone to Rage",
             "cost": -2, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Potence", "Celerity", "Presence"],
-        "skill_dots": {"Brawl": 2, "Athletics": 1},
+        "discipline_levels": {"Potence": 2, "Celerity": 1, "Presence": 1},
+        "discipline_powers": {
+            "Potence": ["Vigor", "Shockwave"],
+            "Celerity": ["Speed"],
+            "Presence": ["Awe"],
+        },
+        "skill_dots": {
+            "Brawl": 2, "Martial Arts": 1, "Athletics": 2,
+            "Basic Manipulation": 2, "Intimidation": 1,
+        },
     },
     "gangrel_wanderer": {
         "label": "Gangrel Wanderer",
+        "name": "Reva",
         "clan": "Gangrel",
         "tagline": "Predator and survivor. The wild is your haven, the beast your compass.",
+        "backstory": (
+            "A wilderness guide from Minnesota who came south following a trail and found "
+            "something hunting her in return. The Embrace changed her direction but not her "
+            "nature. She haunts the forest preserves and Chicago's industrial edges."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "ravenous", "name": "Ravenous",
             "cost": -3, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Animalism", "Protean", "Fortitude"],
-        "skill_dots": {"Awareness": 2, "Survival": 1},
+        "discipline_levels": {"Animalism": 2, "Protean": 1, "Fortitude": 1},
+        "discipline_powers": {
+            "Animalism": ["Ghoul Animal", "Confront the Beast", "Borrowed Wisdom"],
+            "Protean": ["Feral Weapons"],
+            "Fortitude": ["Rapid Healing"],
+        },
+        "skill_dots": {
+            "Awareness": 2, "Survival": 2, "Athletics": 2,
+            "Brawl": 2, "Stealth": 1,
+        },
     },
     "malkavian_oracle": {
         "label": "Malkavian Oracle",
+        "name": "Pip",
         "clan": "Malkavian",
         "tagline": "Madness and prophecy walk hand in hand. You see what others cannot.",
+        "backstory": (
+            "A behavioral economist at U of C whose gift for reading systems was simply too "
+            "unsettling to ignore. The Embrace fractured Pip's already-strange mind into "
+            "something genuinely prophetic — and genuinely difficult to follow in conversation."
+        ),
         "mortal_trait": {
             "key": "paranoid", "name": "Paranoid",
             "cost": -2, "detail": None, "sub_choice": None,
         },
         "vampire_trait": None,
         "disciplines": ["Auspex", "Nightmare", "Arrete"],
-        "skill_dots": {"Basic Analytical": 2, "Insight": 1},
+        "discipline_levels": {"Auspex": 2, "Nightmare": 1, "Arrete": 1},
+        "discipline_powers": {
+            "Auspex": ["Sense The Unseen", "Impulse", "Read Aura"],
+            "Nightmare": ["Haunt Dream"],
+            "Arrete": ["Calculating"],
+        },
+        "skill_dots": {
+            "Basic Analytical": 2, "Insight": 2,
+            "Curiosity": 2, "Occult": 1, "Awareness": 2,
+        },
     },
     "tremere_warlock": {
         "label": "Tremere Warlock",
+        "name": "Adara Voss",
         "clan": "Tremere",
         "tagline": "Mages who sought eternity and found damnation. Power has a price.",
+        "backstory": (
+            "A rare books archivist recruited by Chicago's Emerald Circle Chantry with "
+            "promises of access to texts that don't exist in libraries. The blood bond "
+            "was not disclosed in the recruitment materials."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "infatuation", "name": "Infatuation",
             "cost": -1, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Blood Sorcery", "Auspex", "Arrete"],
-        "skill_dots": {"Curiosity": 2, "Occult": 1},
+        "discipline_levels": {"Blood Sorcery": 2, "Auspex": 1, "Arrete": 1},
+        "discipline_powers": {
+            "Blood Sorcery": ["Bend Blood", "A Taste for Blood", "Bend Veins"],
+            "Auspex": ["Enhance Senses"],
+            "Arrete": ["Calculating"],
+        },
+        "skill_dots": {
+            "Basic Analytical": 2, "Social Academics": 1, "Investigation": 1,
+            "Curiosity": 2, "Occult": 2, "Insight": 1,
+        },
     },
     "hecata_necromancer": {
         "label": "Hecata Necromancer",
+        "name": "Father Ioseph",
         "clan": "Hecata",
         "tagline": "Death is a doorway. You hold the key — and the business card.",
+        "backstory": (
+            "A Catholic priest who ministered to a Hecata-affiliated family for a decade "
+            "before learning what they were. The Clan offered eternity when they realized "
+            "his networks of grief and trust were worth more than his silence."
+        ),
         "mortal_trait": None,
         "vampire_trait": {
             "key": "painful_bite", "name": "Painful Bite",
             "cost": -2, "detail": None, "sub_choice": None,
         },
         "disciplines": ["Necromancy", "Fortitude", "Potence"],
-        "skill_dots": {"Curiosity": 2, "Occult": 1},
+        "discipline_levels": {"Necromancy": 2, "Fortitude": 1, "Potence": 1},
+        "discipline_powers": {
+            "Necromancy": ["Touch of Oblivion", "Ashes to Ashes", "Raise Corpse"],
+            "Fortitude": ["Rapid Healing"],
+            "Potence": ["Vigor"],
+        },
+        "skill_dots": {
+            "Curiosity": 2, "Occult": 2, "Social Academics": 1,
+            "Basic Analytical": 2, "Medicine": 1,
+        },
     },
 }
 
 
 def _apply_quickstart(char: dict, key: str) -> None:
     qs = QUICKSTARTS[key]
+    char["name"] = qs.get("name", "")
+    char["mortal_history"] = qs.get("backstory", "")
     char["clan"] = qs["clan"]
     char["unlocked_disciplines"] = list(qs["disciplines"])
-    char["discipline_levels"] = {}
-    char["discipline_powers"] = {}
+    char["discipline_levels"] = dict(qs.get("discipline_levels", {}))
+    char["discipline_powers"] = {k: list(v) for k, v in qs.get("discipline_powers", {}).items()}
     char["skill_dots"] = dict(qs["skill_dots"])
+    char["mortal_traits"] = []
+    char["vampire_traits"] = []
     if qs.get("mortal_trait"):
-        t = qs["mortal_trait"]
-        if not any(x["key"] == t["key"] for x in char["mortal_traits"]):
-            char["mortal_traits"].append(t)
+        char["mortal_traits"].append(qs["mortal_trait"])
     if qs.get("vampire_trait"):
-        t = qs["vampire_trait"]
-        if not any(x["key"] == t["key"] for x in char["vampire_traits"]):
-            char["vampire_traits"].append(t)
+        char["vampire_traits"].append(qs["vampire_trait"])
 
 
 def _render_quickstart_panel(char: dict) -> None:
     with st.expander("⚡ Quick Start — know your clan? Begin here", expanded=not char.get("clan")):
         st.caption(
-            "Pick an archetype to pre-fill your clan, a qualifying trait, discipline unlocks, "
-            "and a starter skill seed. You can still customise everything afterwards."
+            "Pick an archetype to pre-fill name, backstory, clan, traits, disciplines with "
+            "starting powers, and a full skill package. Everything can be edited afterwards."
         )
 
         options = ["— choose —"] + list(QUICKSTARTS.keys())
@@ -209,18 +344,29 @@ def _render_quickstart_panel(char: dict) -> None:
                 if t.get("detail"):
                     label += f" — {t['detail']}"
                 traits_preview.append(f"{label} ({t['cost']:+d}) [vampire]")
+            disc_levels = qs.get("discipline_levels", {})
+            disc_preview = ", ".join(
+                f"{d} {'●' * disc_levels.get(d, 1)}" for d in qs["disciplines"]
+            )
             skills_preview = ", ".join(
-                f"{s} {d}●" for s, d in qs["skill_dots"].items()
+                f"{s} {'●' * d}" for s, d in qs["skill_dots"].items()
+            )
+            disc_powers = qs.get("discipline_powers", {})
+            powers_preview = " &nbsp;·&nbsp; ".join(
+                f"<em>{d}:</em> {', '.join(ps)}"
+                for d, ps in disc_powers.items()
             )
             st.markdown(
                 f"<div style='background:#1a0812;border:1px solid #5c1a28;border-radius:4px;"
-                f"padding:0.8rem 1.2rem;margin:0.4rem 0'>"
-                f"<b style='color:#c41e3a;font-size:1.05rem'>{qs['label']}</b><br>"
-                f"<span style='color:#9a8f82;font-style:italic'>{qs['tagline']}</span><br><br>"
-                f"<b>Clan:</b> {qs['clan']}&nbsp;&nbsp;"
-                f"<b>Disciplines:</b> {', '.join(qs['disciplines'])}<br>"
+                f"padding:0.9rem 1.2rem;margin:0.4rem 0;line-height:1.7'>"
+                f"<b style='color:#c41e3a;font-size:1.1rem'>{qs['label']}</b>"
+                f"<span style='color:#9a8f82;font-size:0.9rem'> — {qs['name']}, {qs['clan']}, Chicago 1999</span><br>"
+                f"<span style='color:#9a8f82;font-style:italic;font-size:0.92rem'>{qs['tagline']}</span><br>"
+                f"<span style='color:#c9bdb0;font-size:0.88rem'>{qs.get('backstory', '')}</span><br><br>"
+                f"<b>Disciplines:</b> {disc_preview}<br>"
+                f"<span style='font-size:0.85rem;color:#9a8f82'>{powers_preview}</span><br>"
                 f"<b>Trait:</b> {' / '.join(traits_preview) or '—'}<br>"
-                f"<b>Starter skills:</b> {skills_preview}"
+                f"<b>Skills:</b> <span style='font-size:0.85rem'>{skills_preview}</span>"
                 f"</div>",
                 unsafe_allow_html=True,
             )
