@@ -1,0 +1,921 @@
+﻿App Plan
+We are making a Vampire TTRPG App. It has three main functions: A character creation Wizard, an interactive character sheet, and a Struggle note-taking surface to place text-box assets on.
+Plan, ask questions, then build. You can delete this old version of the app, the only thing I liked about it is the color scheme. Create comprehensive tests to go through the character creation Wizard making many possible choices, and find edge-case failures, fix them.
+
+
+First Function: Character Creation Wizard:
+
+
+Stage 1: Mortal
+Choose Mortal Traits (optional)
+
+
+Stage 2: Vampire
+Choose Vampire Traits (optional)
+
+
+Stage 3: Skill
+Spend 15 XP on Skill trees
+
+
+Stage 4: Disciplines
+Choose 3 Disciplines to unlock
+Spend 10 XP on Disciplines trees from the 3 Disciplines you unlocked
+
+
+Stage 5: Clan
+Check if you fulfill the requirements of a Clan. Join it if you want.
+
+
+Second Function: Character sheet
+This final sheet includes:
+1. Fillable fields for: Name, Birth place & time, Sire, backstory, Who you were as a mortal, Beliefs, Important characters and connections
+2. Traits from Stage 1 & 2
+3. HP tracker (10 dots, can be increased and decreased)
+4. Willpower tracker (10 dots, can be increased and decreased)
+5. Blood tracker (10 dots, can go into negative)
+6. Skill trees
+7. Disciplines trees
+8. Default vampire powers (Blood Surge, Blood Heal, Blush of Life, Blood Bond, The Kiss)
+9. XP to spend, increasing it unlock ability to spend XP on Skills or Disciplines
+10. Log of total XP spent, and spent on what
+11. Text box for player to write notes
+12. Export option
+13. Ability to reverse XP spends and even go back in Stages
+
+
+Scripts for Character Creation Wizard and Character Sheet: 
+1. Traits & Disciplines determine Clan eligibility
+2. Advancing in skill trees unlocks advanced skills
+3. Advancing in Disciplines unlocks powers
+4. A Fortitude Discipline power increases max HP by Fortitude level
+
+
+Third Function: Struggle Screen
+Ability to click on Card suite, then on card number, providing descriptions as in the Card Events tab.
+Ability to write two types of objects, place them on a surface and drag them, mark them “secret” and unmark them, and throw them to a “graveyard”:
+1. Scheme: has name, stated goal, editable notes, number of dots acquired out of number of dots required
+2. Asset, has one of these types: [Institution, Servants, Object, Haven, Herd], has description, and number of dots
+Character Creation
+Stage 1: Mortal
+Who were you? When and where were you born? Think about childhood, adulthood, job, hobbies, life-changing events, personality, mannerisms, beliefs.
+Choose Mortal Traits (optional)
+
+
+Stage 2: Vampire
+Who Embraced You? When and why? Were you recruited to a Clan?
+Choose Vampire Traits (optional)
+
+
+Stage 3: Skill trees
+Spend XP on skill trees
+
+
+Character Sheet has:
+1. Traits
+2. Skill trees
+3. HP, Willpower, and Blood trackers
+
+
+
+
+Skill Trees
+Skill trees are either Corruption or Discipline. A vampire can have up to 3 Discipline skill trees.
+
+
+Discipline trees:
+    "Animalism",
+    "Auspex",
+    "Celerity",
+    "Dominate",
+    "Fortitude",
+    "Nightmare",
+    "Obfuscate",
+    "Potence",
+    "Presence",
+    "Protean",
+    "Arrete",
+    "Necromancy",
+    “Druidic”,
+    “Blood Sorcery",
+    “Shadow Sorcery"
+
+
+Skill trees:
+
+
+Scheming
+Manipulation
+Thrashing
+Survival
+Experimentation
+Custom Skill Tree
+
+
+Traits
+Traits: all traits have a cost. Some traits, like curses, have negative cost. In total, your Vampire traits + Mortal traits cost cannot exceed +2. It is recommended to take up to 6 traits, and you cannot take more than 8.
+
+
+Mortal Traits
+Specialist (+1): You were Embraced because of your expertise in a narrow and specific field, such as: Epidemiology, Celtic History, Opera Conducting. You gain +1 whenever you roll using this expertise. Can be taken up to 2 times.
+
+
+Rare Specialist (+2): You were Embraced because of your rare expertise in a narrow and specific field. You gain +2 whenever you roll using this expertise. Can be taken up to 2 times.
+
+
+World-Renowned Specialist (+4): You were Embraced because of your rare expertise in a narrow and specific field. You gain +3 whenever you roll using this expertise. Note that expertise in a field like “Kung-Fu” might not fit every street brawl with guns and narrow alleys. Can be taken once.
+
+
+Medical Condition (-1 to -3): You have a medical condition that restricts you in a way the Embrace did not fix. -1 cost examples are: very short-sighted, stammer, limp. -2 examples are: missing limb, loss of hearing. -3 examples are: wheelchair bound, blindness. Relevant rolls will be impeded by this condition.
+
+
+Brave (+2): You add +2 to rolls involving resisting fear
+
+
+Compulsion (-1): You have a persistent mundane habit or fixation—gambling, collecting, ritual cleanliness, thrill-seeking, or similar. When a tempting opportunity appears, resisting it requires a roll; failure means you must indulge it or suffer a penalty until the opportunity passes.
+Distinctive Appearance (-1): You possess a conspicuous, memorable feature: extensive facial scarring, unusual pigmentation, ritual tattoos, striking deformity, or another unmistakable characteristic. Attempts to identify, describe, track, or recognize you gain +1. Disguises must specifically conceal this feature.
+Illiterate (-2): You cannot read or write fluently. You may recognize familiar signs, symbols, names, or numbers, but cannot reliably understand written instructions, records, correspondence, or contracts without assistance.
+Addiction (-1 to -2): You are dependent on a mundane substance or behavior. At -1, deprivation makes you distracted and irritable, impeding relevant rolls. At -2, prolonged deprivation also prevents you from recovering Willpower until you indulge the addiction.
+Phobia (-1 to -2): You suffer an intense, irrational fear of a specific mundane stimulus, such as enclosed spaces, heights, deep water, dogs, or hospitals. At -1, confronting it impedes relevant rolls. At -2, you must also succeed on a roll to willingly approach or remain near it.
+Famous (+1): You were publicly known before your Embrace—as an artist, athlete, politician, criminal, or other notable figure. Your reputation can open doors and lend credibility, but strangers may recognize you, and maintaining anonymity is more difficult.
+Beautiful (+2): Your appearance is exceptionally attractive by prevailing standards. You gain +1 on first-impression rolls where physical appeal is genuinely relevant, but you are also more memorable and may attract unwanted attention.
+Large (+1): You are exceptionally tall and heavily built. You gain +1 when your sheer size helps with lifting, carrying, blocking movement, or physical intimidation, but you are easier to identify and have difficulty using cramped spaces, disguises, or equipment made for ordinary bodies.
+Dwarfism (0): You are significantly shorter than average due to a form of dwarfism. You gain +1 when your size helps you hide, squeeze through confined spaces, or use unusually limited cover, but ordinary furniture, vehicles, clothing, and equipment may be inconvenient or require adaptation.
+Criminal Record (-1): Your mortal identity has a serious criminal history. Police, border authorities, employers, and institutions can uncover it through routine checks, and official scrutiny involving your identity is more likely to escalate.
+Double-Jointed (+1): Your joints are unusually flexible. You gain +1 when escaping restraints, contorting through confined spaces, or performing actions where exceptional flexibility provides a clear advantage.
+Sterile/eunuch (0): You were infertile or castrated before the Embrace. This has no mechanical benefit or penalty in most situations, but may shape your mortal history, relationships, inheritance, or the circumstances surrounding your Embrace.
+Embraced Young (-1): You were Embraced before reaching physical adulthood and remain permanently adolescent in appearance. Adults often dismiss your authority, and accessing age-restricted spaces, contracts, travel, or institutions without attracting scrutiny is difficult.
+Embraced Old (-1): You were Embraced at an advanced physical age. Your apparent frailty makes others underestimate or patronize you, and strenuous movement may draw attention as unnatural when your body performs beyond mortal expectations.
+Perfect Pitch (+1): You can identify, reproduce, and remember musical notes and precise tones without a reference. Gain +1 when this directly aids a roll, such as tuning an instrument, reproducing a sound, detecting a disguised voice, or noticing changes in machinery or alarms.
+Color Blindness (-1): You cannot reliably distinguish colors. Rolls involving color-coded information, visual identification, tracking by color, interpreting maps or signals, or noticing color-based details are impeded when the distinction matters.
+Face Blindness (-1): You struggle to recognize people by their faces, even those you know well. You must rely on voice, clothing, posture, scent, or context, and rolls involving identifying, remembering, or distinguishing individuals by appearance are impeded.
+Tetrachromat (+1): You perceive subtle differences between colors that most people cannot distinguish. Gain +1 when examining dyes, pigments, bruising, stains, forged artwork, altered documents, or other evidence where minute color variations are relevant.
+Aphantasia (-1): You cannot voluntarily form mental images. Rolls that depend on visualizing a remembered face, place, route, object, or scene are impeded, though your factual and verbal memory are unaffected.
+Unerring Sense of Direction (+1): You possess an exceptional instinct for orientation. You always know the cardinal directions and gain +1 when navigating, retracing a route, avoiding becoming lost, or estimating the relative position of places you have visited.
+Genius (+3): You possess exceptional general intelligence. Gain +1 on rolls involving abstract reasoning, rapid learning, complex problem-solving, or connecting information across different fields. This does not grant specialized knowledge you have never acquired.
+Iron Constitution (+2): Even before the Embrace, your body was exceptionally resistant to poison, disease, exhaustion, and physical deprivation. Gain +1 HP and I rolls made to muddle through.
+Perfect Balance (+2): Your sense of balance is extraordinary. Gain +2 on rolls to keep your footing, move across narrow or unstable surfaces, resist being knocked down, or perform physical actions where balance is the primary challenge.
+Lightning Reflexes (+3): Your reactions are exceptionally fast. Gain +1 to rolls involving sudden danger, avoiding ambushes, catching falling objects, reacting before an opponent, or taking action during the first moments of a crisis.
+Cowardly (-2): You are unusually vulnerable to fear, intimidation, and panic. You suffer −2 on rolls to resist fear, and when such a roll fails, you instinctively flee, freeze, submit, or seek immediate safety.
+Amnesiac (-2): Large parts of your mortal life are missing or fragmented. You cannot reliably recall important people, places, events, or obligations from before your Embrace, and rolls that depend on your personal history are impeded. The Storyteller may introduce forgotten relationships, enemies, crimes, or promises that your character does not recognize.
+Bad Liar (-2): You are visibly uncomfortable and unconvincing when stating something you believe to be false. Rolls to tell a direct lie are impeded. Evasion, omission, and misleading truths are unaffected.
+Night Blindness (-3): Your vision is exceptionally poor in dim light. Unless an area is brightly illuminated, visual rolls are impeded, and in near-total darkness you can perceive little beyond vague shapes and movement.
+Ugly (-2): Your appearance is notably unpleasant by prevailing standards. Rolls relying on physical attractiveness or making a favorable first impression are impeded. This does not affect intimidation and may occasionally make you seem more threatening or memorable.
+Chronic Pain (-2): You suffer persistent pain that the Embrace did not cure. During physically or mentally demanding scenes, the Storyteller may impede one relevant roll unless you have recently fed from someone having appropriate medication in their bloodstream.
+Innumerate (-2): You struggle severely with numbers, quantities, and arithmetic. Rolls involving accounts, prices, measurements, schedules, probabilities, maps with scales, or numerical records are impeded, and complex calculations require assistance.
+Severe Allergy (-2): You retain a dangerous allergy from mortal life. Exposure to a common trigger—such as nuts, latex, insect venom, or a particular medication—causes serious impairment and may incapacitate you until the reaction passes or is treated.
+Dyslexia (-2): You have severe difficulty reading quickly and accurately. Rolls involving written instructions, records, research, codes, or time-sensitive reading are impeded, though spoken information and general intelligence are unaffected
+Severe Motion Sickness (-1): You become disoriented and nauseated in moving vehicles, boats, aircraft, elevators, or similar environments. Relevant rolls are impeded during travel and for a short time afterward, especially when reading, aiming, or concentrating.
+Paranoid (-2): You habitually perceive hidden threats, betrayal, and hostile intent. Rolls to accurately judge whether someone is trustworthy are impeded, and under stress the Storyteller may require you to treat an ambiguous person or event as dangerous until given convincing evidence otherwise.
+Dissociative Episodes (-2): Under severe stress, you may become detached from your surroundings, emotions, or sense of self. Relevant awareness, memory, and social rolls are impeded until the episode passes or something forcefully grounds you.
+Depressive Episodes (-2): You periodically fall into profound hopelessness, numbness, and loss of motivation. During an episode, rolls requiring initiative, sustained effort, or belief that your actions can improve the situation are impeded.
+Manic Episodes (-2): You periodically experience extreme energy, confidence, impulsivity, and reduced judgment. During an episode, rolls to resist risky opportunities, reckless escalation, or abandoning a plan for a more exciting course are impeded.
+Psychotic Episodes (-3): Under severe stress, you may experience hallucinations, delusions, or a profound break from shared reality. During an episode, rolls to correctly interpret events, distinguish real threats from imagined ones, or follow complex plans are impeded.
+Selective Mutism (-2): In particular social situations—often involving authority, unfamiliar groups, confrontation, or intense scrutiny—you become unable to speak despite being physically capable of doing so. During such episodes, verbal social actions are impossible, though you may communicate through writing, gesture, or supernatural means.
+Panic Disorder (-2): Under intense stress, confinement, pursuit, or perceived loss of control, you may suffer a sudden panic attack. During an attack, rolls requiring concentration, steady coordination, or calm social interaction are impeded until you escape the trigger or regain control.
+Post-Traumatic Stress (-2): Choose a category of trigger connected to a past trauma, such as fire, captivity, medical procedures, military violence, or drowning. When confronted with a close reminder, rolls to remain composed, think clearly, or act against the trigger are impeded until you regain control.
+Delusional Belief (-2): You hold one fixed false belief that resists ordinary evidence—for example, that a particular organization controls your thoughts, that you are being replaced by an impostor, or that certain coincidences are directed messages. When the belief becomes relevant, rolls to interpret events objectively are impeded.
+Vampire Traits
+Folkloric Bane (-1): choose one each time you take this trait:
+* Weakness to garlic
+* Willpower roll to enter homes uninvited
+* Hearing ringing bells or crowing of a rooster cause 1 HP damage
+* Willpower roll to cross running water
+* weakness to salt
+* no mirror reflection 
+* Your shadow is uncanny: moves too late, wrong directions
+
+
+Morph (+2): You can change your timeless appearance to adapt to the times & fashions. You can spend 2 Blood per change that is consistent with some passage of time, such as: growing out your hair, retaining a tattoo or piercings done to your flesh instead of letting your vampiric blood “heal” them. The change cannot be something that would take a mortal more than 1 year to achieve. You can spend the same amount to revert each change. The changes must be applied and reverted during daysleep.
+
+
+Prone to Rage (-2): you suffer a -2 to resist Rage Frenzy
+
+
+Archaic (-3): You cannot competently use modern technology. Computers, smartphones, elevators, cars, electronic security systems, online services, and similar tools require assistance or a difficult roll even for routine tasks; complex technical actions are effectively impossible without training.
+
+
+Ravenous (-3): feeding without killing always requires a willpower roll
+
+
+Selective Taste (-1 to -5): you only feed on a specific type of mortal. An example for -1 is 20-30 year old males, and a -5 example is pregnant women. Feeding on anything else costs 1 to 5 willpower, depending on how close it is to the desired prey.
+
+
+Territorial (-2): every encroachment on your territory or property either triggers a Rage Frenzy, or you pay 2 Willpower
+
+
+Stigmata (-1): You begin to bleed from your eyes when you reach Blood -4.
+
+
+Corpse-Like (-2): Your appearance feels wrong and dead. Rolls relying on physical attractiveness or making a favorable first impression are impeded. This does not automatically help intimidation and may occasionally make you seem more memorable.
+Iron Gullet (+2): You can feed from cold blood, rancid blood, and fractionated plasma.
+
+
+Dead Stillness (+1): You can remain easily perfectly motionless blinking or shifting your weight for any length of time. Casual observers mistake you for a corpse, statue, or sleeping body even when they inspect you.
+
+
+Scent Hound (+2): You can smell fresh blood from several rooms away and distinguish individuals by the scent of their blood. Strong odors, sealed containers, or heavy rain may obscure the trail.
+
+
+Infatuation (-1): You are easily emotionally bonded to mortals, caring about them deeply.
+
+
+Painful Bite (-2): you Kiss doesn’t work - mortals experience only pain when you bite into them, but you can still close the wounds afterwards.
+Skill Trees
+Skills are delimited from skill trees by indentation, separated from one another by white space.
+
+
+When a skill "branches from" another, that means the original skill's points are added to the new skill, only at the level of branching.
+So: if Skill A has 3 dots, Skill B which branches from [Skill A 2 dots] has 1 dot - then in total, practical Skill B has 3 dots: 2 from A + 1 from B, the same as if Skill A had 2 dots.
+If Skill A has 2 dots, Skill B which branches from [Skill A 2 dots] has 4 dots, and Skill C which branches from [Skill B 2 dots] has 1 dot - then practical Skill C has 2+2+1 = 5 dots. Can you 
+
+
+The goal is to make a skill tree/graph that is intuitive and simple for players.
+Dots in skill could be like empty circles that can be colored in (representing invested XP) - thus the number of dots from the top of the page to the skill name intuitively tells the onlooker how many dots - by counting the filled circles/dots in the path.
+
+
+The cost in XP is equal to the desired actual level in the skill - so first level costs 1 XP, 2 costs 2. To get to Finance 4, for example, we pay 1 to get Basic Analytical to 1, then 2 to raise Basic Analytical to 2, then 3 to get Finance first dot (thus Finance level: 3), then 4 to get Finance second dot (Finance level: 4).
+
+
+Scheming:
+  Basic Analytical:
+    description: Inferring secrets, Planning ambushes, Investigating crime scenes.
+    Dots: up to 2
+
+
+  Finance:
+    Branches from: [Basic Analytical 2 dots]
+    description: Manage money, embezzle, launder, follow money trails
+    Dots: up to 5
+
+
+  Logistics:
+    Branches from: [Basic Analytical 2 dots]
+    description: supplying, smuggling, organizing
+    Dots: up to 5
+
+
+  Investigation:
+    Branches from: [Basic Analytical 2 dots]
+    description: Interrogate, pick up clues, scan vast text sources
+    Dots: up to 5
+
+
+  Social Academics:
+    Branches from: [Basic Analytical 2 dots]
+    description: History, Archeology, Sociology, Anthropology, Philosophy, Literature. Impress others I guess
+    Dots: up to 5
+
+
+  Mortal Politics:
+    Branches from: [Basic Analytical 2 dots]
+    description: Organize large institutions, Find out who holds sway and makes decisions in mortal society, understand and write mortal laws, systems, and dynastic power
+    Dots: up to 5
+
+
+  Undead Politics:
+    Branches from: [Mortal Politics 3 dots]
+    description: Find out who holds sway and makes decisions in vampiric society
+    Dots: up to 2
+
+
+
+
+Manipulation:
+  Basic Manipulation:
+    description: Push people’s buttons, convince, convert
+    Dots: up to 2
+
+
+  Insight:
+    description: See through lies, uncover motives and emotions
+    Dots: up to 5
+
+
+  Court Etiquette (Vampiric):
+    Branches from: [Basic Manipulation 2 dots]
+    description: Rules of Vampiric society, traditions, proper forms of address
+    Dots: up to 5
+
+
+  Boon Economy:
+    Branches from: [Court Etiquette 3 dots]
+    description: Understand how Boons and Debts amongst Vampires work, and use them to your advantage
+    Dots: up to 2
+
+
+  Social Chameleon:
+    Branches from: [Basic Manipulation 2 dots]
+    description: Ability to integrate in mortal society and circles, understand and perform mortal culture.
+    Dots: 5
+
+
+  Mortal Society Status:
+    Branches from: [Social Chameleon 1 dot]
+    description: Learn to rise in Status and recognition, and to wield them over mortals
+    Dots: up to 2
+
+
+  Deception:
+    Branches from: [Basic Manipulation 2 dots]
+    description: Learn to lie and deceive
+    Dots: up to 5
+  
+  Persuasion:
+    Branches from: [Basic Manipulation 2 dots]
+    description: Learn to convince and corrupt
+    Dots: up to 5
+
+
+  Intimidation:
+    Branches from: [Basic Manipulation 2 dots]
+    description: Learn to frighten and strong-arm your lessers
+    Dots: up to 5
+
+
+Thrashing:
+  Brawl:
+    description: up-close and personal, Battle-awareness, willingness to suffer and impose pain
+    Dots: up to 2
+
+
+  Martial Arts:
+    Branches from: [Brawl 2 dot]
+    description: Fighting face-to-face using fists, kicks, chokeholds etc.
+    Dots: up to 5
+
+
+  Swordmanship:
+    Branches from: [Brawl 2 dot]
+    description: Fighting using bladed weapons such as swords, scimitars, rapiers. katanas
+    Dots: up to 5
+
+
+  Bludgeoning:
+    Branches from: [Brawl 2 dots]
+    description: You appreciate blunt-force trauma. You are adept at using maces, baseball bats, rocks, and if you can manage - throwing whole cars at opponents.
+    Dots: up to 5
+
+
+  Guns:
+    description: You can shoot, clean, reload guns. You know how to handle them.
+    Dots: up to 5
+
+
+  Projectiles :
+    description: You can shoot bows, throw knives, and use other long-range weapons.
+    Dots: up to 5
+    
+  Marksmanship:
+    Branches from: [Guns 5 dots or Projectiles 5 dots]
+    description: You can shoot long range, picking up targets as a sniper
+    Dots: up to 2
+
+
+  Dodge:
+    description: Dodge physical attacks. You can roll if you are actively dodging, or take half rounded-down as the difficulty to hit you.
+    Dots: up to 5
+
+
+  Athletics:
+    description: You can jump, climb, crawl, and stay upright
+    Dots: up to 5
+
+
+Resourcefulness:
+  Awareness:
+    Description: notice threats, recognize surroundings
+    Dots: up to 5
+
+
+  Stealth:
+    description: You can hide, sneak, skulk, notice gazes
+    Dots: up to 5
+
+
+  Larceny:
+    Branches from: [Stealth 2 dot]
+    description: you can picklock, pickpocket, carjack, break & enter
+    Dots: up to 5
+
+
+  Streetwise:
+    Branches from: [Awareness 2 dot]
+    description: you can get drugs, understand gang territory, notice weird looks, survive in urban areas
+    Dots: up to 5
+
+
+  Survival:
+    Branches from: [Awareness 2 dot]
+    description: you understand terrain, navigation, can find sanctuary from the sun, and generally survive in non-urban areas
+    Dots: up to 5
+
+
+  Technology:
+    description: you understand the common technology of your time not as a theoretical concept, but as something to use and manipulate
+    Dots: up to 5
+
+
+  Hacking:
+    Branches from: [Technology 2 dot]
+    description: uniquely amongst Vampires, you understand operating systems, cryptography and communication well enough to abuse, infiltrate, and distort.
+    Dots: up to 5
+
+
+  Medicine (M):
+    description: you understand the mortal body, disease symptoms, treatments
+    Dots: up to 7
+
+
+  Medical Forensics:
+    Branches from: [Medicine 2 dot]
+    description: you understand evidence collection methods, DNA, how to make something look like a "natural" death.
+    Dots: up to 5
+
+
+  Poisons:
+    Branches from: [Medicine 2 dot]
+    description: you understand dosages, poisons, drugs ODs.
+    Dots: up to 5
+
+
+
+
+Experimentation:
+  Curiosity:
+    description: you have a morbid interest in pushing the limits of what current society can do, and is willing to do.
+    dots: up to 2
+
+
+  Science:
+    Branches from: [Curiosity 2 dot]
+    description: You understand both the scientific method and current mainstream science.
+    dots: up to 5
+
+
+  Biology:
+    Branches from: [Science 2 dot]
+    description: You understand biological processes in mortals, animals, bacteria, viruses.
+    dots: up to 5
+
+
+  Chemistry:
+    Branches from: [Science 2 dot]
+    description: You understand compounds, can create chemical reactions, acids, explosives, 
+    dots: up to 5
+
+
+  Weird Science:
+    Branches from: [Biology 2 dot]
+    description: You are willing to experiment on unwilling mortals, can create mutants, targeted viruses. Uses of Weird Science are often specific, unstable, require exotic ingredients, and can be unreproducible.
+    dots: up to 5.
+
+
+  Alchemy:
+    Branches from: [Chemistry 2 dot]
+    description: You can create new materials, potions and elixirs which grant limited-time effects. Uses of Alchemy are often specific, unstable, require exotic ingredients, and can be unreproducible.
+    dots: up to 5
+
+
+  Occult:
+    Branches from: [Curiosity 2 dots]
+    description: You can research forbidden lore, secret weaknesses, and rituals.
+    dots: up to 5
+
+
+  Demonology:
+    Branches from: [Occult 3 dots]
+    description: You can research demons and means of summoning them
+    dots: up to 5
+
+
+
+
+Custom Skills: Dance, Chess, Agriculture…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Discipline Trees
+Max dots (or level) in each Discipline is 5; 
+Each dot increase allows acquiring a power from a level equal or smaller than Discipline dots.
+The cost in XP is equal to the desired actual level in the skill - so the first level costs 1 XP, the second level/dot costs 2 XP.
+
+
+Auspex https://vtm.paradoxwikis.com/images/9/93/Auspex_symbol.png
+  Level 1:
+    Enhance Senses: add Auspex level to sensory input: seeing, hearing, etc. 
+    Sense The Unseen: roll Auspex to find hidden and invisible
+    Impulse: Ask 1 question per scene about: danger, emotions, specific secrets
+  Level 2:
+    Read Aura: pay 1 Blood, roll Auspex, margin is # of questions you ask about target creature, or skim the surface thoughts of people nearby 
+    Spirit’s Touch: pay 1 Blood, roll Auspex, margin is # of questions you ask about target item or building 
+    Anticipation: pay 1 Blood, add Auspex to rolls made to dodge/defend against attacks
+  Level 3:
+    Telepathy: pay 1 Blood, talk to 1 target you know for a scene, if target is unwilling roll Auspex, if target is far roll Auspex. Lasts for a scene.
+    Clairvoyance: pay 1 Blood, roll Auspex, margin is # of questions you ask about what happened during the last day in a large area
+  Level 4:
+    Tempt Fate: pay 3 Blood, cause another to reroll a roll. Once per night.
+    Scry: requires Telepathy; when using Telepathy you can roll Auspex to see if you can avoid the target sensing you. When Telepathy is active, you can experience the target’s senses in real time.
+
+
+Animalism https://vtm.paradoxwikis.com/images/5/57/Animalism_symbol.png
+  Level 1:
+    Ghoul Animal: pay 1 Blood to ghoul an animal to serve you. Up to Animalism amount simultaneously. Wants to serve like a loyal dog, but has the intelligence no greater than an average dog.
+    Mark Territory: pay 1 Blood in place you own to impose difficulty on rivals in it
+    Confront the Beast: pay 1 Blood, roll Animalism, relax or enrage another Vampire’s Beast
+  Level 2:
+    Borrowed Wisdom: drinking from animal gives +3 to +5 in things it is good at until next feed
+    Abomination: requires Ghoul Animal; pay 1 Blood to make monstrous changes to a ghouled Animal, such as enlarging a wolf to horse size, adding max HP, or giving a cat horns. Max number of changes is Animalism level.
+    Unliving Hive: A swarm of small animals burrow into your dead flesh, feeding off of miniscule amounts of your Vitae. They can be wasps, flies, roaches, etc. Add Animalism level to intimidation rolls, and half your Animalism level rounded down to close-range attacks.
+      Level 3:
+    The Wild Hunt: pay 1 Blood, enrage all animals to seek and attack a target, your Animalism is what they use to roll.
+    Wild Whispers: pay 1 Blood,  communicate with any animal fully for a scene.
+    Summon Animal: summon a specific type of animal, or even specify characteristics (“a white Persian cat”). Roll Animalism if very specific, or very uncommon in area
+  Level 5:
+    Wild Escape: when reduced to 0 HP, you can instantly move your consciousness to a ghouled animal nearby instead of entering torpor. If you can later get a drop of your original blood, you can reform your old body. Otherwise, you are stuck in the animal.
+
+
+
+
+Celerity https://vtm.paradoxwikis.com/images/2/2a/Celerity_symbol.png
+  Level 1:
+   Speed: add Celerity level to rolls involving speed, such as running, slashing, and dodging. Add half Celerity level rounded down to rolls of precision, such as lock picking and sharpshooting.
+  Level 2:
+    The Still World: pay 1 Blood, move super-fast in your turn: walk on water, on vertical walls, between the blades of a spinning jet engine.
+  Level 4:
+    Hover: the vampire can hover slightly above ground
+    Whirlwind: pay 2 Blood, You can do 2 actions in a turn, without penalties for doing so.
+  Level 5:
+    Unholy Flight: pay 1 Blood, the vampire can fly at running speed for a scene
+   
+Dominate https://vtm.paradoxwikis.com/images/1/1b/Dominate_symbol.png
+  Level 1:
+    Draw On Instinct: cause a mortal to Flee, or Fight
+    Cloud Mind: cause a mortal to forget the last 5 minutes and the next 2 minutes
+  Level 2:
+    Mesmerize: pay 1 Blood, target a mortal, roll Dominate if mortal resists, cause a mortal to do a simple task immediately for about a scene. The affected Mortal can’t reveal information, isn’t very smart or creative, and can’t handle complex conditions. Task can’t be suicidal. Mortals remember doing the task, but not why.
+    Modify Memory: pay 1 Blood, target a mortal, roll Dominate, alter memories. cannot extract information.
+  Level 3:
+    Implant Trigger: pay 1 Blood, allow Mesmerize, Cloud Memory, and Modify Memory to have a trigger.
+    Terminal Decree:  requires Mesmerize; Allows suicidal tasks
+  Level 4:
+    Dominate Your Kind: allows using Dominate powers on vampires. Very hard and very risky.
+    Mass Dominate: you can target more than 1 mortal with Dominate, paying 1 Blood per extra mortal, even when using free Dominate powers. Max mortals targeted equal to Dominate level.
+
+
+Fortitude https://vtm.paradoxwikis.com/images/0/06/Fortitude_symbol.png
+  Level 1:
+    Rapid Healing: each 1 Blood you pay allows healing of 2 HP instead of 1
+    Toughness: add 2 max HP per level of Fortitude 
+  Level 2:
+    Prowess From Pain: each HP damage you have, up to Fortitude level, can be added to physical attacks or other stressed efforts
+    Draught of Endurance: your ghouls add your Fortitude level to their HP, a vampire drinking at least 1 of your Blood gets your Fortitude powers for the night
+  Level 3:
+    Flesh of Marble: pay 3 Blood, take no damage for 1 turn
+  Level 4:
+    Last Stand: requires Flesh of Marble; If reduced to 0 HP,  Flesh of Marble activates automatically if Blood is at -7 or higher. you pay Blood as normal.
+  Level 5:
+    Endurance: requires Flesh of Marble; Flesh of Marble costs 2 Blood
+
+
+Nightmare https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO-JFf3pGHgUQGHNdnfxreloZikUsSBuTmhoaKHX1Q7w&s (or in file)
+  Level 1:
+    Haunt Dream: appear in mortal’s dreams, give them messages. Can be activated during day and from torpor.
+    Lullaby: pay 1 Blood, roll Nightmare to put mortals to sleep
+    It Was All a Bad Dream: cause all mortals in a scene to think that whatever scary shit they just saw was, in fact, a dream, or has some plausible, mundane & rational explanation.
+    Melpominee: You can cast your voice to sound as if coming from a point you can see.
+  Level 2:
+    Dread Gaze: add Nightmare to Intimidation rolls, create scary illusions of your appearance. A +3 margin can paralyze a target for a turn.
+    Haunting Ground: activate to cause mortals to subconsciously avoid an area when you are there
+  Level 3:
+    Paranoia:  requires Haunt Dream; pay 1 Blood, unnerve a target you talk to, causing up to -4 for the night 
+    Illusion: pay 1 Blood, create a small (up to a chair) motionless illusion that affects one of the five senses for a short moment. Each additional sense affected, motion, or size increase - cost 1 more Blood.
+  Level 4:
+    Summon Nightmare: pay 1 Blood, as a turn attack a target with its worst fear or nightmare, rolling Nightmare, inflicting Willpower damage.
+
+
+Obfuscate https://vtm.paradoxwikis.com/images/a/a8/Obfuscate_symbol.png
+  Level 1:
+    Fade: A low-level hypnotism makes all mortals avert their eyes or otherwise ignore you, seeing you as a forgettable nobody.
+    Cloak of Shadows: standing still or moving obscured or against a backdrop allows you to be totally ignored by mortals, they see you as an object, a piece of vegetation, or wall.
+  Level 2:
+    Vanish: pay 1 Blood, be completely invisible for a scene.
+    Disguise: pay 1 Blood, you can alter your appearance to appear as another person. Copying someone exactly is much harder.
+    Labyrinth: pay 1 Blood, cause mortals to get confused and lost around you, having difficulties navigating. For a scene or pay 1 extra Blood for it to last during the whole day.
+    Silent Hunter: when using Fade, Cloak of Shadows, or Vanish - the vampire can also completely silence sounds coming from themselves, such as creaking floors and firing a gun.
+  Level 3:
+    Ambusher: pay 1 Blood, make your Obfuscate powers work on other Vampires for a scene. Those with Auspex can roll against your Obfuscate.
+    Cloak the Gathering: your Obfuscate powers can be extended to other vampires, if they are willing to work with you, and stay close to you. Pay 1 extra Blood per vampire per scene.
+
+
+Potence https://vtm.paradoxwikis.com/images/a/a8/Potence_symbol.png
+  Level 1:
+    Vigor: add Potence to rolls involving strength and muscles such as swinging a sword, jumping, bending metal
+  Level 2:
+    Shockwave: pay 1 Blood, your attacks count against all who are in close-range to you, instead of choosing 1 enemy.
+    Bloody Strangle: pay 1 Blood while grappling a target, that target cannot use supernatural powers as long as you hold it.
+    Brutal Feed: can drink an entire mortal in 1 turn.
+
+
+Presence https://vtm.paradoxwikis.com/images/0/02/Presence_symbol.png
+  Level 1:
+    Awe: add Presence to Social rolls
+    Summon: call a mortal you know to you. They will do all in their power to reach you.
+  Level 2:
+    Midnight Command: pay 1 Blood, add your Presence to rolls made by your ghouls and mortals you lead for a scene.
+    Hypnotize: pay 1 Blood, roll Presence, paralyze a group of mortals or a vampire for as long as you keep using your turns on this power.
+    Affect Mood: Choose an emotion and project it to all mortals in the scene.
+  Level 3:
+    Sway: pay 2 Blood, cause a great crowd of mortals to absolutely believe in a plausible cause: they will endanger themselves to break into a building, for example, believing something very noble requires this. Lasts a scene, they can be chaotic.
+  Level 4:
+    Art Necro: create a piece of art which can project one of your presence powers on viewers.
+
+
+Protean https://vtm.paradoxwikis.com/images/8/8a/Protean_symbol.png
+  Level 1:
+    Animorph: pay 1 Blood, assume the shape of a specific animal, which can be as small as a mouse or as big as a tiger, for a scene. Choose 1 animal each time you take this power. Transforming takes a turn.
+    Feral Weapons: extend fangs, claws, add your Protean to close-range physical attacks
+    Bone armor: pay 1 or more Blood, get 2 extra HP per Blood for a scene.
+  Level 2:
+    Bone Bullets: you can shoot teeth, bones spurs, nails as natural weapons.
+    Separate Limb: pay 1 Blood, Separate a limb and grant it independence. It serves and understands you, but only has senses it has physically (a detached hand has touch, but not sight or sound). Return the limb to you when you want. Up to Protean amount of limbs simultaneously. Lost limbs can be healed.
+  Level 3:
+    Earth Meld: pay 1 Blood, sink and become one with the soil. Leave when you wish. You cannot travel in this state.
+    Mist Form: pay 1 Blood, spend two turns to transform, become a cloud of mist, perceivable to the eye but untouchable by anything save fire, sunlight. Returning to physical form costs 1 Blood. Cannot spend more than two scenes as mist.
+    Internal Shift: you can move your internal organs at-will, for example moving your heart sideways to avoid impaling but a wooden stake, make your heart seem pounding, or terrify onlookers.
+ Level 4:
+    Fleshcraft: pay 2 Blood, take a scene, transform your body: rotate your head 180°, move your hands to your belly, even attaching organs from other creatures, like having extra hands or spider eyes. Note that sensory organs offer no sensory input, but muscle, bone, chitin etc. do. wings require a giant bird, and flying with them is very hard. Up to Protean level changes simultaneously.
+    
+Arrete https://vtm.paradoxwikis.com/images/6/6e/Alchemy_symbol.png
+  Level 1:
+    Calculating: add your Arrete to mental actions requiring intelligence, typically in the Scheming Skill Tree.
+    Perfect Recall: pay 1 Blood, you can retroactively remember a detail from something you have seen, heard, or read.
+  Level 2:
+    Borrowed Knowledge: When feeding from a victim, you gain a bonus to areas of expertise they had, such as banking, journalism, cooking meth, etc. the bonus is between 1 and 3 dice, until next feeding.
+    The Common Denominator: pay 1 Blood, you can learn any human language for a scene. By paying 2 Blood you can decipher any encoded message you can read.
+  Level 3:
+    Perfectionism: you can use willpower to reroll up to 5 dice.
+
+
+Necromancy (image in file )
+  Level 1:
+    Touch of Oblivion: pay 1 Blood, you can cripple and age a body part with a single touch, rolling Necromancy and relevant skills to touch an unwilling creature.
+    Ashes to Ashes: you turn a body to fine ash, eliminating other blood and gore.
+    Kill the Vibe: you can roll Mortifex to cancel Presence and Nightmare powers.
+  Level 2:
+    Raise Corpse: pay 1 Blood to raise a zombie or skeleton to serve you, using your Necromancy to act. Lasts for a night. Can have up to Necromancy level simultaneously.
+    Summon Wraith: pay 1 Blood to summon a ghost to you. You need to convince them to help you. You can summon someone specific and ask questions, but it is under no obligation to answer.  It can spy & frighten, but not move anything materially except a weak wind and sound.
+    Ossuary Explosion: pay 1 Blood, cause a body to explode causing Necromancy level damage to those nearby, no roll necessary.
+  Level 3:
+    Zombie Legion: Can have Necromancy level simultaneous undead who do not disappear at the end of the night as long as they aren’t in the sun.
+
+
+Druidic (image in file)
+  Level 1:
+    Frost Touch: The vampire can chill objects, freeze areas of water, or inflict frostbite with a touch.
+    Disband Beasts: can roll Druidic to counter Animalism powers
+  Level 2:
+    Upend the Course: pay 1 Blood, somewhat affect the weather of a city area. You can summon clouds, rain, or snow for the night.
+    Wrath of Zeus: pay 1 Blood, direct lightning to strike a target, using Druidic to roll
+    Root Grasp: pay 1 Blood, you can command roots, vines, branches, or other available living plants to move, including entangle and immobilize targets using Druidic to roll, lasts a scene.
+  Level 3:
+    Sweet Sap: once per night you can drink up to 4 Blood from trees.
+ 
+Blood Sorcery https://vtm.paradoxwikis.com/images/8/89/Blood_Sorcery_symbol.png
+  Level 1:
+    Bend Blood: You can control spilled blood, making it flow, or float in the air.
+    A Taste for Blood: By tasting blood, the vampire can detect many facts about the target, including: age, place of birth, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled.
+   Level 2:
+    Bend Veins: requires Bend Blood; you can now use Bend Blood even on blood not spilled, residing in the body of another, rolling Blood Sorcery. Causing damage is very difficult, but slowing movement, or causing a vampire to throw up blood is easy.
+  Level 3:
+    Scorpion’s Touch: You turn your spilled vitae corrosive, melting whatever it touches. Paying 1 Blood is enough to melt a hole through a regular door.
+ Level 5:
+    Cauldron of Blood: pay 2 Blood, You boil an enemy’s blood in their veins, causing Blood Sorcery amount damage in a turn to an enemy you can target, without rolling.
+
+
+Shadow Sorcery https://vtm.paradoxwikis.com/images/4/40/Oblivion_symbol.png
+  Level 1:
+    Dim the Lights: You cause lights to dim or flicker, subject to your control.
+    Shadow Perspective: You can look into a shadow and see from another shadow nearby.
+  Level 2:
+    Shadow Step: pay 1 Blood, You can slip into a shadow, and re-emerge into another shadow that is close by.
+    Grab the Effigy: pay 1 Blood, for a scene you can beat, grapple, or otherwise use another’s shadow as if it was the target. By grabbing the shadow someone casts, the vampire can hold them, or cause them damage. Roll Shadow Sorcery, adding Brawl if relevant.
+  Level 3:
+    Shadow Step Mastery: using Shadow Step only costs 1 Blood and lasts for the scene
+    Shadow Avatar: pay 3 Blood, cause your shadow to materialize and act for a scene
+Clans
+Clans are optional. They have requirements and offer bonuses. You can qualify for 1 clan only.
+Ventrue https://vtm.paradoxwikis.com/thumb.php?f=Ventrue_symbol.png&width=1280
+Description: The self-styled rulers of vampire society, masters of control, who believe it is their birthright to lead. Venture typically Embrace mortals with greatness and potential.
+Recruitment: Generals, Lords, Gang Leaders
+Requirements: must have some level of the Vampire trait Selective Taste; must have the Dominate discipline.
+Bonus: Connected - you gain significant advantages to find useful vampires, advance your status
+Suggested Disciplines: Fortitude, Presence
+Dracul https://vtm.paradoxwikis.com/thumb.php?f=Tzimisce_symbol.png&width=1280
+Description: The main competitors of the Ventrue, this clan is fiercely stubborn. Draculs typically Embrace brutal social darwinists. They are known to ruin their potential Embracee’s lives, to “test” whether they are cut out for the Clan.
+Recruitment: Crusaders, Fierce Nationalists, Merchant Princes
+Requirements: must have one of the Vampire traits: Territorial or Archaic
+Bonus: Vengeful - you can Blood Surge and pay only half when pursuing vengeance, against one target at a time, once per scene
+Suggested Disciplines: Dominate, Protean, Potence
+Toreador https://vtm.paradoxwikis.com/thumb.php?f=Toreador_symbol.png&width=1280
+Description: Toreador are connoisseurs of ascendant beauty and emotion, drawn irresistibly to the artistic and the sublime. Toreador typically Embrace out of passion, or to preserve a beautiful thing.
+Recruitment: Artists, Diplomats, Charismatic Clergy
+Requirements: must have one of these traits: Infatuation, Rare Specialist , World-Renowned Specialist; Must have the Presence Discipline
+Bonus: Gentle Touch - you anger targets of Presence, Auspex, and Dominate targets less if and when they learn they have been influenced; You gain +2 on rolls to blood-bond others.
+Suggested Disciplines: Auspex, Celerity
+Nosferatu https://vtm.paradoxwikis.com/thumb.php?f=Nosferatu_symbol.png&width=1280
+Description: Nosferatu are the hidden eyes and ears of the vampire world, cursed with a grotesque appearance that separates them from mortal society. Nosferatu typically Embrace the vain, the dedicated, or the rejected.
+Recruitment: Spymasters, Assassins, Mercenaries
+Requirements: must have either the Ugly mortal trait or the Vampire trait Corpse-Like; Must have the Obfuscate Discipline
+Bonus: Cryptomania - you heal Willpower when finding hidden information or things due to a focused unnerving curiosity. You gain an advantage to convince Vampires to share information via trade.
+Suggested Disciplines: Nightmare, Shadow Sorcery, Animalism
+Brujah https://vtm.paradoxwikis.com/thumb.php?f=Brujah_symbol.png&width=1280
+Description: The philosophers, fighters, rebels, gladiators. Brujah typically Embrace the brave. The Clan has a history for great thinkers, generals, and revolutionaries.
+Recruitment: Anarchists, Soldiers, Disloyal Knights
+Requirements: must either the Vampire trait Prone to Rage; Must have either the Potence or Celerity Discipline
+Bonus: Freedom - heals Willpower twice as fast
+Suggested Disciplines: Presence, Potence, Celerity
+Gangrel https://vtm.paradoxwikis.com/thumb.php?f=Gangrel_symbol.png&width=1280
+Description: These wild vampires are described as closest to their Beast, but they maintain they are simply best at interacting with it. Gangrel typically Embrace survivors, explorers, and those who defy prescribed destiny.
+Recruitment: Survivalists, Conquistadors, Raiders
+Requirements: must have the Vampire trait Ravenous; Must have either the Animalism or Protean Discipline
+Bonus: Can stay awake an hour after dawn, wake up half an hour before sunset.
+Suggested Disciplines: Animalism, Protean, Fortitude
+Malkavian https://vtm.paradoxwikis.com/thumb.php?f=Malkavian_symbol.png&width=1280
+Description: Afflicted by a supernatural madness, the clan of seers and oracles are the most heterogeneous. They are Embraced from academics, psychologists, prophets, and other strange geniuses.
+Recruitment: Odd Scientists, Genius Detectives, Shamans
+Requirements: must have at least one of the followin mortal traits (mental illnesses): Paranoid, Dissociative Episodes, Depressive Episodes, Manic Episodes, Psychotic Episodes, Panic Disorder, Post-Traumatic Stress, Delusional Belief. This can either be before the Embrace, or caused by it.
+Bonus: Prophetic - you can make a cryptic, vague, or riddle prophecy and have it be fulfilled. Only one prophecy can be active at a time, until fulfilled.
+Suggested Disciplines: Auspex, Nightmare, Arrete
+
+
+Tremere https://vtm.paradoxwikis.com/thumb.php?f=Tremere_symbol.png&width=1280
+Description: Mage who sought immortality. In their greed, they instigated a terrifying magical experiment, damning themselves to a hell of their own making.
+Recruitment: Occultists, Pagans, Academics
+
+
+Requirements: must have one of these traits: Infatuation, Rare Specialist , World-Renowned Specialist; Must have the Blood Sorcery Discipline
+Bonus: Ritual Magic - can find other Tremere to cast spells together, somewhat tolerated by other mages.
+Suggested Disciplines: Auspex, Arrete
+
+
+Hecata https://vtm.paradoxwikis.com/thumb.php?f=Hecata_symbol.png&width=1920
+Description: A weird incestous clan steeped in death, they practice the arts of necromancy. The clan tends to favour Embracing mortals either from their own mortal family or those with useful connections to other outside families.
+Recruitment: Bankers, Arms Dealers, Monks
+Requirements: must have the trait Painful Bite or Selective Mutism; Must have the Necromancy Discipline
+Bonus: Private - can spend 1 Willpower to automatically succeed against Insight, Aura Reading, or Dominate
+Suggested Fortitude, Potence
+All Vampires
+Powers:
+Blood Surge: pay 1 Blood get +1 to roll
+Blood Heal: pay 1 Blood heal 1 HP damage, max once per turn
+Blush of Life: pay 1 Blood, become warm, able to blush, able to hold food in stomach, for a scene
+Blood Bond: makes mortals ghouls, makes vampires supernaturally like you
+The Kiss: mortals experience ecstasy and relaxation when bitten, and you can close the bite wounds by licking them.
+
+
+Dangers:
+Sunlight & Fire cause damage
+When reaching 0 HP, Torpor for a while (can be days, for ancients - even years)
+Wood through heart - paralyzed
+
+
+General Rules:
+When the results of an action are uncertain, we roll. We either roll against a set difficulty, or an opposed roll - one dice pool vs another.
+
+
+We typically start from a base of 1 die, and add to it as relevant: skills, Disciplines, Blood Surges, other modifiers. 
+Finally, we have our number of dice, which are Vampire the Masquerade 10-sided dice.
+We roll and count successes. The margin can be positive (above the difficulty or opposed roll), which can have extra advantages, inflict extra damage etc, or negative (below the difficulty or opposed roll), which can have consequences.
+
+
+Struggle Rules
+Each side starts with their assets:
+1. Institutions
+2. Servants
+3. Objects
+4. Debts
+5. Haven
+6. Herd
+
+
+Assets range in dots from 1 to 5.
+
+
+Each turn, a player:
+Draws a card
+Can do 1 scheme action:
+1. Start a scheme
+2. Advance an existing scheme
+
+
+Can do 1 direct action:
+1. Bolster an asset
+2. Investigate rival
+3. Attack a rival asset with an existing asset
+4. Feed
+
+
+If the player has more than 3 cards, dispose.
+
+
+Schemes: 
+Schemes are represented as pieces of paper with either red tokens on them (create a new asset, reform an existing one) or cards on them (hostile schemes against rivals)
+
+
+Schemes to create or reform assets have a number of successful tasks required to create them, which can be assigned to different domains. For example: a vampire wants to create a “cult of the faithful”. They operate in an area where strains of evangelicals do congregate in this way. They want total control and devotion, and moderate size, roughly 6 families.
+
+
+The Storyteller and player agree that would count as a 2-dot asset, reflecting medium size and strong control. The player chooses to create it as an institution, since they want to use it for money and more down the road. The Storyteller requires 3 tasks, for 2-dots: 1 for recruitment, and 2 for incentive, dogma, or resources.
+
+
+The scheme is placed on the table. If it was a secret scheme (which would make it harder), it would have been placed face down. 
+
+
+Starting a scheme against a rival asset works similarly: the player describes the plan, the desired damage, and the Storyteller sets the number of tasks. As the scheme advances, cards in amounts equal to the damage desired are placed on the scheme. When the scheme is complete, all of the cards are placed under the asset - damaging it. Small schemes can be 1 card only.
+
+
+A Trap scheme is a secret scheme that when triggered, joins a battle like an asset would.
+
+
+Advancing a scheme: In the next turns, the player can spend turns defining tasks that would help his scheme, rolling vs difficulty, with success granting a red token on the scheme. Since 2 tasks are required, once 2 tokens are placed, the scheme becomes an asset. Other players can contribute to schemes.
+
+
+
+
+
+
+Direct Actions:
+Bolstering an asset gives some temporary advantage, such as extra weapons, a great cash flow, etc. The advantage lasts until the next roll that asset makes. To make a permanent improvement to an asset, start a scheme to reform it. Bolstering can be used to repair damage to an asset.
+
+
+Attacking a rival asset is the only way to destroy it. The attack can be Mental, Social, Physical, or a combination, and has to be exactly described. You attack using a primary asset, but can add in more assets, if relevant. Adding irrelevant assets gives diminishing returns.
+The defender can add assets, with the same limitations.
+
+
+Both sides sum up: Main asset dots + helping asset bonuses (which can be less than their dots) + amount of bolstering - amount of damage cards.
+
+
+Both sides roll, and the margin is inflicted as damage. If an asset attacked has as much damage as dots - it is destroyed. Other assets that participated in the battle get the rest of the damage, and may be destroyed as well.
+
+
+Investigating a rival allows a roll to reveal a hidden scheme.
+Card Events
+
+
+Clubs - matters of conflict, such as:
+rival vampire transgressed into another’s territory
+you find a lead to a rival’s herd
+a rival recently frenzied in the presence of others
+A mortal close to a vampire recently had a falling-out with them
+
+
+Hearts - matters of passion, such as:
+A festival, holiday, sports event bring lots of excited mortals
+A local movement is gaining momentum
+A capable mortal is available for recruitment
+
+
+Diamonds - matters of prudence, such as:
+a vampire needs something you can provide, like a safe haven or permission to feed, willing to do a small Boon for it
+Company went bankrupt, selling cheaply
+Local drug supply runs dry
+
+
+Spades - matters of whispers, such as:
+An ancient and valuable item is discovered hiding in plain sight, but not freely available
+Vampire hunters are searching for targets
+A witch is active
+you find an old Kindred Boon debt, if you can navigate Vampire politics subtly enough to purchase it
+
+
+2,3,4 - moderate opportunity
+5,6,7 - great opportunity
+8,9,10 - a rare opportunity
+Jack - less risk than usual
+Queen - Can add another card, even another player’s, for a great bonus
+King - can add a dot to an asset
+Ace - can interrupt rival’s action
