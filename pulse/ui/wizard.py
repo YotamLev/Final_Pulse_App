@@ -899,9 +899,12 @@ def _select_disciplines(char: dict) -> None:
             if already:
                 if st.button(f"✓ {disc_name}", key=f"unsel_disc_{disc_name}", type="secondary", help=desc):
                     unlocked.remove(disc_name)
-                    # Remove level & powers too
                     char["discipline_levels"].pop(disc_name, None)
                     char["discipline_powers"].pop(disc_name, None)
+                    char["xp_log"] = [
+                        e for e in char.get("xp_log", [])
+                        if not e["description"].startswith(f"{disc_name} level ")
+                    ]
                     st.rerun()
             else:
                 disabled = remaining_slots == 0
@@ -924,6 +927,11 @@ def _spend_disc_xp(char: dict) -> None:
         st.error(f"Over budget by {-remaining} XP!")
 
     if st.button("← Change Discipline Selection", key="change_disc_sel"):
+        disc_names = list(char.get("unlocked_disciplines", []))
+        char["xp_log"] = [
+            e for e in char.get("xp_log", [])
+            if not any(e["description"].startswith(f"{d} level ") for d in disc_names)
+        ]
         char["unlocked_disciplines"] = []
         char["discipline_levels"] = {}
         char["discipline_powers"] = {}
