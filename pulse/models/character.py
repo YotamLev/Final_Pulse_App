@@ -22,25 +22,23 @@ def default_character() -> dict:
         "wizard_stage": 1,
         "wizard_complete": False,
 
-        # ── Stage 1: Mortal ──────────────────────────────────────────────────
+        # ── Stage 1: Origins & Traits ────────────────────────────────────────
         "name": "",
         "tagline": "",          # one-line descriptor, e.g. "Former NSA analyst"
         "memories": "",         # free-form mortal + vampire backstory
         "mortal_traits": [],    # list of trait dicts (see traits.py)
-
-        # ── Stage 2: Vampire ─────────────────────────────────────────────────
         "vampire_traits": [],
 
-        # ── Stage 3: Skills ──────────────────────────────────────────────────
+        # ── Stage 2: Skills ───────────────────────────────────────────────────
         "skill_dots": {},        # {skill_name: own_dots}
         "custom_skills": [],     # [{name, max_dots}]
 
-        # ── Stage 4: Disciplines ─────────────────────────────────────────────
+        # ── Stage 3: Disciplines ─────────────────────────────────────────────
         "unlocked_disciplines": [],    # up to 3 discipline names
         "discipline_levels": {},       # {disc_name: level (0-5)}
         "discipline_powers": {},       # {disc_name: [power_name, ...]}
 
-        # ── Stage 5: Clan ────────────────────────────────────────────────────
+        # ── Stage 4: Clan ─────────────────────────────────────────────────────
         "clan": None,
 
         # ── Character sheet trackers ─────────────────────────────────────────
@@ -153,4 +151,10 @@ def char_from_dict(data: dict) -> dict:
         merged = "\n\n".join(p for p in old_parts if p)
         if merged:
             base["memories"] = merged
+    # Migrate old 5-stage numbering (2=Vampire,3=Skills,4=Disciplines,5=Clan)
+    # to new 4-stage numbering (1=Origins&Traits,2=Skills,3=Disciplines,4=Clan)
+    old_stage_map = {2: 1, 3: 2, 4: 3, 5: 4}
+    saved_stage = base.get("wizard_stage", 1)
+    if saved_stage in old_stage_map:
+        base["wizard_stage"] = old_stage_map[saved_stage]
     return base

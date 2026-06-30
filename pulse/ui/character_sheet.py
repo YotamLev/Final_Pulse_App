@@ -177,18 +177,11 @@ def _tab_traits(char: dict) -> None:
 
     st.divider()
     with st.expander("Edit Traits (go back to creator)"):
-        st.info("To add or remove traits, use the Character Creator stages 1 and 2.")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("→ Stage 1: Mortal Traits"):
-                char["wizard_stage"] = 1
-                st.session_state.nav = "wizard"
-                st.rerun()
-        with col2:
-            if st.button("→ Stage 2: Vampire Traits"):
-                char["wizard_stage"] = 2
-                st.session_state.nav = "wizard"
-                st.rerun()
+        st.info("Both mortal and vampire traits are on Stage 1 of the Character Creator.")
+        if st.button("→ Stage 1: Origins & Traits"):
+            char["wizard_stage"] = 1
+            st.session_state.nav = "wizard"
+            st.rerun()
 
 
 def _tab_skills(char: dict) -> None:

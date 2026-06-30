@@ -35,17 +35,16 @@ from pulse.models.character import (
     log_xp_spend,
     log_xp_refund,
 )
-from pulse.ui.components import dots, section_header, info_box, render_trait_pill
+from pulse.ui.components import dots, section_header, info_box
 
 
 # ── Stage labels ──────────────────────────────────────────────────────────────
 
 STAGES = {
-    1: "Mortal",
-    2: "Vampire",
-    3: "Skills",
-    4: "Disciplines",
-    5: "Clan",
+    1: "Origins & Traits",
+    2: "Skills",
+    3: "Disciplines",
+    4: "Clan",
 }
 
 # ── Quick Start archetypes ────────────────────────────────────────────────────
@@ -394,21 +393,19 @@ def render_wizard(char: dict) -> None:
     st.divider()
 
     if stage == 1:
-        _stage_mortal(char)
+        _stage_origins(char)
     elif stage == 2:
-        _stage_vampire(char)
-    elif stage == 3:
         _stage_skills(char)
-    elif stage == 4:
+    elif stage == 3:
         _stage_disciplines(char)
-    elif stage == 5:
+    elif stage == 4:
         _stage_clan(char)
 
 
 # ── Stage navigation ──────────────────────────────────────────────────────────
 
 def _render_stage_nav(char: dict, current: int) -> None:
-    cols = st.columns(5)
+    cols = st.columns(4)
     for i, (num, label) in enumerate(STAGES.items()):
         with cols[i]:
             if num == current:
@@ -438,138 +435,24 @@ def _nav_buttons(char: dict, stage: int, next_disabled: bool = False) -> None:
                 char["wizard_stage"] = stage - 1
                 st.rerun()
     with col_next:
-        label = "Continue →" if stage < 5 else "Complete Character ✓"
+        label = "Continue →" if stage < 4 else "Complete Character ✓"
         if st.button(label, key=f"next_{stage}", type="primary", disabled=next_disabled):
-            if stage < 5:
+            if stage < 4:
                 char["wizard_stage"] = stage + 1
             else:
                 char["wizard_complete"] = True
-                char["wizard_stage"] = 5
+                char["wizard_stage"] = 4
             st.rerun()
 
 
-# ── Trait helpers ─────────────────────────────────────────────────────────────
+# ── Trait grid ────────────────────────────────────────────────────────────────
 
-def _trait_form(char: dict, trait_list_key: str, traits_source: list, form_key: str) -> None:
-    """Generic add-trait form for mortal or vampire traits."""
-    with st.expander("➕ Add a Predefined Trait"):
-        trait_names = [t["name"] for t in traits_source]
-        sel_name = st.selectbox("Select trait", trait_names, key=f"{form_key}_select")
-        trait_def = next(t for t in traits_source if t["name"] == sel_name)
-
-        # Cost selection
-        chosen_cost = trait_def.get("cost")
-        if trait_def.get("variable_cost"):
-            opt_labels = [f"{c:+d} — {desc}" for c, desc in trait_def["cost_options"]]
-            chosen_label = st.selectbox("Severity / cost", opt_labels, key=f"{form_key}_cost")
-            idx = opt_labels.index(chosen_label)
-            chosen_cost = trait_def["cost_options"][idx][0]
-
-        # Show cost prominently next to selection
-        sign = "+" if chosen_cost >= 0 else ""
-        color = "#c41e3a" if chosen_cost > 0 else ("#4a9a6a" if chosen_cost < 0 else "#9a8f82")
-        st.markdown(
-            f"<span style='font-size:1.1rem;font-weight:bold;color:{color}'>Cost: {sign}{chosen_cost}</span>"
-            f"<span style='color:#9a8f82;margin-left:0.8rem;font-size:0.9rem'>Combined total would be: "
-            f"{'+' if get_total_trait_cost(char)+chosen_cost >= 0 else ''}"
-            f"{get_total_trait_cost(char)+chosen_cost}</span>",
-            unsafe_allow_html=True,
-        )
-
-        # Sub-choice (e.g., Folkloric Bane)
-        sub_choice = None
-        if trait_def.get("requires_sub_choice"):
-            sub_choice = st.selectbox("Choose option", trait_def["sub_options"], key=f"{form_key}_sub")
-
-        # Detail text
-        detail = ""
-        if trait_def.get("requires_detail"):
-            detail = st.text_input(trait_def["detail_prompt"], key=f"{form_key}_detail")
-
-        # Validation
-        current_count = get_trait_count(char)
-        times_taken = sum(1 for t in char[trait_list_key] if t["key"] == trait_def["key"])
-        max_times = trait_def.get("max_times", 1)
-
-        warnings = []
-        if current_count >= MAX_TRAITS:
-            warnings.append(f"Already at maximum of {MAX_TRAITS} traits.")
-        if times_taken >= max_times:
-            warnings.append(f"This trait can only be taken {max_times} time(s).")
-        if trait_def.get("requires_detail") and not detail.strip():
-            warnings.append("Please fill in the required detail.")
-
-        for w in warnings:
-            st.warning(w)
-
-        if st.button("Add Trait", key=f"{form_key}_add", disabled=bool(warnings)):
-            char[trait_list_key].append({
-                "key": trait_def["key"],
-                "name": trait_def["name"],
-                "cost": chosen_cost,
-                "detail": detail.strip() or None,
-                "sub_choice": sub_choice,
-            })
-            st.rerun()
-
-    with st.expander("✏️ Add a Custom Trait"):
-        col_name, col_cost = st.columns([3, 1])
-        with col_name:
-            custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
-                                        placeholder="e.g., Notorious Criminal")
-        with col_cost:
-            custom_cost = st.number_input("Cost", min_value=-5, max_value=5, value=-1,
-                                          key=f"{form_key}_custom_cost")
-        custom_detail = st.text_input("Detail (optional)", key=f"{form_key}_custom_detail",
-                                      placeholder="Any clarifying notes")
-
-        sign = "+" if custom_cost >= 0 else ""
-        color = "#c41e3a" if custom_cost > 0 else ("#4a9a6a" if custom_cost < 0 else "#9a8f82")
-        combined = get_total_trait_cost(char) + custom_cost
-        st.markdown(
-            f"<span style='font-size:1.1rem;font-weight:bold;color:{color}'>Cost: {sign}{custom_cost}</span>"
-            f"<span style='color:#9a8f82;margin-left:0.8rem;font-size:0.9rem'>Combined total would be: "
-            f"{'+' if combined >= 0 else ''}{combined}</span>",
-            unsafe_allow_html=True,
-        )
-
-        custom_warnings = []
-        if get_trait_count(char) >= MAX_TRAITS:
-            custom_warnings.append(f"Already at maximum of {MAX_TRAITS} traits.")
-        if not custom_name.strip():
-            custom_warnings.append("Enter a trait name.")
-        for w in custom_warnings:
-            st.warning(w)
-
-        if st.button("Add Custom Trait", key=f"{form_key}_custom_add",
-                     disabled=bool(custom_warnings)):
-            char[trait_list_key].append({
-                "key": f"custom_{custom_name.strip().lower().replace(' ', '_')}",
-                "name": custom_name.strip(),
-                "cost": int(custom_cost),
-                "detail": custom_detail.strip() or None,
-                "sub_choice": None,
-                "custom": True,
-            })
-            st.rerun()
-
-
-def _render_trait_list(char: dict, trait_list_key: str, section_label: str) -> None:
-    traits = char[trait_list_key]
-    if not traits:
-        st.caption(f"No {section_label} traits selected.")
-        return
-    total = sum(t["cost"] for t in traits)
-    sign = "+" if total >= 0 else ""
-    st.markdown(f"**{section_label} Traits** (total cost: {sign}{total})")
-    for i, trait in enumerate(traits):
-        render_trait_pill(trait, remove_key=f"remove_{trait_list_key}_{i}")
-        if st.session_state.get(f"remove_{trait_list_key}_{i}"):
-            traits.pop(i)
-            st.rerun()
-
-
-# ── Stage 1: Mortal ───────────────────────────────────────────────────────────
+MORTAL_CATEGORIES = [
+    ("personality", "🎭 Personality"),
+    ("mental",      "🧠 Mental"),
+    ("body",        "💪 Body"),
+    ("sensory",     "👁 Sensory"),
+]
 
 _MEMORIES_PLACEHOLDER = (
     "Where were you born, and in what era? What did you do for a living?\n"
@@ -581,8 +464,174 @@ _MEMORIES_PLACEHOLDER = (
 )
 
 
-def _stage_mortal(char: dict) -> None:
-    section_header("Stage 1 — Who Were You?")
+def _cost_badge(cost) -> str:
+    if cost is None:
+        return "<span style='background:#2a2010;color:#9a8060;padding:0.1rem 0.4rem;border-radius:2px;font-size:0.75rem'>variable</span>"
+    sign = "+" if cost >= 0 else ""
+    if cost > 0:
+        bg, fg = "#2a0a10", "#c41e3a"
+    elif cost < 0:
+        bg, fg = "#0a2010", "#4a9a6a"
+    else:
+        bg, fg = "#1a1a24", "#9a8f82"
+    return (
+        f"<span style='background:{bg};color:{fg};padding:0.1rem 0.4rem;"
+        f"border-radius:2px;font-size:0.75rem;font-weight:bold'>{sign}{cost}</span>"
+    )
+
+
+def _render_trait_card(char: dict, trait_list_key: str, trait_def: dict, form_key: str) -> None:
+    key = trait_def["key"]
+    name = trait_def["name"]
+    desc = trait_def.get("description", "")
+    cost = trait_def.get("cost")
+    variable = trait_def.get("variable_cost", False)
+    requires_detail = trait_def.get("requires_detail", False)
+    requires_sub = trait_def.get("requires_sub_choice", False)
+    max_times = trait_def.get("max_times", 1)
+    is_simple = not variable and not requires_detail and not requires_sub
+
+    selected_list = char[trait_list_key]
+    times_taken = sum(1 for t in selected_list if t["key"] == key)
+    is_selected = times_taken > 0
+    can_add_more = times_taken < max_times and get_trait_count(char) < MAX_TRAITS
+
+    expand_key = f"expand_{form_key}_{key}"
+    is_expanded = st.session_state.get(expand_key, False)
+
+    if is_expanded:
+        border = "#7a5a20"
+    elif is_selected:
+        border = "#2a5a2a" if (cost or 0) <= 0 else "#5a2a2a"
+    else:
+        border = "#2a1a24"
+
+    name_color = "#c9bdb0" if not is_selected else ("#8acf8a" if (cost or 0) <= 0 else "#cf8a8a")
+    badge = _cost_badge(cost)
+
+    st.markdown(
+        f"<div style='background:#120810;border:1px solid {border};border-radius:4px;"
+        f"padding:0.6rem 0.8rem;margin-bottom:0.25rem'>"
+        f"<div style='display:flex;justify-content:space-between;align-items:flex-start;gap:0.4rem'>"
+        f"<b style='color:{name_color};font-size:0.88rem'>{name}</b>{badge}</div>"
+        f"<div style='font-size:0.77rem;color:#8a7f78;margin-top:0.2rem;line-height:1.35'>{desc}</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+    if is_expanded:
+        chosen_cost = cost
+        if variable:
+            opt_labels = [f"{c:+d} — {d}" for c, d in trait_def["cost_options"]]
+            chosen_label = st.selectbox("Severity", opt_labels, key=f"{expand_key}_cost", label_visibility="collapsed")
+            chosen_cost = trait_def["cost_options"][opt_labels.index(chosen_label)][0]
+
+        sub_choice = None
+        if requires_sub:
+            sub_choice = st.selectbox("Choose option", trait_def["sub_options"], key=f"{expand_key}_sub", label_visibility="collapsed")
+
+        detail = ""
+        if requires_detail:
+            detail = st.text_input(
+                trait_def.get("detail_prompt", "Detail"),
+                key=f"{expand_key}_detail",
+                placeholder=trait_def.get("detail_prompt", ""),
+                label_visibility="collapsed",
+            )
+
+        ready = not (requires_detail and not detail.strip())
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("✓ Confirm", key=f"{expand_key}_confirm", type="primary", disabled=not ready, use_container_width=True):
+                selected_list.append({
+                    "key": key, "name": name, "cost": chosen_cost,
+                    "detail": detail.strip() or None, "sub_choice": sub_choice,
+                })
+                st.session_state.pop(expand_key, None)
+                st.rerun()
+        with c2:
+            if st.button("Cancel", key=f"{expand_key}_cancel", use_container_width=True):
+                st.session_state.pop(expand_key, None)
+                st.rerun()
+    else:
+        c1, c2 = st.columns(2)
+        with c1:
+            if can_add_more:
+                label = "+ Add" if times_taken == 0 else f"+ Again ({times_taken}/{max_times})"
+                if st.button(label, key=f"add_{form_key}_{key}", use_container_width=True):
+                    if is_simple:
+                        selected_list.append({"key": key, "name": name, "cost": cost, "detail": None, "sub_choice": None})
+                        st.rerun()
+                    else:
+                        st.session_state[expand_key] = True
+                        st.rerun()
+        with c2:
+            if is_selected:
+                if st.button("✕ Remove", key=f"rem_{form_key}_{key}", use_container_width=True):
+                    for i, t in enumerate(selected_list):
+                        if t["key"] == key:
+                            selected_list.pop(i)
+                            break
+                    st.rerun()
+
+
+def _render_trait_grid(
+    char: dict,
+    trait_list_key: str,
+    traits_source: list,
+    form_key: str,
+    categories: list | None = None,
+) -> None:
+    def _render_group(group: list) -> None:
+        cols = st.columns(3)
+        for i, trait_def in enumerate(group):
+            with cols[i % 3]:
+                _render_trait_card(char, trait_list_key, trait_def, form_key)
+
+    if categories:
+        for cat_key, cat_label in categories:
+            group = [t for t in traits_source if t.get("category") == cat_key]
+            if group:
+                st.markdown(f"**{cat_label}**")
+                _render_group(group)
+                st.markdown("")
+    else:
+        _render_group(traits_source)
+
+    # Custom trait expander
+    with st.expander("✏️ Add a Custom Trait"):
+        col_name, col_cost = st.columns([3, 1])
+        with col_name:
+            custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
+                                        placeholder="e.g., Notorious Criminal")
+        with col_cost:
+            custom_cost = st.number_input("Cost", min_value=-5, max_value=5, value=-1,
+                                          key=f"{form_key}_custom_cost")
+        custom_detail = st.text_input("Detail (optional)", key=f"{form_key}_custom_detail",
+                                      placeholder="Any clarifying notes")
+        custom_warnings = []
+        if get_trait_count(char) >= MAX_TRAITS:
+            custom_warnings.append(f"Maximum {MAX_TRAITS} traits reached.")
+        if not custom_name.strip():
+            custom_warnings.append("Enter a trait name.")
+        for w in custom_warnings:
+            st.warning(w)
+        if st.button("Add Custom Trait", key=f"{form_key}_custom_add", disabled=bool(custom_warnings)):
+            char[trait_list_key].append({
+                "key": f"custom_{custom_name.strip().lower().replace(' ', '_')}",
+                "name": custom_name.strip(),
+                "cost": int(custom_cost),
+                "detail": custom_detail.strip() or None,
+                "sub_choice": None,
+                "custom": True,
+            })
+            st.rerun()
+
+
+# ── Stage 1: Origins & Traits ─────────────────────────────────────────────────
+
+def _stage_origins(char: dict) -> None:
+    section_header("Stage 1 — Origins & Traits")
     info_box("All fields are optional — fill in what inspires you. Everything can be edited later.")
     _render_quickstart_panel(char)
 
@@ -596,62 +645,43 @@ def _stage_mortal(char: dict) -> None:
         "Memories",
         value=char.get("memories", ""),
         placeholder=_MEMORIES_PLACEHOLDER,
-        height=200,
+        height=180,
         key="s1_memories",
     )
 
     st.divider()
-    section_header("Mortal Traits")
 
+    # Trait budget summary
     total_cost = get_total_trait_cost(char)
     count = get_trait_count(char)
-    sign = "+" if total_cost >= 0 else ""
-    st.markdown(
-        f"**Current trait cost:** {sign}{total_cost} &nbsp;|&nbsp; "
-        f"**Traits:** {count} / {MAX_TRAITS} (recommended ≤ 6)"
-    )
-    st.caption(f"The combined mortal + vampire cost must be ≤ +{MAX_TRAIT_COST} by the end of Stage 2. You can go higher here and balance it with negative vampire traits.")
-
-    _render_trait_list(char, "mortal_traits", "Mortal")
-    st.markdown("")
-    _trait_form(char, "mortal_traits", MORTAL_TRAITS, "m1")
-
-    st.divider()
-    _nav_buttons(char, 1)
-
-
-# ── Stage 2: Vampire ──────────────────────────────────────────────────────────
-
-def _stage_vampire(char: dict) -> None:
-    section_header("Stage 2 — Your Embrace")
-    info_box("Choose traits that reflect your vampiric nature. The Embrace story lives in your Memories from Stage 1.")
-
-    st.divider()
-    section_header("Vampire Traits")
-
-    total_cost = get_total_trait_cost(char)
-    count = get_trait_count(char)
-    sign = "+" if total_cost >= 0 else ""
     over_budget = total_cost > MAX_TRAIT_COST
+    sign = "+" if total_cost >= 0 else ""
+    budget_color = "#c41e3a" if over_budget else "#4a9a6a" if total_cost <= 0 else "#c9bdb0"
     st.markdown(
-        f"**Combined trait cost (mortal + vampire):** {sign}{total_cost} / +{MAX_TRAIT_COST} max &nbsp;|&nbsp; "
-        f"**Traits:** {count} / {MAX_TRAITS}"
+        f"<span style='font-size:0.95rem'>Trait cost: "
+        f"<b style='color:{budget_color}'>{sign}{total_cost} / +{MAX_TRAIT_COST}</b>"
+        f" &nbsp;·&nbsp; {count} / {MAX_TRAITS} traits</span>",
+        unsafe_allow_html=True,
     )
     if over_budget:
-        st.error(f"Combined cost is {sign}{total_cost} — must be ≤ +{MAX_TRAIT_COST} to continue. Add negative vampire traits or remove positive mortal traits.")
+        st.error(f"Combined cost exceeds +{MAX_TRAIT_COST}. Add negative vampire traits or remove positive mortal traits to continue.")
 
-    _render_trait_list(char, "vampire_traits", "Vampire")
-    st.markdown("")
-    _trait_form(char, "vampire_traits", VAMPIRE_TRAITS, "v2")
+    tab_mortal, tab_vampire = st.tabs(["Mortal Traits", "Vampire Traits"])
+
+    with tab_mortal:
+        _render_trait_grid(char, "mortal_traits", MORTAL_TRAITS, "m1", MORTAL_CATEGORIES)
+
+    with tab_vampire:
+        _render_trait_grid(char, "vampire_traits", VAMPIRE_TRAITS, "v1")
 
     st.divider()
-    _nav_buttons(char, 2, next_disabled=over_budget)
+    _nav_buttons(char, 1, next_disabled=over_budget)
 
 
-# ── Stage 3: Skills ───────────────────────────────────────────────────────────
+# ── Stage 2: Skills ───────────────────────────────────────────────────────────
 
 def _stage_skills(char: dict) -> None:
-    section_header("Stage 3 — Skills")
+    section_header("Stage 2 — Skills")
 
     skill_xp_spent = total_skill_xp(char["skill_dots"], char["custom_skills"])
     remaining = CREATION_SKILL_XP - skill_xp_spent
@@ -675,7 +705,7 @@ def _stage_skills(char: dict) -> None:
         _render_custom_skills(char, budget_remaining=remaining)
 
     st.divider()
-    _nav_buttons(char, 3)
+    _nav_buttons(char, 2)
 
 
 def _render_skill_tree(char: dict, tree_name: str, budget_remaining: int) -> None:
@@ -816,7 +846,7 @@ def _render_custom_skills(char: dict, budget_remaining: int) -> None:
 # ── Stage 4: Disciplines ──────────────────────────────────────────────────────
 
 def _stage_disciplines(char: dict) -> None:
-    section_header("Stage 4 — Disciplines")
+    section_header("Stage 3 — Disciplines")
 
     unlocked = char["unlocked_disciplines"]
 
@@ -826,7 +856,7 @@ def _stage_disciplines(char: dict) -> None:
         _spend_disc_xp(char)
 
     st.divider()
-    _nav_buttons(char, 4)
+    _nav_buttons(char, 3)
 
 
 def _select_disciplines(char: dict) -> None:
@@ -992,7 +1022,7 @@ def _power_selector(disc_name: str, disc: dict, level: int, powers: list[str]) -
 # ── Stage 5: Clan ─────────────────────────────────────────────────────────────
 
 def _stage_clan(char: dict) -> None:
-    section_header("Stage 5 — Clan")
+    section_header("Stage 4 — Clan")
     info_box(
         "Clans are optional. Check if you meet a Clan's requirements. "
         "You can qualify for at most one Clan. Your Traits and Disciplines determine eligibility."
@@ -1058,8 +1088,8 @@ def _stage_clan(char: dict) -> None:
     else:
         col_back, _, col_finish = st.columns([2, 4, 2])
         with col_back:
-            if st.button("← Back", key="back_5"):
-                char["wizard_stage"] = 4
+            if st.button("← Back", key="back_4"):
+                char["wizard_stage"] = 3
                 st.rerun()
         with col_finish:
             if st.button("Complete Character ✓", key="finish_wizard", type="primary"):

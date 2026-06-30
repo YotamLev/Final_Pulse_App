@@ -69,8 +69,8 @@ MORTAL_TRAITS: list[dict] = [
         "description": "Add +2 to rolls involving resisting fear.",
     },
     {
-        "key": "natrual_leader",
-        "name": "Natrual Leader",
+        "key": "natural_leader",
+        "name": "Natural Leader",
         "category": "personality",
         "cost": 3,
         "description": "Add +2 to rolls involving leadership.",
