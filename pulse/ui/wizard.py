@@ -775,11 +775,9 @@ def _render_skill_tree(char: dict, tree_name: str, budget_remaining: int) -> Non
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("−", key=rem_key, disabled=not can_rem):
-                    refund = xp_cost_for_next_dot(skill_name, tree_name, {**own, skill_name: d - 1}) + 0
-                    # Actual refund = cost of that last dot = xp_next at old state
                     refund = get_static_base(skill_name, tree_name) + d
                     own[skill_name] = d - 1
-                    log_xp_refund(char, f"{skill_name} −1 dot", refund)
+                    log_xp_refund(char, f"{skill_name} −1 dot", refund, cancel_description=f"{skill_name} +1 dot")
                     st.rerun()
             with c2:
                 if st.button("+", key=add_key, disabled=not can_add):
@@ -813,7 +811,7 @@ def _render_custom_skills(char: dict, budget_remaining: int) -> None:
         with col3:
             if st.button("−", key=f"rem_custom_{i}", disabled=not can_rem):
                 own[cname] = d - 1
-                log_xp_refund(char, f"{cname} −1 dot", d)
+                log_xp_refund(char, f"{cname} −1 dot", d, cancel_description=f"{cname} +1 dot")
                 st.rerun()
             if st.button("+", key=f"add_custom_{i}", disabled=not can_add):
                 own[cname] = d + 1
@@ -950,12 +948,11 @@ def _render_discipline_editor(char: dict, disc_name: str, budget_remaining: int)
             st.markdown(f"Level: {level} / 5 &nbsp; {dots(level, 5)}")
         with col_minus_d:
             if st.button("−", key=f"disc_minus_{disc_name}", disabled=level == 0):
-                # Remove last acquired power
                 if powers:
                     powers.pop()
-                refund = level  # cost of that last level
+                refund = level
                 char["discipline_levels"][disc_name] = level - 1
-                log_xp_refund(char, f"{disc_name} level {level} → {level-1}", refund)
+                log_xp_refund(char, f"{disc_name} level {level} → {level-1}", refund, cancel_description=f"{disc_name} level {level-1} → {level}")
                 st.rerun()
         with col_plus_d:
             if st.button("+", key=f"disc_plus_{disc_name}", disabled=not can_up):

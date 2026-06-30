@@ -129,8 +129,15 @@ def log_xp_spend(char: dict, description: str, cost: int) -> None:
     char.setdefault("xp_log", []).append({"description": description, "cost": cost})
 
 
-def log_xp_refund(char: dict, description: str, refund: int) -> None:
-    char.setdefault("xp_log", []).append({"description": f"[Refund] {description}", "cost": -refund})
+def log_xp_refund(char: dict, description: str, refund: int, cancel_description: str | None = None) -> None:
+    log = char.setdefault("xp_log", [])
+    if cancel_description:
+        for i in range(len(log) - 1, -1, -1):
+            entry = log[i]
+            if entry.get("description") == cancel_description and entry.get("cost", 0) > 0:
+                log.pop(i)
+                return
+    log.append({"description": f"[Refund] {description}", "cost": -refund})
 
 
 # ── Serialisation helpers ─────────────────────────────────────────────────────

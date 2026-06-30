@@ -266,7 +266,7 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
                 if st.button("−", key=f"sheet_rem_{tree_name}_{skill_name}", disabled=not can_rem):
                     refund = get_static_base(skill_name, tree_name) + d
                     own[skill_name] = d - 1
-                    log_xp_refund(char, f"{skill_name} −1 dot", refund)
+                    log_xp_refund(char, f"{skill_name} −1 dot", refund, cancel_description=f"{skill_name} +1 dot")
                     st.rerun()
             with c2:
                 if st.button("+", key=f"sheet_add_{tree_name}_{skill_name}", disabled=not can_add):
@@ -302,7 +302,7 @@ def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("−", key=f"sheet_rem_custom_{i}", disabled=not can_rem):
-                    log_xp_refund(char, f"{cname} −1 dot", d)
+                    log_xp_refund(char, f"{cname} −1 dot", d, cancel_description=f"{cname} +1 dot")
                     own[cname] = d - 1
                     st.rerun()
             with c2:
@@ -389,7 +389,7 @@ def _sheet_disc_editor(char: dict, disc_name: str) -> None:
                 char["discipline_levels"][disc_name] = level - 1
                 if powers:
                     powers.pop()
-                log_xp_refund(char, f"{disc_name} level −1", refund)
+                log_xp_refund(char, f"{disc_name} level −1", refund, cancel_description=f"{disc_name} level +1 (→{level})")
                 st.rerun()
         with col_p:
             if st.button("+", key=f"sheet_disc_plus_{disc_name}", disabled=not can_up):
@@ -529,16 +529,23 @@ def _tab_xp(char: dict) -> None:
 
     skill_xp = total_skill_xp(char["skill_dots"], char["custom_skills"])
     disc_xp = total_disc_xp(char["discipline_levels"])
-    earned = char.get("earned_xp", 0)
     earned_avail = get_earned_xp_available(char)
 
-    col1, col2, col3 = st.columns(3)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    spent_xp = skill_xp + disc_xp
+    over = spent_xp > total_xp
+
+    col1, col2 = st.columns(2)
     with col1:
-        st.metric("Creation Skill XP", f"{min(skill_xp, CREATION_SKILL_XP)} / {CREATION_SKILL_XP}")
+        st.metric("Total XP", total_xp)
     with col2:
-        st.metric("Creation Disc XP", f"{min(disc_xp, CREATION_DISC_XP)} / {CREATION_DISC_XP}")
-    with col3:
-        st.metric("Earned XP Available", f"{max(0, earned_avail)} / {earned}")
+        st.metric("Spent XP", f"{spent_xp} / {total_xp}", delta=f"{total_xp - spent_xp} remaining" if not over else f"{spent_xp - total_xp} over budget", delta_color="normal" if not over else "inverse")
+
+    st.caption(
+        f"Creation pools: {min(skill_xp, CREATION_SKILL_XP)}/{CREATION_SKILL_XP} skill · "
+        f"{min(disc_xp, CREATION_DISC_XP)}/{CREATION_DISC_XP} disc · "
+        f"Earned available: {max(0, earned_avail)}"
+    )
 
     st.divider()
     st.markdown("**Storyteller: Award Earned XP**")
@@ -559,12 +566,10 @@ def _tab_xp(char: dict) -> None:
     if not log:
         st.caption("No XP activity yet.")
     else:
-        running = 0
         for entry in log:
             cost = entry["cost"]
             desc = entry["description"]
             if cost > 0:
-                running += cost
                 st.markdown(f"− **{cost} XP** &nbsp; {desc}")
             else:
                 st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
