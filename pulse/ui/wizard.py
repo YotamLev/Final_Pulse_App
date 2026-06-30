@@ -315,6 +315,14 @@ def _apply_quickstart(char: dict, key: str) -> None:
         char["mortal_traits"].append(qs["mortal_trait"])
     if qs.get("vampire_trait"):
         char["vampire_traits"].append(qs["vampire_trait"])
+    # Reset log and seed one entry per dot so refunds can cancel cleanly
+    char["xp_log"] = []
+    for tree_name, tree in SKILL_TREES.items():
+        for skill_name in tree:
+            n = qs["skill_dots"].get(skill_name, 0)
+            for d in range(n):
+                cost = xp_cost_for_next_dot(skill_name, tree_name, {skill_name: d})
+                log_xp_spend(char, f"{skill_name} +1 dot", cost)
 
 
 def _render_quickstart_panel(char: dict) -> None:

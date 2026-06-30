@@ -635,6 +635,7 @@ def _generate_html(char: dict) -> str:
     from pulse.data.skill_trees import get_effective_level, get_static_base, total_skill_xp
     from pulse.data.disciplines import total_disc_xp
     from pulse.data.traits import MORTAL_TRAITS, VAMPIRE_TRAITS
+    from pulse.models.character import CREATION_SKILL_XP, CREATION_DISC_XP, get_earned_xp_available
 
     name = char.get("name", "Unnamed")
     clan = char.get("clan") or "Clanless"
@@ -708,6 +709,21 @@ def _generate_html(char: dict) -> str:
             f"<td><ul style='margin:0;padding-left:1.2rem'>{powers_html or '<li>—</li>'}</ul></td></tr>"
         )
 
+    # XP summary
+    skill_xp = total_skill_xp(char.get("skill_dots", {}), char.get("custom_skills", []))
+    disc_xp  = total_disc_xp(char.get("discipline_levels", {}))
+    earned_avail = get_earned_xp_available(char)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    spent_xp = skill_xp + disc_xp
+    xp_log_rows = ""
+    for entry in char.get("xp_log", []):
+        cost = entry["cost"]
+        desc = entry["description"]
+        if cost > 0:
+            xp_log_rows += f"<tr><td>{desc}</td><td style='color:#c41e3a;text-align:right'>−{cost}</td></tr>"
+        else:
+            xp_log_rows += f"<tr><td>{desc}</td><td style='color:#4a9a6a;text-align:right'>+{-cost}</td></tr>"
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -766,6 +782,12 @@ def _generate_html(char: dict) -> str:
 <div class="section">
 <h2>Notes</h2>
 <p>{char.get('notes', '—')}</p>
+</div>
+
+<div class="section">
+<h2>Experience Points</h2>
+<p><strong>Total XP:</strong> {total_xp} &nbsp;·&nbsp; <strong>Spent:</strong> {spent_xp} / {total_xp}</p>
+{"<table><thead><tr><th style='text-align:left'>Description</th><th style='text-align:right'>XP</th></tr></thead><tbody>" + xp_log_rows + "</tbody></table>" if xp_log_rows else "<p style='color:#9a8f82'>No XP activity logged.</p>"}
 </div>
 </body>
 </html>"""
