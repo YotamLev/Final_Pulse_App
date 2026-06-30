@@ -423,24 +423,23 @@ def _power_selector_sheet(disc_name: str, disc: dict, level: int, powers: list[s
             dependents = [p2 for p2 in disc["powers"] if p2.get("requires") == power["name"] and p2["name"] in powers]
             can_release = acquired and not dependents
 
-            col_p, col_btn = st.columns([5, 1])
-            with col_p:
-                icon = "●" if acquired else ("○" if req_met else "🔒")
-                req_note = f" *(requires {req})*" if req and not req_met else ""
-                st.markdown(
-                    f"&nbsp;&nbsp;{icon} **{power['name']}**{req_note}  \n"
-                    f"&nbsp;&nbsp;<small style='color:#9a8f82'>{power['description']}</small>",
-                    unsafe_allow_html=True,
-                )
-            with col_btn:
+            col_chk, col_p = st.columns([1, 7])
+            with col_chk:
                 if acquired:
-                    if st.button("✕", key=f"sheet_release_{disc_name}_{power['name']}", disabled=not can_release):
+                    if st.button("■", key=f"sheet_release_{disc_name}_{power['name']}", disabled=not can_release):
                         powers.remove(power["name"])
                         st.rerun()
                 else:
-                    if st.button("✓", key=f"sheet_acquire_{disc_name}_{power['name']}", disabled=not can_acquire):
+                    if st.button("□", key=f"sheet_acquire_{disc_name}_{power['name']}", disabled=not can_acquire):
                         powers.append(power["name"])
                         st.rerun()
+            with col_p:
+                req_note = f" *(requires {req})*" if req and not req_met else ""
+                st.markdown(
+                    f"**{power['name']}**{req_note}  \n"
+                    f"<small style='color:#9a8f82'>{power['description']}</small>",
+                    unsafe_allow_html=True,
+                )
 
 
 def _tab_summary(char: dict) -> None:

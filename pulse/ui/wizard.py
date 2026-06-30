@@ -335,27 +335,48 @@ def _render_quickstart_panel(char: dict) -> None:
             "starting powers, and a full skill package. Everything can be edited afterwards."
         )
 
-        options = ["— choose —"] + list(QUICKSTARTS.keys())
-        sel = st.selectbox(
-            "Archetype",
-            options,
-            format_func=lambda k: QUICKSTARTS[k]["label"] if k != "— choose —" else "— choose —",
-            key="qs_select",
-            label_visibility="collapsed",
-        )
+        # Pre-select from applied clan on first render
+        if "qs_grid_sel" not in st.session_state:
+            for k, v in QUICKSTARTS.items():
+                if v["clan"] == char.get("clan"):
+                    st.session_state["qs_grid_sel"] = k
+                    break
 
-        if sel != "— choose —":
+        # 3-column clan-symbol grid
+        qs_keys = list(QUICKSTARTS.keys())
+        cols = st.columns(3)
+        for i, key in enumerate(qs_keys):
+            qs_card = QUICKSTARTS[key]
+            with cols[i % 3]:
+                clan_img = CLANS.get(qs_card["clan"], {}).get("image", "")
+                if clan_img:
+                    try:
+                        st.image(clan_img, width=56)
+                    except Exception:
+                        pass
+                is_sel = st.session_state.get("qs_grid_sel") == key
+                if st.button(
+                    qs_card["label"],
+                    key=f"qs_grid_{key}",
+                    use_container_width=True,
+                    type="primary" if is_sel else "secondary",
+                ):
+                    st.session_state["qs_grid_sel"] = key
+                    st.rerun()
+
+        # Preview + apply for the selected archetype
+        sel = st.session_state.get("qs_grid_sel")
+        if sel and sel in QUICKSTARTS:
             qs = QUICKSTARTS[sel]
+            st.divider()
             traits_preview = []
             if qs.get("mortal_trait"):
                 t = qs["mortal_trait"]
                 traits_preview.append(f"{t['name']} ({t['cost']:+d}) [mortal]")
             if qs.get("vampire_trait"):
                 t = qs["vampire_trait"]
-                label = t["name"]
-                if t.get("detail"):
-                    label += f" — {t['detail']}"
-                traits_preview.append(f"{label} ({t['cost']:+d}) [vampire]")
+                lbl = t["name"] + (f" — {t['detail']}" if t.get("detail") else "")
+                traits_preview.append(f"{lbl} ({t['cost']:+d}) [vampire]")
             disc_levels = qs.get("discipline_levels", {})
             disc_preview = ", ".join(
                 f"{d} {'●' * disc_levels.get(d, 1)}" for d in qs["disciplines"]
@@ -365,8 +386,7 @@ def _render_quickstart_panel(char: dict) -> None:
             )
             disc_powers = qs.get("discipline_powers", {})
             powers_preview = " &nbsp;·&nbsp; ".join(
-                f"<em>{d}:</em> {', '.join(ps)}"
-                for d, ps in disc_powers.items()
+                f"<em>{d}:</em> {', '.join(ps)}" for d, ps in disc_powers.items()
             )
             st.markdown(
                 f"<div style='background:#1a0812;border:1px solid #5c1a28;border-radius:4px;"
@@ -1013,28 +1033,26 @@ def _power_selector(disc_name: str, disc: dict, level: int, powers: list[str]) -
                 and req_met
                 and slots_used < slots_total
             )
-            # Can release if acquired AND no other power requires this one
             dependents = [p2 for p2 in disc["powers"] if p2.get("requires") == power["name"] and p2["name"] in powers]
             can_release = acquired and not dependents
 
-            col_p, col_btn = st.columns([5, 1])
-            with col_p:
-                icon = "●" if acquired else ("○" if req_met else "🔒")
-                req_note = f" *(requires {req})*" if req and not req_met else ""
-                st.markdown(
-                    f"&nbsp;&nbsp;{icon} **{power['name']}**{req_note}  \n"
-                    f"&nbsp;&nbsp;<small style='color:#9a8f82'>{power['description']}</small>",
-                    unsafe_allow_html=True,
-                )
-            with col_btn:
+            col_chk, col_p = st.columns([1, 7])
+            with col_chk:
                 if acquired:
-                    if st.button("✕", key=f"release_{disc_name}_{power['name']}", disabled=not can_release):
+                    if st.button("■", key=f"release_{disc_name}_{power['name']}", disabled=not can_release):
                         powers.remove(power["name"])
                         st.rerun()
                 else:
-                    if st.button("✓", key=f"acquire_{disc_name}_{power['name']}", disabled=not can_acquire):
+                    if st.button("□", key=f"acquire_{disc_name}_{power['name']}", disabled=not can_acquire):
                         powers.append(power["name"])
                         st.rerun()
+            with col_p:
+                req_note = f" *(requires {req})*" if req and not req_met else ""
+                st.markdown(
+                    f"**{power['name']}**{req_note}  \n"
+                    f"<small style='color:#9a8f82'>{power['description']}</small>",
+                    unsafe_allow_html=True,
+                )
 
 
 # ── Stage 5: Clan ─────────────────────────────────────────────────────────────
