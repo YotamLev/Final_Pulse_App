@@ -46,7 +46,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "The Still World", "level": 2, "description": "Pay 1 Blood, move super-fast in your turn: walk on water, on vertical walls, between the blades of a spinning jet engine.", "requires": None},
             {"name": "Hover", "level": 4, "description": "The vampire can hover slightly above ground.", "requires": None},
             {"name": "Whirlwind", "level": 4, "description": "Pay 2 Blood, you can take 2 actions in a turn without penalties.", "requires": None},
-            {"name": "Unholy Flight", "level": 5, "description": "Pay 1 Blood, the vampire can fly at running speed for a scene.", "requires": None},
+            {"name": "Unholy Flight", "level": 5, "description": "Pay 1 Blood, the vampire can fly at running speed for a scene.", "requires": "Hover"},
         ],
     },
     "Dominate": {
