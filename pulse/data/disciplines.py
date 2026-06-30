@@ -174,9 +174,9 @@ DISCIPLINES: dict[str, dict] = {
         "powers": [
             {"name": "Bend Blood", "level": 1, "description": "Control spilled blood, making it flow or float in the air. Up to 2 Liters at a time, and the max force it can apply is 3 kg.", "requires": None},
             {"name": "A Taste for Blood", "level": 1, "description": "By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled.", "requires": None},
-            {"name": "Bend Veins", "level": 2, "description": "Use Bend Blood even on blood inside another's body, rolling Blood Sorcery. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.", "requires": "Bend Blood"},
-            {"name": "Telekinesis", "level": 3, "description": "Your Bend Blood power can now control up to 20 Liters of blood, and apply up to 30 kg of force at a time.", "requires": "Bend Blood"},
-            {"name": "Scorpion's Touch", "level": 3, "description": "Turn your spilled vitae corrosive, melting whatever it touches. 1 Blood is enough to melt a hole through a regular door.", "requires": None},
+            {"name": "Bend Veins", "level": 2, "description": "by paying 3 Blood, you can use Bend Blood even on blood inside another's body, rolling Blood Sorcery, for a scene. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.", "requires": "Bend Blood"},
+            {"name": "Telekinesis", "level": 3, "description": "by paying 1 or more Blood, Your Bend Blood power can now control up to Blood paid * 10 Liters of blood, and apply up to Blood paid * 20 kg of force at a time, for a scene. Max spend is 5 Blood", "requires": "Bend Blood"},
+            {"name": "Scorpion's Touch", "level": 3, "description": "Turn your own spilled vitae corrosive, melting whatever it touches. 1 Blood extracted is enough to melt a hole through a regular door.", "requires": None},
             {"name": "Cauldron of Blood", "level": 5, "description": "Pay 2 Blood, boil an enemy's blood in their veins, causing Blood Sorcery level damage in a turn to a target you can reach. No roll required.", "requires": None},
         ],
     },
