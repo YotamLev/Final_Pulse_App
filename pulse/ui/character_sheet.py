@@ -40,7 +40,7 @@ from pulse.models.character import (
     char_to_dict,
     char_from_dict,
 )
-from pulse.ui.components import dots, section_header, info_box, render_trait_pill
+from pulse.ui.components import dots, section_header, info_box, render_trait_pill, load_image
 
 
 # ── Main entry ────────────────────────────────────────────────────────────────
@@ -214,13 +214,13 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
     own = char["skill_dots"]
     skills = SKILL_TREES[tree_name]
 
+    creation_remaining = max(0, CREATION_SKILL_XP - total_skill_xp(own, char["custom_skills"]))
     for skill_name, skill in skills.items():
         d = own.get(skill_name, 0)
         eff = get_effective_level(skill_name, tree_name, own)
         xp_next = xp_cost_for_next_dot(skill_name, tree_name, own)
-        skill_xp_total = total_skill_xp(own, char["custom_skills"])
 
-        can_add = can_add_dot(skill_name, tree_name, own) and can_spend_skill_xp(char, xp_next)
+        can_add = can_add_dot(skill_name, tree_name, own) and xp_next <= creation_remaining + max(0, earned_avail)
         can_rem = can_remove_dot(skill_name, tree_name, own)
 
         branch = skill.get("branches_from")
@@ -372,13 +372,10 @@ def _sheet_disc_editor(char: dict, disc_name: str) -> None:
     col_img, col_info = st.columns([1, 5])
     with col_img:
         img = disc["image"]
-        if not img.startswith("http"):
-            try:
-                st.image(img, width=60)
-            except Exception:
-                pass
-        else:
-            st.image(img, width=60)
+        try:
+            st.image(load_image(img) if not img.startswith("http") else img, width=60)
+        except Exception:
+            pass
     with col_info:
         st.markdown(f"### {disc_name}")
         col_d, col_m, col_p = st.columns([4, 1, 1])

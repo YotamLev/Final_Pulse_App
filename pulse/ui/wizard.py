@@ -36,7 +36,7 @@ from pulse.models.character import (
     log_xp_refund,
     normalize_character,
 )
-from pulse.ui.components import dots, section_header, info_box
+from pulse.ui.components import dots, section_header, info_box, load_image
 
 
 # ── Stage labels ──────────────────────────────────────────────────────────────
@@ -350,11 +350,13 @@ def _render_quickstart_panel(char: dict) -> None:
             qs_card = QUICKSTARTS[key]
             with cols[i % 3]:
                 clan_img = CLANS.get(qs_card["clan"], {}).get("image", "")
-                if clan_img:
+                if clan_img and not clan_img.startswith("http"):
                     try:
-                        st.image(clan_img, width=56)
+                        st.image(load_image(clan_img), width=56)
                     except Exception:
                         pass
+                elif clan_img:
+                    st.image(clan_img, width=56)
                 is_sel = st.session_state.get("qs_grid_sel") == key
                 if st.button(
                     qs_card["label"],
@@ -909,13 +911,10 @@ def _select_disciplines(char: dict) -> None:
         with cols[i % 3]:
             already = disc_name in unlocked
             img = DISCIPLINES[disc_name]["image"]
-            if not img.startswith("http"):
-                try:
-                    st.image(img, width=48)
-                except Exception:
-                    pass
-            else:
-                st.image(img, width=48)
+            try:
+                st.image(load_image(img) if not img.startswith("http") else img, width=48)
+            except Exception:
+                pass
 
             desc = DISC_SHORT_DESC.get(disc_name, "")
             if already:
@@ -974,13 +973,10 @@ def _render_discipline_editor(char: dict, disc_name: str, budget_remaining: int)
     col_img, col_info = st.columns([1, 5])
     with col_img:
         img = disc["image"]
-        if not img.startswith("http"):
-            try:
-                st.image(img, width=60)
-            except Exception:
-                pass
-        else:
-            st.image(img, width=60)
+        try:
+            st.image(load_image(img) if not img.startswith("http") else img, width=60)
+        except Exception:
+            pass
     with col_info:
         st.markdown(f"### {disc_name}")
         xp_up = xp_cost_for_disc_level(level)
@@ -1090,8 +1086,9 @@ def _stage_clan(char: dict) -> None:
         ):
             col_img, col_info = st.columns([1, 4])
             with col_img:
+                img_path = clan["image"]
                 try:
-                    st.image(clan["image"], width=80)
+                    st.image(load_image(img_path) if not img_path.startswith("http") else img_path, width=80)
                 except Exception:
                     pass
             with col_info:

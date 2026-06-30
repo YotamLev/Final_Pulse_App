@@ -4,6 +4,13 @@ from __future__ import annotations
 
 import streamlit as st
 
+
+@st.cache_data(show_spinner=False)
+def load_image(path: str) -> bytes:
+    """Read an image from disk once per server lifetime; cached by path."""
+    with open(path, "rb") as f:
+        return f.read()
+
 FILLED = "●"
 EMPTY = "○"
 
