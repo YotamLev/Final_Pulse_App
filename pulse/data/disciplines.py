@@ -46,7 +46,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "The Still World", "level": 2, "description": "Pay 1 Blood, move super-fast in your turn: walk on water, on vertical walls, between the blades of a spinning jet engine.", "requires": None},
             {"name": "Hover", "level": 4, "description": "The vampire can hover slightly above ground.", "requires": None},
             {"name": "Whirlwind", "level": 4, "description": "Pay 2 Blood, you can take 2 actions in a turn without penalties.", "requires": None},
-            {"name": "Unholy Flight", "level": 5, "description": "Pay 1 Blood, the vampire can fly at running speed for a scene.", "requires": None},
+            {"name": "Unholy Flight", "level": 5, "description": "Pay 1 Blood, the vampire can fly at running speed for a scene.", "requires": "Hover"},
         ],
     },
     "Dominate": {
@@ -133,7 +133,8 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Earth Meld", "level": 3, "description": "Pay 1 Blood, sink into and become one with soil. Leave when you wish. Cannot travel in this state.", "requires": None},
             {"name": "Mist Form", "level": 3, "description": "Pay 1 Blood, spend two turns to transform into a cloud of mist — untouchable save by fire and sunlight. Cannot spend more than two scenes as mist.", "requires": None},
             {"name": "Internal Shift", "level": 3, "description": "Move your internal organs at will — shift your heart to dodge a stake, make it seem to pound, terrify onlookers.", "requires": None},
-            {"name": "Fleshcraft", "level": 4, "description": "Pay 2 Blood, take a scene, transform your body: rotate head, relocate limbs, attach organs from other creatures. Up to Protean level simultaneous changes.", "requires": None},
+            {"name": "Fleshcraft", "level": 4, "description": "pay 2 Blood, take a scene, transform your body: rotate your head 180°, move your hands to your belly, even attaching organs from other creatures, like having extra hands or spider eyes. Note that sensory organs offer no sensory input, but muscle, bone, chitin etc. do. wings require a giant bird, and flying with them is very hard. Up to Protean level changes simultaneously.", "requires": None},
+            {"name": "Szlachta", "level": 5, "description": "You can use your Protean powers on your ghouls by touching them. This is very painful. Pay Blood prices as usual.", "requires": None},
         ],
     },
     "Arrete": {
@@ -143,7 +144,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Perfect Recall", "level": 1, "description": "Pay 1 Blood, retroactively remember a detail from something you have seen, heard, or read.", "requires": None},
             {"name": "Borrowed Knowledge", "level": 2, "description": "When feeding from a victim, gain a bonus (1-3 dice) to areas of expertise they had until next feeding.", "requires": None},
             {"name": "The Common Denominator", "level": 2, "description": "Pay 1 Blood, learn any human language for a scene. Pay 2 Blood to decipher any encoded message you can read.", "requires": None},
-            {"name": "Perfectionism", "level": 3, "description": "You can use Willpower to reroll up to 5 dice.", "requires": None},
+            {"name": "Perfectionism", "level": 3, "description": "You can use Willpower to reroll up to 5 dice, instead of 3.", "requires": None},
         ],
     },
     "Necromancy": {
@@ -172,10 +173,11 @@ DISCIPLINES: dict[str, dict] = {
     "Blood Sorcery": {
         "image": "Data/Images/Blood_Sorcery_symbol.png",
         "powers": [
-            {"name": "Bend Blood", "level": 1, "description": "Control spilled blood, making it flow or float in the air.", "requires": None},
+            {"name": "Bend Blood", "level": 1, "description": "Control spilled blood, making it flow or float in the air. Up to 2 Liters at a time, and the max force it can apply is 3 kg.", "requires": None},
             {"name": "A Taste for Blood", "level": 1, "description": "By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled.", "requires": None},
-            {"name": "Bend Veins", "level": 2, "description": "Use Bend Blood even on blood inside another's body, rolling Blood Sorcery. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.", "requires": "Bend Blood"},
-            {"name": "Scorpion's Touch", "level": 3, "description": "Turn your spilled vitae corrosive, melting whatever it touches. 1 Blood is enough to melt a hole through a regular door.", "requires": None},
+            {"name": "Bend Veins", "level": 2, "description": "by paying 3 Blood, you can use Bend Blood even on blood inside another's body, rolling Blood Sorcery, for a scene. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.", "requires": "Bend Blood"},
+            {"name": "Telekinesis", "level": 3, "description": "by paying 1 or more Blood, Your Bend Blood power can now control up to Blood paid * 10 Liters of blood, and apply up to Blood paid * 20 kg of force at a time, for a turn. Max spend is 5 Blood", "requires": "Bend Blood"},
+            {"name": "Scorpion's Touch", "level": 3, "description": "Turn your own spilled vitae corrosive, melting whatever it touches. 1 Blood extracted is enough to melt a hole through a regular door.", "requires": None},
             {"name": "Cauldron of Blood", "level": 5, "description": "Pay 2 Blood, boil an enemy's blood in their veins, causing Blood Sorcery level damage in a turn to a target you can reach. No roll required.", "requires": None},
         ],
     },
