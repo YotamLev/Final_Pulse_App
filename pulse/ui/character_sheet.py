@@ -51,10 +51,12 @@ def render_character_sheet(char: dict) -> None:
     _render_hero(char)
     st.divider()
 
-    tab_bg, tab_traits, tab_skills, tab_disc, tab_trackers, tab_xp, tab_notes, tab_export = st.tabs(
-        ["📖 Background", "🩸 Traits", "⚔ Skills", "🌑 Disciplines", "❤ Trackers", "⚡ XP", "📝 Notes", "💾 Export"]
+    tab_summary, tab_bg, tab_traits, tab_skills, tab_disc, tab_xp, tab_notes, tab_export = st.tabs(
+        ["📋 Summary", "📖 Background", "🩸 Traits", "⚔ Skills", "🌑 Disciplines", "⚡ XP", "📝 Notes", "💾 Export"]
     )
 
+    with tab_summary:
+        _tab_summary(char)
     with tab_bg:
         _tab_background(char)
     with tab_traits:
@@ -63,8 +65,6 @@ def render_character_sheet(char: dict) -> None:
         _tab_skills(char)
     with tab_disc:
         _tab_disciplines(char)
-    with tab_trackers:
-        _tab_trackers(char)
     with tab_xp:
         _tab_xp(char)
     with tab_notes:
@@ -443,7 +443,103 @@ def _power_selector_sheet(disc_name: str, disc: dict, level: int, powers: list[s
                         st.rerun()
 
 
-def _tab_trackers(char: dict) -> None:
+def _tab_summary(char: dict) -> None:
+    _render_trackers(char)
+
+    st.divider()
+    section_header("Traits")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Mortal Traits**")
+        for t in char.get("mortal_traits", []):
+            c = t["cost"]
+            s = "+" if c >= 0 else ""
+            det = t.get("detail") or t.get("sub_choice") or ""
+            st.markdown(f"**{t['name']}** ({s}{c}){' — ' + det if det else ''}")
+        if not char.get("mortal_traits"):
+            st.caption("None")
+    with col2:
+        st.markdown("**Vampire Traits**")
+        for t in char.get("vampire_traits", []):
+            c = t["cost"]
+            s = "+" if c >= 0 else ""
+            det = t.get("detail") or t.get("sub_choice") or ""
+            st.markdown(f"**{t['name']}** ({s}{c}){' — ' + det if det else ''}")
+        if not char.get("vampire_traits"):
+            st.caption("None")
+
+    st.divider()
+    section_header("Skills")
+    own = char.get("skill_dots", {})
+    skill_rows = ""
+    for tree_name, tree in SKILL_TREES.items():
+        for skill_name, skill_data in tree.items():
+            d = own.get(skill_name, 0)
+            if not d:
+                continue
+            base = get_static_base(skill_name, tree_name)
+            level_str = f"{'●' * base} + {dots(d, skill_data['max_dots'])}" if base > 0 else dots(d, skill_data["max_dots"])
+            skill_rows += f"<tr><td style='color:#9a8f82'>{tree_name}</td><td><b>{skill_name}</b></td><td>{level_str}</td></tr>"
+    for cs in char.get("custom_skills", []):
+        d = own.get(cs["name"], 0)
+        if d:
+            skill_rows += f"<tr><td style='color:#9a8f82'>Custom</td><td><b>{cs['name']}</b></td><td>{dots(d, cs['max_dots'])}</td></tr>"
+    if skill_rows:
+        st.markdown(
+            "<table style='width:100%;border-collapse:collapse'>"
+            "<thead><tr>"
+            "<th style='text-align:left;color:#9a8f82;padding:0.25rem 0.5rem'>Tree</th>"
+            "<th style='text-align:left;padding:0.25rem 0.5rem'>Skill</th>"
+            "<th style='text-align:left;padding:0.25rem 0.5rem'>Level</th>"
+            "</tr></thead><tbody>" + skill_rows + "</tbody></table>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.caption("No skills invested.")
+
+    st.divider()
+    section_header("Disciplines")
+    for disc_name in char.get("unlocked_disciplines", []):
+        level = char.get("discipline_levels", {}).get(disc_name, 0)
+        powers = char.get("discipline_powers", {}).get(disc_name, [])
+        st.markdown(f"**{disc_name}** — Level {level} &nbsp; {dots(level, 5)}", unsafe_allow_html=True)
+        if powers:
+            st.caption(", ".join(powers))
+    if not char.get("unlocked_disciplines"):
+        st.caption("No disciplines unlocked.")
+
+    if char.get("memories"):
+        st.divider()
+        section_header("Memories")
+        st.markdown(char["memories"])
+
+    if char.get("notes"):
+        st.divider()
+        section_header("Notes")
+        st.markdown(char["notes"])
+
+    st.divider()
+    section_header("Experience Points")
+    skill_xp = total_skill_xp(char["skill_dots"], char["custom_skills"])
+    disc_xp = total_disc_xp(char["discipline_levels"])
+    earned_avail = get_earned_xp_available(char)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    spent_xp = skill_xp + disc_xp
+    st.markdown(f"**Total XP:** {total_xp} &nbsp;·&nbsp; **Spent:** {spent_xp} / {total_xp}", unsafe_allow_html=True)
+    log = char.get("xp_log", [])
+    if log:
+        for entry in log:
+            cost = entry["cost"]
+            desc = entry["description"]
+            if cost > 0:
+                st.markdown(f"− **{cost} XP** &nbsp; {desc}")
+            else:
+                st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
+    else:
+        st.caption("No XP activity yet.")
+
+
+def _render_trackers(char: dict) -> None:
     section_header("Status Trackers")
     hp_max = get_hp_max(char)
 
