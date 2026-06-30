@@ -78,7 +78,7 @@ def render_character_sheet(char: dict) -> None:
 def _render_hero(char: dict) -> None:
     name = char.get("name") or "Unnamed Vampire"
     clan = char.get("clan") or "Clanless"
-    sire = char.get("sire") or "Unknown Sire"
+    tagline = char.get("tagline") or ""
     hp_max = get_hp_max(char)
     hp_cur = char.get("hp_current", BASE_HP)
     wp_cur = char.get("willpower_current", BASE_WILLPOWER)
@@ -89,7 +89,7 @@ def _render_hero(char: dict) -> None:
         f"<div style='background:linear-gradient(135deg,#0c080e,#1a0812);border:1px solid #5c1a28;"
         f"border-radius:4px;padding:1rem 1.5rem;margin-bottom:0.5rem'>"
         f"<h2 style='color:#c41e3a;font-family:Cinzel,serif;margin:0'>{name}</h2>"
-        f"<div style='color:#9a8f82;font-style:italic'>{clan} &nbsp;·&nbsp; Sire: {sire}</div>"
+        f"<div style='color:#9a8f82;font-style:italic'>{clan}{' &nbsp;·&nbsp; ' + tagline if tagline else ''}</div>"
         f"<div style='margin-top:0.6rem;font-size:1.2rem;letter-spacing:0.06em'>"
         f"HP {dots(max(0, hp_cur), hp_max)} &nbsp; "
         f"WP {dots(max(0, wp_cur), BASE_WILLPOWER)} &nbsp; "
@@ -103,24 +103,19 @@ def _render_hero(char: dict) -> None:
 
 def _tab_background(char: dict) -> None:
     section_header("Background & History")
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([2, 1])
     with col1:
-        char["name"] = st.text_input("Character Name", value=char.get("name", ""), key="sheet_name")
-        char["birthplace"] = st.text_input("Birth Place", value=char.get("birthplace", ""), key="sheet_bp")
-        char["sire"] = st.text_input("Sire", value=char.get("sire", ""), key="sheet_sire")
+        char["name"] = st.text_input("Name", value=char.get("name", ""), placeholder="Character name", key="sheet_name")
     with col2:
-        char["birthtime"] = st.text_input("Birth Time / Era", value=char.get("birthtime", ""), key="sheet_bt")
-        char["embrace_time"] = st.text_input("Embrace Time", value=char.get("embrace_time", ""), key="sheet_et")
+        char["tagline"] = st.text_input("Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="sheet_tagline")
 
-    char["mortal_history"] = st.text_area(
-        "Who You Were as a Mortal", value=char.get("mortal_history", ""), height=120, key="sheet_mh"
-    )
-    char["embrace_backstory"] = st.text_area(
-        "The Embrace Story", value=char.get("embrace_backstory", ""), height=100, key="sheet_eb"
-    )
-    char["beliefs"] = st.text_area("Beliefs", value=char.get("beliefs", ""), height=80, key="sheet_bel")
-    char["connections"] = st.text_area(
-        "Important Characters & Connections", value=char.get("connections", ""), height=80, key="sheet_conn"
+    from pulse.ui.wizard import _MEMORIES_PLACEHOLDER
+    char["memories"] = st.text_area(
+        "Memories",
+        value=char.get("memories", ""),
+        placeholder=_MEMORIES_PLACEHOLDER,
+        height=220,
+        key="sheet_memories",
     )
 
     # Default vampire powers
@@ -635,7 +630,7 @@ def _generate_html(char: dict) -> str:
 
     name = char.get("name", "Unnamed")
     clan = char.get("clan") or "Clanless"
-    sire = char.get("sire") or "—"
+    tagline = char.get("tagline") or ""
     hp_max = get_hp_max(char)
     hp_cur = char.get("hp_current", hp_max)
     wp_cur = char.get("willpower_current", 10)
@@ -726,10 +721,7 @@ def _generate_html(char: dict) -> str:
 </head>
 <body>
 <h1>{name}</h1>
-<p><strong>Clan:</strong> {clan} &nbsp;|&nbsp; <strong>Sire:</strong> {sire} &nbsp;|&nbsp;
-<strong>Birthplace:</strong> {char.get('birthplace', '—')} &nbsp;|&nbsp;
-<strong>Born:</strong> {char.get('birthtime', '—')} &nbsp;|&nbsp;
-<strong>Embraced:</strong> {char.get('embrace_time', '—')}</p>
+<p><strong>Clan:</strong> {clan}{(' &nbsp;·&nbsp; ' + tagline) if tagline else ''}</p>
 
 <div class="section">
 <h2>Trackers</h2>
@@ -759,14 +751,8 @@ def _generate_html(char: dict) -> str:
 </div>
 
 <div class="section">
-<h2>Mortal History</h2>
-<p>{char.get('mortal_history', '—')}</p>
-<h2>The Embrace</h2>
-<p>{char.get('embrace_backstory', '—')}</p>
-<h2>Beliefs</h2>
-<p>{char.get('beliefs', '—')}</p>
-<h2>Connections</h2>
-<p>{char.get('connections', '—')}</p>
+<h2>Memories</h2>
+<p style="white-space:pre-wrap">{char.get('memories', '—')}</p>
 </div>
 
 <div class="section">

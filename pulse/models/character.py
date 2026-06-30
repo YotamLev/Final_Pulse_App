@@ -24,17 +24,11 @@ def default_character() -> dict:
 
         # ── Stage 1: Mortal ──────────────────────────────────────────────────
         "name": "",
-        "birthplace": "",
-        "birthtime": "",
-        "mortal_history": "",   # who you were, childhood, job, hobbies, events
-        "beliefs": "",
-        "connections": "",      # important characters and connections
+        "tagline": "",          # one-line descriptor, e.g. "Former NSA analyst"
+        "memories": "",         # free-form mortal + vampire backstory
         "mortal_traits": [],    # list of trait dicts (see traits.py)
 
         # ── Stage 2: Vampire ─────────────────────────────────────────────────
-        "sire": "",
-        "embrace_time": "",
-        "embrace_backstory": "",
         "vampire_traits": [],
 
         # ── Stage 3: Skills ──────────────────────────────────────────────────
@@ -150,4 +144,13 @@ def char_to_dict(char: dict) -> dict:
 def char_from_dict(data: dict) -> dict:
     base = default_character()
     base.update(data)
+    # Migrate old separate text fields into the unified memories field
+    if not base.get("memories"):
+        old_parts = [
+            base.pop(k, "") or ""
+            for k in ("mortal_history", "beliefs", "connections", "embrace_backstory")
+        ]
+        merged = "\n\n".join(p for p in old_parts if p)
+        if merged:
+            base["memories"] = merged
     return base

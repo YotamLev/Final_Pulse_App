@@ -571,33 +571,33 @@ def _render_trait_list(char: dict, trait_list_key: str, section_label: str) -> N
 
 # ── Stage 1: Mortal ───────────────────────────────────────────────────────────
 
+_MEMORIES_PLACEHOLDER = (
+    "Where were you born, and in what era? What did you do for a living?\n"
+    "What shaped you — events, losses, turning points? What did you believe in?\n"
+    "Who matters to you?\n\n"
+    "Who was your Sire, and when and how did they Embrace you?\n"
+    "Were you recruited, seduced, or taken by surprise?\n"
+    "What were you told — and what weren't you told?"
+)
+
+
 def _stage_mortal(char: dict) -> None:
     section_header("Stage 1 — Who Were You?")
-    info_box(
-        "Think about: childhood, adulthood, job, hobbies, life-changing events, "
-        "personality, mannerisms, beliefs. All fields are optional — fill in what inspires you."
-    )
+    info_box("All fields are optional — fill in what inspires you. Everything can be edited later.")
     _render_quickstart_panel(char)
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([2, 1])
     with col1:
-        char["name"] = st.text_input("Character Name", value=char["name"], key="s1_name")
-        char["birthplace"] = st.text_input("Birth Place", value=char["birthplace"], key="s1_birthplace")
+        char["name"] = st.text_input("Name", value=char.get("name", ""), placeholder="Character name", key="s1_name")
     with col2:
-        char["birthtime"] = st.text_input("Birth Time / Era", value=char["birthtime"], key="s1_birthtime")
+        char["tagline"] = st.text_input("Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="s1_tagline")
 
-    char["mortal_history"] = st.text_area(
-        "Mortal History (who you were as a mortal)",
-        value=char["mortal_history"],
-        height=120,
-        key="s1_history",
-    )
-    char["beliefs"] = st.text_area("Beliefs", value=char["beliefs"], height=80, key="s1_beliefs")
-    char["connections"] = st.text_area(
-        "Important Characters & Connections",
-        value=char["connections"],
-        height=80,
-        key="s1_connections",
+    char["memories"] = st.text_area(
+        "Memories",
+        value=char.get("memories", ""),
+        placeholder=_MEMORIES_PLACEHOLDER,
+        height=200,
+        key="s1_memories",
     )
 
     st.divider()
@@ -624,22 +624,7 @@ def _stage_mortal(char: dict) -> None:
 
 def _stage_vampire(char: dict) -> None:
     section_header("Stage 2 — Your Embrace")
-    info_box("Who Embraced You? When and why? Were you recruited to a Clan?")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        char["sire"] = st.text_input("Sire's Name", value=char["sire"], key="s2_sire")
-    with col2:
-        char["embrace_time"] = st.text_input(
-            "When were you Embraced?", value=char["embrace_time"], key="s2_embrace_time"
-        )
-
-    char["embrace_backstory"] = st.text_area(
-        "The Embrace Story",
-        value=char["embrace_backstory"],
-        height=130,
-        key="s2_backstory",
-    )
+    info_box("Choose traits that reflect your vampiric nature. The Embrace story lives in your Memories from Stage 1.")
 
     st.divider()
     section_header("Vampire Traits")
