@@ -76,7 +76,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Basic Analytical": 2, "Finance": 1, "Mortal Politics": 1,
-            "Basic Manipulation": 2,
+            "Basic Manipulation": 2, "Persuasion": 1,
         },
     },
     "dracul_warlord": {
@@ -131,7 +131,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Basic Manipulation": 2, "Persuasion": 1, "Court Etiquette": 1,
-            "Insight": 2,
+            "Insight": 2, "Deception": 1,
         },
     },
     "nosferatu_spymaster": {
@@ -185,7 +185,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Brawl": 2, "Martial Arts": 1, "Athletics": 1,
-            "Streetwise": 1, "Basic Manipulation": 1, "Guns": 1,
+            "Streetwise": 1, "Basic Manipulation": 1, "Guns": 1, "Intimidation": 1,
         },
     },
     "gangrel_wanderer": {
@@ -212,7 +212,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Awareness": 2, "Survival": 1, "Athletics": 2,
-            "Brawl": 2, "Stealth": 1,
+            "Brawl": 2, "Stealth": 2,
         },
     },
     "malkavian_oracle": {
@@ -293,7 +293,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Curiosity": 2, "Occult": 1,
-            "Basic Analytical": 2, "Medicine": 1, "Logistics": 1,
+            "Basic Analytical": 2, "Medicine": 2, "Logistics": 1,
         },
     },
 }
@@ -302,7 +302,8 @@ QUICKSTARTS: dict[str, dict] = {
 def _apply_quickstart(char: dict, key: str) -> None:
     qs = QUICKSTARTS[key]
     char["name"] = qs.get("name", "")
-    char["mortal_history"] = qs.get("backstory", "")
+    char["tagline"] = qs.get("tagline", "")
+    char["memories"] = qs.get("backstory", "")
     char["clan"] = qs["clan"]
     char["unlocked_disciplines"] = list(qs["disciplines"])
     char["discipline_levels"] = dict(qs.get("discipline_levels", {}))
