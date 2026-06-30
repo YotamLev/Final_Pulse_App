@@ -133,7 +133,8 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Earth Meld", "level": 3, "description": "Pay 1 Blood, sink into and become one with soil. Leave when you wish. Cannot travel in this state.", "requires": None},
             {"name": "Mist Form", "level": 3, "description": "Pay 1 Blood, spend two turns to transform into a cloud of mist — untouchable save by fire and sunlight. Cannot spend more than two scenes as mist.", "requires": None},
             {"name": "Internal Shift", "level": 3, "description": "Move your internal organs at will — shift your heart to dodge a stake, make it seem to pound, terrify onlookers.", "requires": None},
-            {"name": "Fleshcraft", "level": 4, "description": "Pay 2 Blood, take a scene, transform your body: rotate head, relocate limbs, attach organs from other creatures. Up to Protean level simultaneous changes.", "requires": None},
+            {"name": "Fleshcraft", "level": 4, "description": "pay 2 Blood, take a scene, transform your body: rotate your head 180°, move your hands to your belly, even attaching organs from other creatures, like having extra hands or spider eyes. Note that sensory organs offer no sensory input, but muscle, bone, chitin etc. do. wings require a giant bird, and flying with them is very hard. Up to Protean level changes simultaneously.", "requires": None},
+            {"name": "Szlachta", "level": 5, "description": "You can use your Protean powers on your ghouls by touching them. This is very painful. Pay Blood prices as usual.", "requires": None},
         ],
     },
     "Arrete": {
@@ -143,7 +144,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Perfect Recall", "level": 1, "description": "Pay 1 Blood, retroactively remember a detail from something you have seen, heard, or read.", "requires": None},
             {"name": "Borrowed Knowledge", "level": 2, "description": "When feeding from a victim, gain a bonus (1-3 dice) to areas of expertise they had until next feeding.", "requires": None},
             {"name": "The Common Denominator", "level": 2, "description": "Pay 1 Blood, learn any human language for a scene. Pay 2 Blood to decipher any encoded message you can read.", "requires": None},
-            {"name": "Perfectionism", "level": 3, "description": "You can use Willpower to reroll up to 5 dice.", "requires": None},
+            {"name": "Perfectionism", "level": 3, "description": "You can use Willpower to reroll up to 5 dice, instead of 3.", "requires": None},
         ],
     },
     "Necromancy": {
