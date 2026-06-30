@@ -185,7 +185,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Brawl": 2, "Martial Arts": 1, "Athletics": 1,
-            "Streetwise": 1, "Basic Manipulation": 1, "Guns": 1, "Intimidation": 1,
+            "Awareness": 1, "Basic Manipulation": 2, "Guns": 1, "Intimidation": 1,
         },
     },
     "gangrel_wanderer": {
