@@ -449,16 +449,14 @@ def _tab_trackers(char: dict) -> None:
 
     # HP
     st.markdown("### Hit Points")
-    hp_cur = char.get("hp_current", hp_max)
+    hp_cur = max(0, char.get("hp_current", hp_max))
+    char["hp_current"] = hp_cur
     col1, col2, col3 = st.columns([3, 1, 1])
     with col1:
-        display = dots(max(0, hp_cur), hp_max)
-        if hp_cur < 0:
-            display += f" **(In Torpor: {hp_cur})**"
-        st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{display}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{dots(hp_cur, hp_max)}</span>", unsafe_allow_html=True)
         st.caption(f"{hp_cur} / {hp_max}")
     with col2:
-        if st.button("−", key="hp_minus"):
+        if st.button("−", key="hp_minus", disabled=hp_cur <= 0):
             char["hp_current"] = hp_cur - 1
             st.rerun()
     with col3:
@@ -468,13 +466,14 @@ def _tab_trackers(char: dict) -> None:
 
     # Willpower
     st.markdown("### Willpower")
-    wp_cur = char.get("willpower_current", BASE_WILLPOWER)
+    wp_cur = max(0, char.get("willpower_current", BASE_WILLPOWER))
+    char["willpower_current"] = wp_cur
     col1, col2, col3 = st.columns([3, 1, 1])
     with col1:
-        st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{dots(max(0, wp_cur), BASE_WILLPOWER)}</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{dots(wp_cur, BASE_WILLPOWER)}</span>", unsafe_allow_html=True)
         st.caption(f"{wp_cur} / {BASE_WILLPOWER}")
     with col2:
-        if st.button("−", key="wp_minus"):
+        if st.button("−", key="wp_minus", disabled=wp_cur <= 0):
             char["willpower_current"] = wp_cur - 1
             st.rerun()
     with col3:
@@ -482,19 +481,30 @@ def _tab_trackers(char: dict) -> None:
             char["willpower_current"] = min(BASE_WILLPOWER, wp_cur + 1)
             st.rerun()
 
-    # Blood
-    st.markdown("### Blood")
+    # Blood / Hunger
     bl_cur = char.get("blood_current", BASE_BLOOD)
+    _HUNGER_RED = "#ff3030"
+    in_hunger = bl_cur < 0
+    if in_hunger:
+        st.markdown(f"<h3 style='color:{_HUNGER_RED}'>Hunger</h3>", unsafe_allow_html=True)
+    else:
+        st.markdown("### Blood")
     col1, col2, col3 = st.columns([3, 1, 1])
     with col1:
         if bl_cur > 0:
-            display = dots(bl_cur, BASE_BLOOD)
+            track = dots(bl_cur, BASE_BLOOD)
+            st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{track}</span>", unsafe_allow_html=True)
         elif bl_cur == 0:
-            display = "○" * BASE_BLOOD + " **(EMPTY)**"
+            st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{'○' * BASE_BLOOD}</span>", unsafe_allow_html=True)
         else:
-            display = "○" * BASE_BLOOD + f" **({bl_cur})**"
-        st.markdown(f"<span style='font-size:1.4rem;letter-spacing:0.06em'>{display}</span>", unsafe_allow_html=True)
-        st.caption(f"{bl_cur} / {BASE_BLOOD}")
+            empty = "○" * BASE_BLOOD
+            st.markdown(
+                f"<span style='font-size:1.4rem;letter-spacing:0.06em;color:{_HUNGER_RED}'>"
+                f"{empty} +{abs(bl_cur)}</span>",
+                unsafe_allow_html=True,
+            )
+        cap_style = f"color:{_HUNGER_RED}" if in_hunger else ""
+        st.markdown(f"<span style='font-size:0.8rem;{cap_style}'>{bl_cur} / {BASE_BLOOD}</span>", unsafe_allow_html=True)
         if bl_cur <= -4:
             st.warning("Stigmata threshold reached (if that trait is active).")
     with col2:
@@ -718,9 +728,9 @@ def _generate_html(char: dict) -> str:
 
 <div class="section">
 <h2>Trackers</h2>
-<p><strong>HP:</strong> <span class="tracker">{dot_html(max(0,hp_cur), hp_max)}</span> ({hp_cur}/{hp_max})</p>
-<p><strong>Willpower:</strong> <span class="tracker">{dot_html(max(0,wp_cur), 10)}</span> ({wp_cur}/10)</p>
-<p><strong>Blood:</strong> <span class="tracker">{dot_html(max(0,bl_cur), 10)}</span> ({bl_cur}/10)</p>
+<p><strong>HP:</strong> <span class="tracker">{dot_html(max(0,hp_cur), hp_max)}</span> ({max(0,hp_cur)}/{hp_max})</p>
+<p><strong>Willpower:</strong> <span class="tracker">{dot_html(max(0,wp_cur), 10)}</span> ({max(0,wp_cur)}/10)</p>
+<p><strong>{'Hunger' if bl_cur < 0 else 'Blood'}:</strong> <span class="tracker" {'style="color:#ff3030"' if bl_cur < 0 else ''}>{dot_html(max(0,bl_cur), 10)}{(' +' + str(abs(bl_cur))) if bl_cur < 0 else ''}</span> ({bl_cur}/10)</p>
 </div>
 
 <div class="section">
