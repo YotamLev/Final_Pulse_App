@@ -34,6 +34,7 @@ from pulse.models.character import (
     get_trait_count,
     log_xp_spend,
     log_xp_refund,
+    normalize_character,
 )
 from pulse.ui.components import dots, section_header, info_box
 
@@ -322,10 +323,10 @@ def _apply_quickstart(char: dict, key: str) -> None:
             n = qs["skill_dots"].get(skill_name, 0)
             for d in range(n):
                 cost = xp_cost_for_next_dot(skill_name, tree_name, {skill_name: d})
-                log_xp_spend(char, f"{skill_name} +1 dot", cost)
+                log_xp_spend(char, f"{skill_name} +1 dot", cost, skill=skill_name)
     for disc_name, level in qs.get("discipline_levels", {}).items():
         for lv in range(level):
-            log_xp_spend(char, f"{disc_name} level {lv} → {lv + 1}", xp_cost_for_disc_level(lv))
+            log_xp_spend(char, f"{disc_name} level {lv} → {lv + 1}", xp_cost_for_disc_level(lv), disc=disc_name, from_level=lv, to_level=lv + 1)
 
 
 def _render_quickstart_panel(char: dict) -> None:
@@ -419,6 +420,7 @@ def _render_quickstart_panel(char: dict) -> None:
 
 
 def render_wizard(char: dict) -> None:
+    normalize_character(char)
     stage = char["wizard_stage"]
 
     # Stage navigator
@@ -810,12 +812,12 @@ def _render_skill_tree(char: dict, tree_name: str, budget_remaining: int) -> Non
                 if st.button("−", key=rem_key, disabled=not can_rem):
                     refund = get_static_base(skill_name, tree_name) + d
                     own[skill_name] = d - 1
-                    log_xp_refund(char, f"{skill_name} −1 dot", refund, cancel_description=f"{skill_name} +1 dot")
+                    log_xp_refund(char, f"{skill_name} −1 dot", refund, skill=skill_name)
                     st.rerun()
             with c2:
                 if st.button("+", key=add_key, disabled=not can_add):
                     own[skill_name] = d + 1
-                    log_xp_spend(char, f"{skill_name} +1 dot", xp_next)
+                    log_xp_spend(char, f"{skill_name} +1 dot", xp_next, skill=skill_name)
                     st.rerun()
 
         st.markdown("---" if depth == 0 else "")
@@ -844,11 +846,11 @@ def _render_custom_skills(char: dict, budget_remaining: int) -> None:
         with col3:
             if st.button("−", key=f"rem_custom_{i}", disabled=not can_rem):
                 own[cname] = d - 1
-                log_xp_refund(char, f"{cname} −1 dot", d, cancel_description=f"{cname} +1 dot")
+                log_xp_refund(char, f"{cname} −1 dot", d, skill=cname)
                 st.rerun()
             if st.button("+", key=f"add_custom_{i}", disabled=not can_add):
                 own[cname] = d + 1
-                log_xp_spend(char, f"{cname} +1 dot", xp_next)
+                log_xp_spend(char, f"{cname} +1 dot", xp_next, skill=cname)
                 st.rerun()
         with col4:
             if st.button("✕", key=f"del_custom_{i}"):
@@ -993,13 +995,13 @@ def _render_discipline_editor(char: dict, disc_name: str, budget_remaining: int)
                     powers.pop()
                 refund = level
                 char["discipline_levels"][disc_name] = level - 1
-                log_xp_refund(char, f"{disc_name} level {level} → {level-1}", refund, cancel_description=f"{disc_name} level {level-1} → {level}")
+                log_xp_refund(char, f"{disc_name} level {level} → {level-1}", refund, disc=disc_name, from_level=level-1, to_level=level)
                 st.rerun()
         with col_plus_d:
             if st.button("+", key=f"disc_plus_{disc_name}", disabled=not can_up):
                 new_level = level + 1
                 char["discipline_levels"][disc_name] = new_level
-                log_xp_spend(char, f"{disc_name} level {level} → {new_level}", xp_up)
+                log_xp_spend(char, f"{disc_name} level {level} → {new_level}", xp_up, disc=disc_name, from_level=level, to_level=new_level)
                 # Automatically pick the first available power if only one choice
                 available = get_available_powers(disc_name, new_level, powers)
                 if len(available) == 1:

@@ -18,6 +18,7 @@ from pulse.models.character import (
     char_to_dict,
     char_from_dict,
     get_hp_max,
+    normalize_character,
     log_xp_spend,
     log_xp_refund,
     CREATION_SKILL_XP,
@@ -45,63 +46,72 @@ def fresh() -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestXPLogRefund:
-    def test_refund_cancels_matching_spend(self):
+    def test_structural_skill_refund_cancels_spend(self):
         c = fresh()
-        log_xp_spend(c, "Guns +1 dot", 1)
-        assert len(c["xp_log"]) == 1
-        log_xp_refund(c, "Guns −1 dot", 1, cancel_description="Guns +1 dot")
+        log_xp_spend(c, "Guns +1 dot", 1, skill="Guns")
+        log_xp_refund(c, "Guns −1 dot", 1, skill="Guns")
+        assert len(c["xp_log"]) == 0
+
+    def test_structural_disc_refund_cancels_spend(self):
+        c = fresh()
+        log_xp_spend(c, "Auspex level 0 → 1", 1, disc="Auspex", from_level=0, to_level=1)
+        log_xp_refund(c, "Auspex level 1 → 0", 1, disc="Auspex", from_level=0, to_level=1)
+        assert len(c["xp_log"]) == 0
+
+    def test_structural_refund_ignores_description_format(self):
+        """Structural match works even if description strings differ."""
+        c = fresh()
+        log_xp_spend(c, "Guns dot 1", 1, skill="Guns")   # different description
+        log_xp_refund(c, "removing Guns", 1, skill="Guns")
         assert len(c["xp_log"]) == 0
 
     def test_refund_without_match_appends_refund_entry(self):
         c = fresh()
-        log_xp_refund(c, "Guns −1 dot", 1, cancel_description="Guns +1 dot")
+        log_xp_refund(c, "Guns −1 dot", 1, skill="Guns")
         assert len(c["xp_log"]) == 1
         assert c["xp_log"][0]["cost"] == -1
         assert "[Refund]" in c["xp_log"][0]["description"]
 
-    def test_refund_cancels_most_recent_match_only(self):
-        """Two identical spend entries — refund removes only the last one."""
+    def test_structural_refund_cancels_most_recent_skill_match(self):
+        """Two spend entries for same skill — refund removes only the last one."""
         c = fresh()
-        log_xp_spend(c, "Guns +1 dot", 1)
-        log_xp_spend(c, "Brawl +1 dot", 1)
-        log_xp_spend(c, "Guns +1 dot", 2)  # second Guns entry
-        log_xp_refund(c, "Guns −1 dot", 2, cancel_description="Guns +1 dot")
-        # Should remove the LAST "Guns +1 dot" (cost 2), leaving the first (cost 1) + Brawl
+        log_xp_spend(c, "Guns +1 dot", 1, skill="Guns")
+        log_xp_spend(c, "Brawl +1 dot", 1, skill="Brawl")
+        log_xp_spend(c, "Guns +1 dot", 2, skill="Guns")
+        log_xp_refund(c, "Guns −1 dot", 2, skill="Guns")
         assert len(c["xp_log"]) == 2
-        remaining_descs = [e["description"] for e in c["xp_log"]]
-        assert "Guns +1 dot" in remaining_descs
-        assert "Brawl +1 dot" in remaining_descs
+        skills = [e.get("skill") for e in c["xp_log"]]
+        assert "Guns" in skills   # first entry survives
+        assert "Brawl" in skills
 
     def test_refund_only_cancels_positive_cost_entries(self):
-        """Refund entries (negative cost) should not be cancelled by another refund."""
+        """Refund entries (negative cost) are not cancelled by structural match."""
         c = fresh()
-        c["xp_log"] = [{"description": "Guns +1 dot", "cost": -1}]  # already a refund
-        log_xp_refund(c, "Guns −1 dot", 1, cancel_description="Guns +1 dot")
-        # The existing entry has cost < 0 so it should NOT be cancelled
+        c["xp_log"] = [{"description": "Guns +1 dot", "skill": "Guns", "cost": -1}]
+        log_xp_refund(c, "Guns −1 dot", 1, skill="Guns")
         assert len(c["xp_log"]) == 2
 
-    def test_no_cancel_description_always_appends(self):
+    def test_legacy_cancel_description_fallback(self):
+        """Old log entries without structured fields still cancel by description."""
         c = fresh()
-        log_xp_spend(c, "Guns +1 dot", 1)
-        log_xp_refund(c, "Guns −1 dot", 1, cancel_description=None)
-        assert len(c["xp_log"]) == 2
-
-    def test_discipline_spend_and_cancel_descriptions_match(self):
-        """The format seeded by _apply_quickstart must match what the UI uses to cancel."""
-        c = fresh()
-        disc_name = "Auspex"
-        # Seed format used in _apply_quickstart
-        log_xp_spend(c, f"{disc_name} level 0 → 1", 1)
-        # Cancel format used in wizard._render_discipline_editor on level decrease
-        log_xp_refund(c, f"{disc_name} level 1 → 0", 1, cancel_description=f"{disc_name} level 0 → 1")
-        assert len(c["xp_log"]) == 0
-
-    def test_skill_spend_and_cancel_descriptions_match(self):
-        """Skill spend format must match cancel_description on removal."""
-        c = fresh()
-        log_xp_spend(c, "Guns +1 dot", 1)
+        c["xp_log"] = [{"description": "Guns +1 dot", "cost": 1}]  # no 'skill' key
         log_xp_refund(c, "Guns −1 dot", 1, cancel_description="Guns +1 dot")
         assert len(c["xp_log"]) == 0
+
+    def test_no_match_args_always_appends(self):
+        c = fresh()
+        log_xp_spend(c, "Guns +1 dot", 1, skill="Guns")
+        log_xp_refund(c, "Guns −1 dot", 1)  # no match args at all
+        assert len(c["xp_log"]) == 2
+
+    def test_disc_refund_matches_exact_level_transition(self):
+        """Disc refund only cancels the exact from→to transition, not others."""
+        c = fresh()
+        log_xp_spend(c, "Auspex level 0 → 1", 1, disc="Auspex", from_level=0, to_level=1)
+        log_xp_spend(c, "Auspex level 1 → 2", 2, disc="Auspex", from_level=1, to_level=2)
+        log_xp_refund(c, "Auspex level 2 → 1", 2, disc="Auspex", from_level=1, to_level=2)
+        assert len(c["xp_log"]) == 1
+        assert c["xp_log"][0]["from_level"] == 0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -119,18 +129,41 @@ class TestHPEdgeCases:
         c["discipline_powers"]["Fortitude"] = []  # Toughness removed
         assert get_hp_max(c) == 10
 
-    def test_hp_current_can_exceed_hp_max_after_toughness_removed(self):
-        """hp_current is NOT automatically clamped when hp_max decreases — known gap."""
+    def test_hp_clamped_to_max_after_toughness_removed(self):
+        """normalize_character clamps hp_current down when hp_max decreases."""
         c = fresh()
         c["discipline_levels"]["Fortitude"] = 2
         c["discipline_powers"]["Fortitude"] = ["Toughness"]
         c["hp_current"] = 14  # at full health with Toughness
 
         c["discipline_powers"]["Fortitude"] = []  # Toughness removed
-        new_max = get_hp_max(c)
-        assert new_max == 10
-        # hp_current is now above hp_max — the UI should clamp on display
-        assert c["hp_current"] > new_max
+        assert get_hp_max(c) == 10
+        normalize_character(c)
+        assert c["hp_current"] == 10
+
+    def test_normalize_clamps_hp_above_max(self):
+        c = fresh()
+        c["hp_current"] = 999
+        normalize_character(c)
+        assert c["hp_current"] == get_hp_max(c)
+
+    def test_normalize_clamps_wp_above_max(self):
+        c = fresh()
+        c["willpower_current"] = 999
+        normalize_character(c)
+        assert c["willpower_current"] == BASE_WILLPOWER
+
+    def test_normalize_clamps_hp_below_zero(self):
+        c = fresh()
+        c["hp_current"] = -5
+        normalize_character(c)
+        assert c["hp_current"] == 0
+
+    def test_normalize_does_not_clamp_blood_below_zero(self):
+        c = fresh()
+        c["blood_current"] = -5
+        normalize_character(c)
+        assert c["blood_current"] == -5  # blood/Hunger stays negative
 
     def test_hp_max_with_iron_constitution_plus_fortitude_5_toughness(self):
         c = fresh()

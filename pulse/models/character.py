@@ -66,10 +66,8 @@ def default_character() -> dict:
 def get_hp_max(char: dict) -> int:
     """Max HP = 10 + 1 (Iron Constitution) + 2 × Fortitude level (if Toughness acquired)."""
     hp = BASE_HP
-    # Iron Constitution mortal trait
     if any(t["key"] == "iron_constitution" for t in char.get("mortal_traits", [])):
         hp += 1
-    # Fortitude Toughness power
     fort_level = char.get("discipline_levels", {}).get("Fortitude", 0)
     if fort_level > 0 and "Toughness" in char.get("discipline_powers", {}).get("Fortitude", []):
         hp += 2 * fort_level
@@ -102,7 +100,6 @@ def get_earned_xp_available(char: dict) -> int:
     """Earned XP not yet spoken for by post-creation spending."""
     skill_spent = get_creation_skill_xp_spent(char)
     disc_spent = get_creation_disc_xp_spent(char)
-    creation_spent = min(skill_spent, CREATION_SKILL_XP) + min(disc_spent, CREATION_DISC_XP)
     overflow = max(0, skill_spent - CREATION_SKILL_XP) + max(0, disc_spent - CREATION_DISC_XP)
     return char.get("earned_xp", 0) - overflow
 
@@ -123,21 +120,97 @@ def can_spend_disc_xp(char: dict, cost: int) -> bool:
     return cost <= creation_remaining + earned
 
 
-# ── Log helpers ───────────────────────────────────────────────────────────────
+# ── XP log helpers ────────────────────────────────────────────────────────────
+#
+# Each spend entry is a dict with at minimum {"description", "cost"}.
+# Structured fields are added when the caller supplies them:
+#   skill      – skill name (for skill-dot spends)
+#   disc       – discipline name (for disc-level spends)
+#   from_level – level before the raise  (disc only)
+#   to_level   – level after the raise   (disc only)
+#
+# log_xp_refund matches structurally first (immune to description string
+# changes), then falls back to cancel_description for legacy entries.
 
-def log_xp_spend(char: dict, description: str, cost: int) -> None:
-    char.setdefault("xp_log", []).append({"description": description, "cost": cost})
+def log_xp_spend(
+    char: dict,
+    description: str,
+    cost: int,
+    *,
+    skill: str | None = None,
+    disc: str | None = None,
+    from_level: int | None = None,
+    to_level: int | None = None,
+) -> None:
+    entry: dict = {"description": description, "cost": cost}
+    if skill is not None:
+        entry["skill"] = skill
+    if disc is not None:
+        entry["disc"] = disc
+    if from_level is not None:
+        entry["from_level"] = from_level
+    if to_level is not None:
+        entry["to_level"] = to_level
+    char.setdefault("xp_log", []).append(entry)
 
 
-def log_xp_refund(char: dict, description: str, refund: int, cancel_description: str | None = None) -> None:
+def log_xp_refund(
+    char: dict,
+    description: str,
+    refund: int,
+    *,
+    skill: str | None = None,
+    disc: str | None = None,
+    from_level: int | None = None,
+    to_level: int | None = None,
+    cancel_description: str | None = None,
+) -> None:
+    """Remove the most recent matching spend entry, or append a [Refund] fallback."""
     log = char.setdefault("xp_log", [])
-    if cancel_description:
+
+    # 1. Structural match: skill dot
+    if skill is not None:
         for i in range(len(log) - 1, -1, -1):
-            entry = log[i]
-            if entry.get("description") == cancel_description and entry.get("cost", 0) > 0:
+            e = log[i]
+            if e.get("skill") == skill and e.get("cost", 0) > 0:
                 log.pop(i)
                 return
+
+    # 2. Structural match: discipline level transition
+    if disc is not None and from_level is not None and to_level is not None:
+        for i in range(len(log) - 1, -1, -1):
+            e = log[i]
+            if (
+                e.get("disc") == disc
+                and e.get("from_level") == from_level
+                and e.get("to_level") == to_level
+                and e.get("cost", 0) > 0
+            ):
+                log.pop(i)
+                return
+
+    # 3. Legacy description-string fallback (old save files / untagged entries)
+    if cancel_description is not None:
+        for i in range(len(log) - 1, -1, -1):
+            e = log[i]
+            if e.get("description") == cancel_description and e.get("cost", 0) > 0:
+                log.pop(i)
+                return
+
     log.append({"description": f"[Refund] {description}", "cost": -refund})
+
+
+# ── Normalization ─────────────────────────────────────────────────────────────
+
+def normalize_character(char: dict) -> None:
+    """Enforce hard invariants on the character dict in-place.
+
+    Safe to call on every render — idempotent, no side effects beyond clamping.
+    """
+    hp_max = get_hp_max(char)
+    char["hp_current"] = max(0, min(char.get("hp_current", hp_max), hp_max))
+    char["willpower_current"] = max(0, min(char.get("willpower_current", BASE_WILLPOWER), BASE_WILLPOWER))
+    # blood_current is intentionally unclamped (goes negative = Hunger)
 
 
 # ── Serialisation helpers ─────────────────────────────────────────────────────
@@ -164,4 +237,5 @@ def char_from_dict(data: dict) -> dict:
     saved_stage = base.get("wizard_stage", 1)
     if saved_stage in old_stage_map:
         base["wizard_stage"] = old_stage_map[saved_stage]
+    normalize_character(base)
     return base

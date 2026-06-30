@@ -36,6 +36,7 @@ from pulse.models.character import (
     can_spend_disc_xp,
     log_xp_spend,
     log_xp_refund,
+    normalize_character,
     char_to_dict,
     char_from_dict,
 )
@@ -45,6 +46,8 @@ from pulse.ui.components import dots, section_header, info_box, render_trait_pil
 # ── Main entry ────────────────────────────────────────────────────────────────
 
 def render_character_sheet(char: dict) -> None:
+    normalize_character(char)
+
     if not char.get("wizard_complete") and not char.get("name"):
         st.info("Complete the Character Creator to populate the sheet, or upload a saved character below.")
 
@@ -266,12 +269,12 @@ def _sheet_skill_tree(char: dict, tree_name: str, earned_avail: int) -> None:
                 if st.button("−", key=f"sheet_rem_{tree_name}_{skill_name}", disabled=not can_rem):
                     refund = get_static_base(skill_name, tree_name) + d
                     own[skill_name] = d - 1
-                    log_xp_refund(char, f"{skill_name} −1 dot", refund, cancel_description=f"{skill_name} +1 dot")
+                    log_xp_refund(char, f"{skill_name} −1 dot", refund, skill=skill_name)
                     st.rerun()
             with c2:
                 if st.button("+", key=f"sheet_add_{tree_name}_{skill_name}", disabled=not can_add):
                     own[skill_name] = d + 1
-                    log_xp_spend(char, f"{skill_name} +1 dot", xp_next)
+                    log_xp_spend(char, f"{skill_name} +1 dot", xp_next, skill=skill_name)
                     st.rerun()
 
 
@@ -302,12 +305,12 @@ def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("−", key=f"sheet_rem_custom_{i}", disabled=not can_rem):
-                    log_xp_refund(char, f"{cname} −1 dot", d, cancel_description=f"{cname} +1 dot")
+                    log_xp_refund(char, f"{cname} −1 dot", d, skill=cname)
                     own[cname] = d - 1
                     st.rerun()
             with c2:
                 if st.button("+", key=f"sheet_add_custom_{i}", disabled=not can_add):
-                    log_xp_spend(char, f"{cname} +1 dot", xp_next)
+                    log_xp_spend(char, f"{cname} +1 dot", xp_next, skill=cname)
                     own[cname] = d + 1
                     st.rerun()
         with col4:
@@ -389,13 +392,13 @@ def _sheet_disc_editor(char: dict, disc_name: str) -> None:
                 char["discipline_levels"][disc_name] = level - 1
                 if powers:
                     powers.pop()
-                log_xp_refund(char, f"{disc_name} level {level} → {level - 1}", refund, cancel_description=f"{disc_name} level {level - 1} → {level}")
+                log_xp_refund(char, f"{disc_name} level {level} → {level - 1}", refund, disc=disc_name, from_level=level - 1, to_level=level)
                 st.rerun()
         with col_p:
             if st.button("+", key=f"sheet_disc_plus_{disc_name}", disabled=not can_up):
                 new_lv = level + 1
                 char["discipline_levels"][disc_name] = new_lv
-                log_xp_spend(char, f"{disc_name} level {level} → {new_lv}", xp_up)
+                log_xp_spend(char, f"{disc_name} level {level} → {new_lv}", xp_up, disc=disc_name, from_level=level, to_level=new_lv)
                 available = get_available_powers(disc_name, new_lv, powers)
                 if len(available) == 1:
                     powers.append(available[0]["name"])
