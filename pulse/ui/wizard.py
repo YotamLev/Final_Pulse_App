@@ -469,9 +469,9 @@ def _cost_badge(cost) -> str:
         return "<span style='background:#2a2010;color:#9a8060;padding:0.1rem 0.4rem;border-radius:2px;font-size:0.75rem'>variable</span>"
     sign = "+" if cost >= 0 else ""
     if cost > 0:
-        bg, fg = "#2a0a10", "#c41e3a"
-    elif cost < 0:
         bg, fg = "#0a2010", "#4a9a6a"
+    elif cost < 0:
+        bg, fg = "#2a0a10", "#c41e3a"
     else:
         bg, fg = "#1a1a24", "#9a8f82"
     return (
@@ -502,11 +502,11 @@ def _render_trait_card(char: dict, trait_list_key: str, trait_def: dict, form_ke
     if is_expanded:
         border = "#7a5a20"
     elif is_selected:
-        border = "#2a5a2a" if (cost or 0) <= 0 else "#5a2a2a"
+        border = "#5a2a2a" if (cost or 0) < 0 else "#2a5a2a"
     else:
         border = "#2a1a24"
 
-    name_color = "#c9bdb0" if not is_selected else ("#8acf8a" if (cost or 0) <= 0 else "#cf8a8a")
+    name_color = "#c9bdb0" if not is_selected else ("#cf8a8a" if (cost or 0) < 0 else "#8acf8a")
     badge = _cost_badge(cost)
 
     st.markdown(
