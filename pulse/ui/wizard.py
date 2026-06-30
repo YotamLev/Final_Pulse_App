@@ -239,7 +239,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Basic Analytical": 2, "Insight": 2,
-            "Curiosity": 2, "Awareness": 1, "Basic Manipulation": 2, "Dodge":1, "Stealth": 1,
+            "Curiosity": 2, "Awareness": 1, "Basic Manipulation": 2, "Dodge": 1, "Stealth": 1,
         },
     },
     "tremere_warlock": {
@@ -293,7 +293,7 @@ QUICKSTARTS: dict[str, dict] = {
         },
         "skill_dots": {
             "Curiosity": 2, "Occult": 1,
-            "Basic Analytical": 2, "Medicine": 1, "Logistics":1
+            "Basic Analytical": 2, "Medicine": 1, "Logistics": 1,
         },
     },
 }
