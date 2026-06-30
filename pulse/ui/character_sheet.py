@@ -389,13 +389,13 @@ def _sheet_disc_editor(char: dict, disc_name: str) -> None:
                 char["discipline_levels"][disc_name] = level - 1
                 if powers:
                     powers.pop()
-                log_xp_refund(char, f"{disc_name} level −1", refund, cancel_description=f"{disc_name} level +1 (→{level})")
+                log_xp_refund(char, f"{disc_name} level {level} → {level - 1}", refund, cancel_description=f"{disc_name} level {level - 1} → {level}")
                 st.rerun()
         with col_p:
             if st.button("+", key=f"sheet_disc_plus_{disc_name}", disabled=not can_up):
                 new_lv = level + 1
                 char["discipline_levels"][disc_name] = new_lv
-                log_xp_spend(char, f"{disc_name} level +1 (→{new_lv})", xp_up)
+                log_xp_spend(char, f"{disc_name} level {level} → {new_lv}", xp_up)
                 available = get_available_powers(disc_name, new_lv, powers)
                 if len(available) == 1:
                     powers.append(available[0]["name"])
