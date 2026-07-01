@@ -106,7 +106,7 @@ DISCIPLINES: dict[str, dict] = {
         "powers": [
             {"name": "Vigor", "level": 1, "description": "Add Potence to rolls involving strength and muscles: swinging a sword, jumping, bending metal.", "requires": None},
             {"name": "Shockwave", "level": 2, "description": "Pay 1 Blood, your attacks count against all in close-range to you instead of choosing 1 enemy.", "requires": None},
-            {"name": "Bloody Strangle", "level": 2, "description": "Pay 1 Blood while grappling a target — that target cannot use supernatural powers as long as you hold it.", "requires": None},
+            {"name": "Bloody Strangle", "level": 2, "description": "Pay 1 Blood while grappling a target — that target cannot use supernatural powers, except Potence and Fortitude, as long as you hold it.", "requires": None},
             {"name": "Brutal Feed", "level": 2, "description": "Can drain an entire mortal in 1 turn.", "requires": None},
         ],
     },
