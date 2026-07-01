@@ -143,7 +143,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Calculating", "level": 1, "description": "Add your Arrete to mental actions requiring intelligence, typically in the Scheming Skill Tree.", "requires": None},
             {"name": "Perfect Recall", "level": 1, "description": "Pay 1 Blood, retroactively remember a detail from something you have seen, heard, or read.", "requires": None},
             {"name": "Borrowed Knowledge", "level": 2, "description": "When feeding from a victim, gain a bonus (1-3 dice) to areas of expertise they had until next feeding.", "requires": None},
-            {"name": "The Common Denominator", "level": 2, "description": "Pay 1 Blood, learn any human language for a scene. Pay 2 Blood to decipher any encoded message you can read.", "requires": None},
+            {"name": "The Common Denominator", "level": 2, "description": "Pay 1 Blood, learn any human language for a scene. Pay 2 Blood to decipher any encoded message you can access.", "requires": None},
             {"name": "Perfectionism", "level": 3, "description": "You can use Willpower to reroll up to 5 dice, instead of 3.", "requires": None},
         ],
     },
