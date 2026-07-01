@@ -58,21 +58,15 @@ CARD_EVENTS: dict[str, dict] = {
     },
 }
 
-CARD_VALUES: dict[str, str] = {
-    "2": "Moderate opportunity",
-    "3": "Moderate opportunity",
-    "4": "Moderate opportunity",
-    "5": "Great opportunity",
-    "6": "Great opportunity",
-    "7": "Great opportunity",
-    "8": "Rare opportunity",
-    "9": "Rare opportunity",
-    "10": "Rare opportunity",
-    "Jack": "Less risk than usual",
-    "Queen": "Can add another card (even another player's) for a great bonus",
-    "King": "Can add a dot to an asset",
-    "Ace": "Can interrupt a rival's action",
-}
+VALUE_TIERS: list[dict] = [
+    {"icon": "♟", "label": "2 – 4",  "meaning": "Moderate opportunity"},
+    {"icon": "♞", "label": "5 – 7",  "meaning": "Great opportunity"},
+    {"icon": "♝", "label": "8 – 10", "meaning": "Rare opportunity"},
+    {"icon": "♜", "label": "Jack",   "meaning": "Less risk than usual"},
+    {"icon": "♛", "label": "Queen",  "meaning": "Can add another card (even another player's) for a great bonus"},
+    {"icon": "♚", "label": "King",   "meaning": "Can add a dot to an asset"},
+    {"icon": "🂡", "label": "Ace",    "meaning": "Can interrupt a rival's action"},
+]
 
 ASSET_TYPES = ["Institution", "Servants", "Object", "Haven", "Herd"]
 
@@ -106,41 +100,76 @@ def render_struggle(char: dict) -> None:
 
 def _tab_card_events() -> None:
     section_header("Card Events")
-    info_box("Select a suit and card value to see the type of event it represents.")
+    info_box("Pick a suit, then pick a value tier to read the event.")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        suit = st.selectbox("Suit", list(CARD_EVENTS.keys()), format_func=lambda s: f"{CARD_EVENTS[s]['icon']} {s}", key="card_suit")
-    with col2:
-        value = st.selectbox("Value", list(CARD_VALUES.keys()), key="card_value")
+    suit_keys = list(CARD_EVENTS.keys())
 
-    ev = CARD_EVENTS[suit]
-    val_meaning = CARD_VALUES[value]
+    # ── Suit row ──────────────────────────────────────────────────────────────
+    suit_cols = st.columns(len(suit_keys))
+    for i, s in enumerate(suit_keys):
+        ev = CARD_EVENTS[s]
+        sel = st.session_state.get("card_suit_sel") == s
+        with suit_cols[i]:
+            if st.button(
+                f"{ev['icon']}  {s}",
+                key=f"suit_btn_{s}",
+                type="primary" if sel else "secondary",
+                use_container_width=True,
+            ):
+                st.session_state["card_suit_sel"] = s
+                st.session_state.pop("card_tier_sel", None)
+                st.rerun()
 
-    st.markdown(
-        f"<div style='background:#1a0812;border:1px solid #5c1a28;border-radius:4px;"
-        f"padding:1.2rem 1.5rem;margin-top:0.8rem'>"
-        f"<div style='font-size:2.5rem;text-align:center'>{ev['icon']} {value}</div>"
-        f"<h3 style='color:#c41e3a;text-align:center;margin:0.3rem 0'>{suit} — {ev['theme']}</h3>"
-        f"<p style='text-align:center;color:#9a8f82;font-style:italic'>{val_meaning}</p>"
-        f"<hr style='border-color:#4a2030'>"
-        f"<p>{ev['description']}</p>"
-        f"<ul>{''.join(f'<li>{e}</li>' for e in ev['examples'])}</ul>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
+    suit_sel = st.session_state.get("card_suit_sel")
 
-    st.divider()
-    st.markdown("### General Rules Reminder")
-    st.markdown("""
-- **2–4**: Moderate opportunity
-- **5–7**: Great opportunity
-- **8–10**: A rare opportunity
-- **Jack**: Less risk than usual
-- **Queen**: Can add another card, even another player's, for a great bonus
-- **King**: Can add a dot to an asset
-- **Ace**: Can interrupt a rival's action
-""")
+    # ── Card preview ──────────────────────────────────────────────────────────
+    tier_sel_idx = st.session_state.get("card_tier_sel")
+    tier = VALUE_TIERS[tier_sel_idx] if tier_sel_idx is not None else None
+
+    if suit_sel:
+        ev = CARD_EVENTS[suit_sel]
+        suit_icon = ev["icon"]
+        value_icon = tier["icon"] if tier else "?"
+        value_label = tier["label"] if tier else "—"
+        value_meaning = tier["meaning"] if tier else "Choose a value below"
+
+        st.markdown(
+            f"<div style='background:#1a0812;border:1px solid #5c1a28;border-radius:4px;"
+            f"padding:1.2rem 1.5rem;margin:0.9rem 0'>"
+            f"<div style='font-size:3rem;text-align:center;letter-spacing:0.15em'>"
+            f"{suit_icon} <span style='color:#9a8f82'>{value_icon}</span></div>"
+            f"<h3 style='color:#c41e3a;text-align:center;margin:0.3rem 0'>"
+            f"{suit_sel} — {ev['theme']}</h3>"
+            f"<p style='text-align:center;color:#9a8f82;font-style:italic'>"
+            f"{value_label} &nbsp;·&nbsp; {value_meaning}</p>"
+            f"<hr style='border-color:#4a2030'>"
+            f"<p>{ev['description']}</p>"
+            f"<ul>{''.join(f'<li>{e}</li>' for e in ev['examples'])}</ul>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            "<div style='background:#0e080c;border:1px dashed #3d2030;border-radius:4px;"
+            "padding:2rem;text-align:center;color:#5c4050;margin:0.9rem 0'>"
+            "Pick a suit above</div>",
+            unsafe_allow_html=True,
+        )
+
+    # ── Value tier row ────────────────────────────────────────────────────────
+    tier_cols = st.columns(len(VALUE_TIERS))
+    for i, t in enumerate(VALUE_TIERS):
+        sel = tier_sel_idx == i
+        with tier_cols[i]:
+            if st.button(
+                f"{t['icon']}\n{t['label']}",
+                key=f"tier_btn_{i}",
+                type="primary" if sel else "secondary",
+                use_container_width=True,
+                disabled=suit_sel is None,
+            ):
+                st.session_state["card_tier_sel"] = i
+                st.rerun()
 
 
 # ── Schemes ───────────────────────────────────────────────────────────────────
