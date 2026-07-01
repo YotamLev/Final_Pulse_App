@@ -53,7 +53,7 @@ DISCIPLINES: dict[str, dict] = {
     "Dominate": {
         "image": "Data/Images/Dominate_symbol.png",
         "powers": [
-            {"name": "Draw On Instinct", "level": 1, "description": "Cause a mortal to obey a simple command that is some form of: Flee (run away), Freeze (kneel), or Fight (shoot that guy).", "requires": None},
+            {"name": "Draw On Instinct", "level": 1, "description": "Cause a mortal to obey a simple command that is some form of: Flee ('run away!'), Freeze ('kneel before me,'), or Fight ('shoot that guy!').", "requires": None},
             {"name": "Cloud Mind", "level": 1, "description": "Cause a mortal to forget the last 5 minutes and the next 2 minutes.", "requires": None},
             {"name": "Mesmerize", "level": 2, "description": "Pay 1 Blood, target a mortal (roll Dominate if they resist), cause a simple task for about a scene. Task can't be suicidal. Mortals remember the task but not why.", "requires": None},
             {"name": "Modify Memory", "level": 2, "description": "Pay 1 Blood, target a mortal, roll Dominate, alter memories. Cannot extract information.", "requires": None},
