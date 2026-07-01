@@ -17,7 +17,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Impulse", "level": 1, "description": "Ask 1 question per scene about: danger, emotions, or specific secrets.", "requires": None},
             {"name": "Read Aura", "level": 2, "description": "Pay 1 Blood, roll Auspex — margin is number of questions you ask about a target creature, or skim surface thoughts of people nearby.", "requires": None},
             {"name": "Spirit's Touch", "level": 2, "description": "Pay 1 Blood, roll Auspex — margin is number of questions you ask about a target item or building.", "requires": None},
-            {"name": "Anticipation", "level": 2, "description": "Pay 1 Blood, add Auspex to rolls made to dodge or defend against attacks.", "requires": None},
+            {"name": "Anticipation", "level": 2, "description": "Pay 1 Blood, add Auspex to a roll made to dodge or defend against all kinds of attacks and dangers.", "requires": None},
             {"name": "Telepathy", "level": 3, "description": "Pay 1 Blood, talk to 1 target you know for a scene. If target is unwilling or far, roll Auspex. Lasts for a scene.", "requires": None},
             {"name": "Write Script", "level": 3, "description": "Pay 1 Blood, choose a short phrase and a target whom you are in conversation with - the target will utter it, in some form.", "requires": None},
             {"name": "Clairvoyance", "level": 3, "description": "Pay 1 Blood, roll Auspex — margin is number of questions about events during the last day in a large area.", "requires": None},
