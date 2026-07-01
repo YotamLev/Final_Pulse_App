@@ -78,7 +78,7 @@ DISCIPLINES: dict[str, dict] = {
         "image": "Data/Images/nightmare.png",
         "powers": [
             {"name": "Haunt Dream", "level": 1, "description": "Appear in a mortal's dreams, give them messages. Can be activated during day and from torpor.", "requires": None},
-            {"name": "Lullaby", "level": 1, "description": "Put a mortal to sleep, or a group of mortals by paying 1 Blood.", "requires": None},
+            {"name": "Lullaby", "level": 1, "description": "Put an unsuspecting mortal to sleep, or a group of mortals by paying 1 Blood. Suspecting mortals or stressful environments may require a Nightmare roll.", "requires": None},
             {"name": "It Was All a Bad Dream", "level": 1, "description": "Cause all mortals in a scene to believe whatever scary thing they just saw was a dream or has a mundane explanation.", "requires": None},
             {"name": "Melpominee", "level": 1, "description": "Cast your voice to sound as if coming from a point you can see.", "requires": None},
             {"name": "Dread Gaze", "level": 2, "description": "Add Nightmare to Intimidation rolls, create scary illusions of your appearance. A +3 margin can paralyze a target for a turn.", "requires": None},
