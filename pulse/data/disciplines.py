@@ -94,7 +94,7 @@ DISCIPLINES: dict[str, dict] = {
         "powers": [
             {"name": "Fade", "level": 1, "description": "Low-level hypnotism makes all mortals avert their eyes and ignore you, seeing you as a forgettable nobody.", "requires": None},
             {"name": "Cloak of Shadows", "level": 1, "description": "Standing still or moving obscured against a backdrop allows you to be totally ignored by mortals — they see you as an object or vegetation.", "requires": None},
-            {"name": "Vanish", "level": 2, "description": "Pay 1 Blood, be completely invisible for a scene.", "requires": None},
+            {"name": "Vanish", "level": 2, "description": "Pay 1 Blood, be completely invisible for a scene. Intentionally stopping from hiding, by attacking, talking loudly etc, - ends the invisibility.", "requires": None},
             {"name": "Disguise", "level": 2, "description": "Pay 1 Blood, alter your appearance to appear as another person. Copying someone exactly is much harder.", "requires": None},
             {"name": "Labyrinth", "level": 2, "description": "Pay 1 Blood, cause mortals to get confused and lost around you, having difficulty navigating. Lasts a scene or pay 1 extra Blood for the whole day.", "requires": None},
             {"name": "Silent Hunter", "level": 2, "description": "When using Fade, Cloak of Shadows, or Vanish — the vampire can also completely silence sounds from themselves.", "requires": None},
