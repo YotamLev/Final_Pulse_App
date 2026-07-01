@@ -49,8 +49,8 @@ STAGES = {
 }
 
 # ── Quick Start archetypes ────────────────────────────────────────────────────
-# Each entry pre-fills a clan, qualifying trait, discipline unlocks, and a
-# small skill seed so the player can dive straight into the biography.
+# Each entry pre-fills a clan, qualifying trait, discipline unlocks, and
+# skills so the player can dive straight into the biography.
 
 QUICKSTARTS: dict[str, dict] = {
     "ventrue_commander": {
