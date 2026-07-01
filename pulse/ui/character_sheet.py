@@ -521,8 +521,7 @@ def _tab_summary(char: dict) -> None:
     section_header("Experience Points")
     skill_xp = total_skill_xp(char["skill_dots"], char["custom_skills"])
     disc_xp = total_disc_xp(char["discipline_levels"])
-    earned_avail = get_earned_xp_available(char)
-    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + char.get("earned_xp", 0)
     spent_xp = skill_xp + disc_xp
     st.markdown(f"**Total XP:** {total_xp} &nbsp;·&nbsp; **Spent:** {spent_xp} / {total_xp}", unsafe_allow_html=True)
     log = char.get("xp_log", [])
@@ -533,7 +532,7 @@ def _tab_summary(char: dict) -> None:
             if cost > 0:
                 st.markdown(f"− **{cost} XP** &nbsp; {desc}")
             else:
-                st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
+                st.markdown(f"＋ **{-cost} XP** &nbsp; {desc}")
     else:
         st.caption("No XP activity yet.")
 
@@ -626,7 +625,7 @@ def _tab_xp(char: dict) -> None:
     disc_xp = total_disc_xp(char["discipline_levels"])
     earned_avail = get_earned_xp_available(char)
 
-    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + char.get("earned_xp", 0)
     spent_xp = skill_xp + disc_xp
     over = spent_xp > total_xp
 
@@ -667,7 +666,7 @@ def _tab_xp(char: dict) -> None:
             if cost > 0:
                 st.markdown(f"− **{cost} XP** &nbsp; {desc}")
             else:
-                st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
+                st.markdown(f"＋ **{-cost} XP** &nbsp; {desc}")
 
 
 def _tab_notes(char: dict) -> None:
