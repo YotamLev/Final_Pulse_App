@@ -18,7 +18,7 @@ CLANS: dict[str, dict] = {
             "trait_any": ["selective_taste"],
             "discipline_all": ["Dominate"],
         },
-        "bonus": "Connected — you gain significant advantages to find useful vampires and advance your status.",
+        "bonus": "Connected — you gain significant advantages to find useful vampires and advance your status. In a social scene, for one target, if you ask for and recieve respect (in the form of proper addressing, a bow, etc.), you gain +2 on rolls to convince, intimidate, or strong-arm the target. If you do not recieve the respect you asked for, you gain +2 on all attack rolls gainst target.",
         "suggested_disciplines": ["Fortitude", "Presence"],
     },
     "Dracul": {
@@ -36,10 +36,10 @@ CLANS: dict[str, dict] = {
         "description": "Connoisseurs of ascendant beauty and emotion, drawn irresistibly to the artistic and the sublime.",
         "recruitment": "Artists, Diplomats, Charismatic Clergy",
         "requirements": {
-            "trait_any": ["infatuation", "rare_specialist", "world_renowned_specialist"],
+            "trait_any": ["infatuation", "beautiful", "rare_specialist", "world_renowned_specialist"],
             "discipline_all": ["Presence"],
         },
-        "bonus": "Gentle Touch — you anger targets of Presence, Auspex, and Dominate less if they discover they've been influenced. Gain +2 on rolls to blood-bond others.",
+        "bonus": "Gentle Touch — gain +2 on rolls to blood-bond others, and you can Blood Surge and pay only half when convincing or manipulating others.",
         "suggested_disciplines": ["Auspex", "Celerity"],
     },
     "Nosferatu": {
@@ -90,10 +90,10 @@ CLANS: dict[str, dict] = {
         "description": "Mages who sought immortality. In their greed, they instigated a terrifying magical experiment, damning themselves to a hell of their own making.",
         "recruitment": "Occultists, Pagans, Academics",
         "requirements": {
-            "trait_any": ["infatuation", "rare_specialist", "world_renowned_specialist"],
+            "trait_any": ["rare_specialist", "world_renowned_specialist"],
             "discipline_all": ["Blood Sorcery"],
         },
-        "bonus": "Ritual Magic — can find other Tremere to cast spells together; somewhat tolerated by other mages.",
+        "bonus": "Ritual Magic — can find other Tremere to cast spells together; Somewhat tolerated by other mages.",
         "suggested_disciplines": ["Auspex", "Arrete"],
     },
     "Hecata": {
