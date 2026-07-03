@@ -521,8 +521,7 @@ def _tab_summary(char: dict) -> None:
     section_header("Experience Points")
     skill_xp = total_skill_xp(char["skill_dots"], char["custom_skills"])
     disc_xp = total_disc_xp(char["discipline_levels"])
-    earned_avail = get_earned_xp_available(char)
-    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + char.get("earned_xp", 0)
     spent_xp = skill_xp + disc_xp
     st.markdown(f"**Total XP:** {total_xp} &nbsp;·&nbsp; **Spent:** {spent_xp} / {total_xp}", unsafe_allow_html=True)
     log = char.get("xp_log", [])
@@ -533,7 +532,7 @@ def _tab_summary(char: dict) -> None:
             if cost > 0:
                 st.markdown(f"− **{cost} XP** &nbsp; {desc}")
             else:
-                st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
+                st.markdown(f"＋ **{-cost} XP** &nbsp; {desc}")
     else:
         st.caption("No XP activity yet.")
 
@@ -626,7 +625,7 @@ def _tab_xp(char: dict) -> None:
     disc_xp = total_disc_xp(char["discipline_levels"])
     earned_avail = get_earned_xp_available(char)
 
-    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + char.get("earned_xp", 0)
     spent_xp = skill_xp + disc_xp
     over = spent_xp > total_xp
 
@@ -667,7 +666,7 @@ def _tab_xp(char: dict) -> None:
             if cost > 0:
                 st.markdown(f"− **{cost} XP** &nbsp; {desc}")
             else:
-                st.markdown(f"+ **{-cost} XP** &nbsp; {desc}")
+                st.markdown(f"＋ **{-cost} XP** &nbsp; {desc}")
 
 
 def _tab_notes(char: dict) -> None:
@@ -684,43 +683,41 @@ def _tab_notes(char: dict) -> None:
 def _tab_export(char: dict) -> None:
     section_header("Export & Save")
 
-    # JSON save / load
-    st.markdown("### Save / Load Character")
+    slug = (char.get("name") or "character").replace(" ", "_")
+
     col1, col2 = st.columns(2)
     with col1:
-        json_bytes = json.dumps(char_to_dict(char), ensure_ascii=False, indent=2).encode("utf-8")
-        st.download_button(
-            "⬇ Download as JSON",
-            data=json_bytes,
-            file_name=f"{char.get('name', 'character').replace(' ', '_')}.json",
-            mime="application/json",
-            key="dl_json",
-        )
-    with col2:
-        uploaded = st.file_uploader("⬆ Load character JSON", type="json", key="upload_json")
-        if uploaded is not None:
-            try:
-                data = json.loads(uploaded.read().decode("utf-8"))
-                loaded = char_from_dict(data)
-                char.update(loaded)
-                st.success("Character loaded!")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Failed to load: {e}")
-
-    st.divider()
-
-    # HTML export
-    st.markdown("### Printable Sheet")
-    if st.button("Generate Printable HTML", key="gen_html"):
+        st.markdown("### Export Character File")
+        st.caption("One `.html` file — looks great in a browser and can be loaded back into the app.")
         html = _generate_html(char)
         st.download_button(
-            "⬇ Download Printable HTML",
+            "⬇ Export Character File",
             data=html.encode("utf-8"),
-            file_name=f"{char.get('name', 'character').replace(' ', '_')}_sheet.html",
+            file_name=f"{slug}.html",
             mime="text/html",
-            key="dl_html",
+            key="dl_character",
+            use_container_width=True,
+            type="primary",
         )
+    with col2:
+        st.markdown("### Load Character")
+        st.caption("Upload a previously exported `.html` file.")
+        uploaded = st.file_uploader("Upload character file", type=["html", "json"], key="upload_char", label_visibility="collapsed")
+        if uploaded is not None:
+            try:
+                raw = uploaded.read().decode("utf-8")
+                if uploaded.name.endswith(".html"):
+                    marker = '<script type="application/json" id="fp-character-data">'
+                    start = raw.index(marker) + len(marker)
+                    end = raw.index("</script>", start)
+                    data = json.loads(raw[start:end])
+                else:
+                    data = json.loads(raw)
+                char.update(char_from_dict(data))
+                st.success("Character loaded!")
+                st.rerun()
+            except (ValueError, KeyError) as e:
+                st.error(f"Could not read character data: {e}")
 
 
 # ── HTML export ───────────────────────────────────────────────────────────────
@@ -807,8 +804,7 @@ def _generate_html(char: dict) -> str:
     # XP summary
     skill_xp = total_skill_xp(char.get("skill_dots", {}), char.get("custom_skills", []))
     disc_xp  = total_disc_xp(char.get("discipline_levels", {}))
-    earned_avail = get_earned_xp_available(char)
-    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + max(0, earned_avail)
+    total_xp = CREATION_SKILL_XP + CREATION_DISC_XP + char.get("earned_xp", 0)
     spent_xp = skill_xp + disc_xp
     xp_log_rows = ""
     for entry in char.get("xp_log", []):
@@ -818,6 +814,8 @@ def _generate_html(char: dict) -> str:
             xp_log_rows += f"<tr><td>{desc}</td><td style='color:#c41e3a;text-align:right'>−{cost}</td></tr>"
         else:
             xp_log_rows += f"<tr><td>{desc}</td><td style='color:#4a9a6a;text-align:right'>+{-cost}</td></tr>"
+
+    char_json = json.dumps(char_to_dict(char), ensure_ascii=False, indent=2)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -884,5 +882,8 @@ def _generate_html(char: dict) -> str:
 <p><strong>Total XP:</strong> {total_xp} &nbsp;·&nbsp; <strong>Spent:</strong> {spent_xp} / {total_xp}</p>
 {"<table><thead><tr><th style='text-align:left'>Description</th><th style='text-align:right'>XP</th></tr></thead><tbody>" + xp_log_rows + "</tbody></table>" if xp_log_rows else "<p style='color:#9a8f82'>No XP activity logged.</p>"}
 </div>
+<script type="application/json" id="fp-character-data">
+{char_json}
+</script>
 </body>
 </html>"""
