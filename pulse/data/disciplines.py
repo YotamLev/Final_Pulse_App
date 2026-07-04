@@ -126,7 +126,7 @@ DISCIPLINES: dict[str, dict] = {
     "Protean": {
         "image": "Data/Images/Protean_symbol.png",
         "powers": [
-            {"name": "Animorph", "level": 1, "description": "Pay 1 Blood, assume the shape of a specific animal (mouse to tiger) for a scene. Choose 1 animal each time you take this power. Transforming takes a turn.", "requires": None},
+            {"name": "Animorph", "level": 1, "description": "Pay 1 Blood, assume the shape of an animal (mouse to tiger) for a scene. Transforming takes a turn.", "requires": None},
             {"name": "Feral Weapons", "level": 1, "description": "Extend fangs and claws, add your Protean to close-range physical attacks.", "requires": None},
             {"name": "Bone Armor", "level": 1, "description": "Pay 1 or more Blood, gain 2 extra HP per Blood for a scene.", "requires": None},
             {"name": "Bone Bullets", "level": 2, "description": "Shoot teeth, bone spurs, or nails as natural weapons.", "requires": None},
