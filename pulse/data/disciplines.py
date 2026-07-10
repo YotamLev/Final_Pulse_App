@@ -178,7 +178,7 @@ DISCIPLINES: dict[str, dict] = {
         "image": "Data/Images/Blood_Sorcery_symbol.png",
         "powers": [
             {"name": "Bend Blood", "level": 1, "description": "Control spilled blood, making it flow or float in the air. Up to 2 Liters at a time, and the max force it can apply is 3 kg.", "requires": None},
-            {"name": "A Taste for Blood", "level": 1, "description": "By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled.", "requires": None},
+            {"name": "A Taste for Blood", "level": 1, "description": "By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled. Additional facts may require a Blood Sorcery roll.", "requires": None},
             {"name": "Bend Veins", "level": 2, "description": "by paying 3 Blood, you can use Bend Blood even on blood inside another's body, rolling Blood Sorcery, for a scene. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.", "requires": "Bend Blood"},
             {"name": "Telekinesis", "level": 3, "description": "by paying 1 Blood, Your Bend Blood power can now control up to 10 Liters of blood, and apply some force (roughly ~50 kg) at a time, for a turn.", "requires": "Bend Blood"},
             {"name": "Scorpion's Touch", "level": 3, "description": "Turn your own spilled vitae corrosive, melting whatever it touches. 1 Blood extracted is enough to melt a hole through a regular door.", "requires": None},
