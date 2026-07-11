@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import base64
+
 import streamlit as st
 
 
@@ -13,6 +15,26 @@ def load_image(path: str) -> bytes:
 
 FILLED = "●"
 EMPTY = "○"
+
+
+def render_icon(image_path: str, size: int = 56) -> None:
+    """Render an image inside a fixed-size box, preserving aspect ratio.
+
+    st.image(..., width=N) only fixes width — source images with different
+    native aspect ratios (e.g. clan symbols, some square, some tall/wide) end
+    up wildly different visual sizes side by side. This scales each image to
+    fit within a uniform size×size box instead, with no distortion.
+    """
+    src = image_path if image_path.startswith("http") else (
+        f"data:image/png;base64,{base64.b64encode(load_image(image_path)).decode('ascii')}"
+    )
+    st.markdown(
+        f"<div style='width:{size}px;height:{size}px;display:flex;"
+        f"align-items:center;justify-content:center;margin:0 auto'>"
+        f"<img src='{src}' style='max-width:100%;max-height:100%;object-fit:contain'/>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
 
 def request_nav(page: str) -> None:

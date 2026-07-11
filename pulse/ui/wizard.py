@@ -36,7 +36,7 @@ from pulse.models.character import (
     log_xp_refund,
     normalize_character,
 )
-from pulse.ui.components import dots, section_header, info_box, load_image, sync_text_field, request_nav
+from pulse.ui.components import dots, section_header, info_box, load_image, sync_text_field, request_nav, render_icon
 
 
 # ── Stage labels ──────────────────────────────────────────────────────────────
@@ -350,13 +350,11 @@ def _render_quickstart_panel(char: dict) -> None:
             qs_card = QUICKSTARTS[key]
             with cols[i % 3]:
                 clan_img = CLANS.get(qs_card["clan"], {}).get("image", "")
-                if clan_img and not clan_img.startswith("http"):
+                if clan_img:
                     try:
-                        st.image(load_image(clan_img), width=56)
+                        render_icon(clan_img, size=56)
                     except Exception:
                         pass
-                elif clan_img:
-                    st.image(clan_img, width=56)
                 is_sel = st.session_state.get("qs_grid_sel") == key
                 if st.button(
                     qs_card["label"],
