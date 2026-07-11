@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import base64
+
 import streamlit as st
 
 
@@ -13,6 +15,49 @@ def load_image(path: str) -> bytes:
 
 FILLED = "●"
 EMPTY = "○"
+
+
+def render_icon(image_path: str, size: int = 56) -> None:
+    """Render an image inside a fixed-size box, preserving aspect ratio.
+
+    st.image(..., width=N) only fixes width — source images with different
+    native aspect ratios (e.g. clan symbols, some square, some tall/wide) end
+    up wildly different visual sizes side by side. This scales each image to
+    fit within a uniform size×size box instead, with no distortion.
+    """
+    src = image_path if image_path.startswith("http") else (
+        f"data:image/png;base64,{base64.b64encode(load_image(image_path)).decode('ascii')}"
+    )
+    st.markdown(
+        f"<div style='width:{size}px;height:{size}px;display:flex;"
+        f"align-items:center;justify-content:center;margin:0 auto'>"
+        f"<img src='{src}' style='max-width:100%;max-height:100%;object-fit:contain'/>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
+def request_nav(page: str) -> None:
+    """Ask app.py to switch the active sidebar page on the next rerun.
+
+    The sidebar's nav radio uses key="nav", so once it has rendered this run,
+    Streamlit forbids reassigning st.session_state["nav"] directly (raises
+    StreamlitAPIException). Stashing the request lets app.py's _init_state()
+    apply it before the radio is instantiated on the following rerun.
+    """
+    st.session_state["_pending_nav"] = page
+
+
+def sync_text_field(char: dict, char_key: str, widget_key: str) -> None:
+    """on_change callback: commit a text widget's value into char immediately.
+
+    Needed because a bare `char[x] = st.text_input(...)` only copies the value
+    when that widget's own code path re-executes — if the user navigates to a
+    different page/tab before that happens, the edit is silently dropped. An
+    on_change callback runs on the same rerun the value changed, regardless of
+    what renders afterward.
+    """
+    char[char_key] = st.session_state[widget_key]
 
 
 def dots(current: int, maximum: int) -> str:
