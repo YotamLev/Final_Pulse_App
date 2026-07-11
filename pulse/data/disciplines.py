@@ -71,6 +71,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Prowess From Pain", "level": 2, "description": "Each HP damage you have, up to Fortitude level, can be added to physical attacks or stressed efforts.", "requires": None},
             {"name": "Draught of Endurance", "level": 2, "description": "Your ghouls add your Fortitude level to their HP. A vampire drinking at least 1 of your Blood gets your Fortitude powers for the night.", "requires": None},
             {"name": "Flesh of Marble", "level": 3, "description": "Pay 3 Blood, take no damage for 1 turn.", "requires": None},
+            {"name": "Mind Fortress", "level": 3, "description": "Add Fortitude level to rolls to resist mental powers.", "requires": None},
             {"name": "Last Stand", "level": 4, "description": "If reduced to 0 HP, Flesh of Marble activates automatically if Blood is -7 or higher. You pay Blood as normal.", "requires": "Flesh of Marble"},
             {"name": "Endurance", "level": 5, "description": "Flesh of Marble costs 2 Blood instead of 3.", "requires": "Flesh of Marble"},
         ],
@@ -171,7 +172,6 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Root Grasp", "level": 2, "description": "Pay 1 Blood, command roots, vines, branches, or other living plants to move, entangle, or immobilize targets. Roll Druidic. Lasts a scene.", "requires": None},
             {"name": "Sweet Sap", "level": 2, "description": "Once per night you can drink up to 4 Blood from trees.", "requires": None},
             {"name": "Malakan's Gift", "level": 3, "description": "Pay 1 Blood, animate a tree or major plant as a servant for a night. The older the plant is - the more powerful it is as a servant.", "requires": None},
-            {"name": "Canopy", "level": 3, "description": "You can cause plants to protect your body during the daysleep. To protect other vampires, pay 1 Blood per additional body requiring protection.", "requires": "Root Grasp"},
         ],
     },
     "Blood Sorcery": {
