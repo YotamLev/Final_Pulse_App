@@ -36,7 +36,7 @@ from pulse.models.character import (
     log_xp_refund,
     normalize_character,
 )
-from pulse.ui.components import dots, section_header, info_box, load_image, sync_text_field
+from pulse.ui.components import dots, section_header, info_box, load_image, sync_text_field, request_nav
 
 
 # ── Stage labels ──────────────────────────────────────────────────────────────
@@ -1216,5 +1216,5 @@ def _stage_clan(char: dict) -> None:
         with col_finish:
             if st.button("Complete Character ✓", key="finish_wizard", type="primary"):
                 char["wizard_complete"] = True
-                st.success("Character complete! Navigate to the Character Sheet.")
+                request_nav("sheet")
                 st.rerun()

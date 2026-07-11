@@ -40,7 +40,7 @@ from pulse.models.character import (
     char_to_dict,
     char_from_dict,
 )
-from pulse.ui.components import dots, section_header, info_box, render_trait_pill, load_image, sync_text_field
+from pulse.ui.components import dots, section_header, info_box, render_trait_pill, load_image, sync_text_field, request_nav
 
 
 # ── Main entry ────────────────────────────────────────────────────────────────
@@ -190,7 +190,7 @@ def _tab_traits(char: dict) -> None:
         st.info("Both mortal and vampire traits are on Stage 1 of the Character Creator.")
         if st.button("→ Stage 1: Origins & Traits"):
             char["wizard_stage"] = 1
-            st.session_state.nav = "wizard"
+            request_nav("wizard")
             st.rerun()
 
 

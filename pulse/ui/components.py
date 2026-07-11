@@ -15,6 +15,17 @@ FILLED = "●"
 EMPTY = "○"
 
 
+def request_nav(page: str) -> None:
+    """Ask app.py to switch the active sidebar page on the next rerun.
+
+    The sidebar's nav radio uses key="nav", so once it has rendered this run,
+    Streamlit forbids reassigning st.session_state["nav"] directly (raises
+    StreamlitAPIException). Stashing the request lets app.py's _init_state()
+    apply it before the radio is instantiated on the following rerun.
+    """
+    st.session_state["_pending_nav"] = page
+
+
 def sync_text_field(char: dict, char_key: str, widget_key: str) -> None:
     """on_change callback: commit a text widget's value into char immediately.
 

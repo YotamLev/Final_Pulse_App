@@ -24,15 +24,16 @@ def resolve_initial_character() -> dict:
 
 
 def save_if_changed(char: dict) -> None:
-    """Persist the character to localStorage, but only when it actually changed."""
+    """Persist the character to localStorage, but only when it actually changed.
+
+    Used for the "Reset to blank" flow too: there's no separate clear/delete
+    call, since assigning a fresh default_character() and letting this run
+    naturally overwrite localStorage avoids introducing a brand-new component
+    key mid-interaction (which was found to race with programmatic nav changes
+    in the same click handler).
+    """
     char_json = json.dumps(char_to_dict(char), sort_keys=True)
     if char_json == st.session_state.get("_last_saved_json"):
         return
     LocalStorage().setItem(STORAGE_KEY, char_json, key="fp_storage_save")
     st.session_state["_last_saved_json"] = char_json
-
-
-def clear_storage() -> None:
-    """Wipe any persisted character (used by the sidebar reset action)."""
-    LocalStorage().deleteAll(key="fp_storage_clear")
-    st.session_state.pop("_last_saved_json", None)

@@ -12,6 +12,7 @@ from pulse.ui.character_sheet import render_character_sheet
 from pulse.ui.struggle import render_struggle
 from pulse.models.character import default_character
 from pulse.services import storage
+from pulse.ui.components import request_nav
 
 st.set_page_config(
     page_title="Final Pulse",
@@ -26,6 +27,9 @@ def _init_state() -> None:
         st.session_state.character = storage.resolve_initial_character()
     if "nav" not in st.session_state:
         st.session_state.nav = "wizard"
+    pending = st.session_state.pop("_pending_nav", None)
+    if pending is not None:
+        st.session_state.nav = pending
 
 
 def _sidebar(char: dict) -> str:
@@ -50,11 +54,9 @@ def _sidebar(char: dict) -> str:
             "sheet": "📜 Character Sheet",
             "struggle": "♟ Struggle",
         }[x],
-        index=["wizard", "sheet", "struggle"].index(st.session_state.nav),
-        key="nav_radio",
+        key="nav",
         label_visibility="collapsed",
     )
-    st.session_state.nav = nav
 
     # Stage links in sidebar when in wizard
     if nav == "wizard":
@@ -73,9 +75,8 @@ def _sidebar(char: dict) -> str:
     with st.sidebar.expander("⚠ Reset Character"):
         st.warning("This will erase all character data.")
         if st.button("Reset to blank", key="reset_char"):
-            storage.clear_storage()
             st.session_state.character = default_character()
-            st.session_state.nav = "wizard"
+            request_nav("wizard")
             st.rerun()
 
     return nav
