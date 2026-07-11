@@ -612,6 +612,61 @@ def _render_trait_card(char: dict, trait_list_key: str, trait_def: dict, form_ke
                     st.rerun()
 
 
+def _render_custom_trait_row(char: dict, trait_list_key: str, index: int, form_key: str) -> None:
+    trait_list = char[trait_list_key]
+    t = trait_list[index]
+    edit_key = f"edit_custom_{form_key}_{index}"
+    is_editing = st.session_state.get(edit_key, False)
+
+    if is_editing:
+        col_name, col_cost = st.columns([3, 1])
+        with col_name:
+            new_name = st.text_input(
+                "Trait name", value=t["name"], key=f"{edit_key}_name", label_visibility="collapsed"
+            )
+        with col_cost:
+            new_cost = st.number_input(
+                "Cost", min_value=-5, max_value=5, value=t["cost"], key=f"{edit_key}_cost", label_visibility="collapsed"
+            )
+        new_detail = st.text_input(
+            "Detail (optional)", value=t.get("detail") or "", key=f"{edit_key}_detail",
+            placeholder="Any clarifying notes", label_visibility="collapsed",
+        )
+        ready = bool(new_name.strip())
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("✓ Save", key=f"{edit_key}_save", type="primary", disabled=not ready, use_container_width=True):
+                t["name"] = new_name.strip()
+                t["cost"] = int(new_cost)
+                t["detail"] = new_detail.strip() or None
+                t["key"] = f"custom_{new_name.strip().lower().replace(' ', '_')}"
+                st.session_state.pop(edit_key, None)
+                st.rerun()
+        with c2:
+            if st.button("Cancel", key=f"{edit_key}_cancel", use_container_width=True):
+                st.session_state.pop(edit_key, None)
+                st.rerun()
+    else:
+        c = t["cost"]
+        s = "+" if c >= 0 else ""
+        det = t.get("detail") or ""
+        col_info, col_edit, col_del = st.columns([5, 1, 1])
+        with col_info:
+            st.markdown(
+                f"<div style='background:#1a1020;padding:0.3rem 0.7rem;border-radius:3px'>"
+                f"<b>{t['name']}</b> ({s}{c}){' — ' + det if det else ''}</div>",
+                unsafe_allow_html=True,
+            )
+        with col_edit:
+            if st.button("✎", key=f"{edit_key}_open", use_container_width=True):
+                st.session_state[edit_key] = True
+                st.rerun()
+        with col_del:
+            if st.button("✕", key=f"del_custom_{form_key}_{index}", use_container_width=True):
+                trait_list.pop(index)
+                st.rerun()
+
+
 def _render_trait_grid(
     char: dict,
     trait_list_key: str,
@@ -637,6 +692,13 @@ def _render_trait_grid(
 
     # Custom trait expander
     with st.expander("✏️ Add a Custom Trait"):
+        custom_traits = [(i, t) for i, t in enumerate(char[trait_list_key]) if t.get("custom")]
+        if custom_traits:
+            st.markdown("**Your Custom Traits**")
+            for i, t in custom_traits:
+                _render_custom_trait_row(char, trait_list_key, i, form_key)
+            st.divider()
+
         col_name, col_cost = st.columns([3, 1])
         with col_name:
             custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
