@@ -11,6 +11,7 @@ from pulse.ui.wizard import render_wizard
 from pulse.ui.character_sheet import render_character_sheet
 from pulse.ui.struggle import render_struggle
 from pulse.models.character import default_character
+from pulse.services import storage
 
 st.set_page_config(
     page_title="Final Pulse",
@@ -22,7 +23,7 @@ st.set_page_config(
 
 def _init_state() -> None:
     if "character" not in st.session_state:
-        st.session_state.character = default_character()
+        st.session_state.character = storage.resolve_initial_character()
     if "nav" not in st.session_state:
         st.session_state.nav = "wizard"
 
@@ -72,6 +73,7 @@ def _sidebar(char: dict) -> str:
     with st.sidebar.expander("⚠ Reset Character"):
         st.warning("This will erase all character data.")
         if st.button("Reset to blank", key="reset_char"):
+            storage.clear_storage()
             st.session_state.character = default_character()
             st.session_state.nav = "wizard"
             st.rerun()
@@ -94,6 +96,8 @@ def main() -> None:
         render_character_sheet(char)
     elif nav == "struggle":
         render_struggle(char)
+
+    storage.save_if_changed(char)
 
 
 if __name__ == "__main__":
