@@ -36,7 +36,7 @@ from pulse.models.character import (
     log_xp_refund,
     normalize_character,
 )
-from pulse.ui.components import dots, section_header, info_box, load_image
+from pulse.ui.components import dots, section_header, info_box, load_image, sync_text_field
 
 
 # ── Stage labels ──────────────────────────────────────────────────────────────
@@ -749,16 +749,23 @@ def _stage_origins(char: dict) -> None:
 
     col1, col2 = st.columns([2, 1])
     with col1:
-        char["name"] = st.text_input("Name", value=char.get("name", ""), placeholder="Character name", key="s1_name")
+        st.text_input(
+            "Name", value=char.get("name", ""), placeholder="Character name", key="s1_name",
+            on_change=sync_text_field, args=(char, "name", "s1_name"),
+        )
     with col2:
-        char["tagline"] = st.text_input("Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="s1_tagline")
+        st.text_input(
+            "Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="s1_tagline",
+            on_change=sync_text_field, args=(char, "tagline", "s1_tagline"),
+        )
 
-    char["memories"] = st.text_area(
+    st.text_area(
         "Memories",
         value=char.get("memories", ""),
         placeholder=_MEMORIES_PLACEHOLDER,
         height=180,
         key="s1_memories",
+        on_change=sync_text_field, args=(char, "memories", "s1_memories"),
     )
 
     st.divider()

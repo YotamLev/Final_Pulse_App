@@ -15,6 +15,18 @@ FILLED = "●"
 EMPTY = "○"
 
 
+def sync_text_field(char: dict, char_key: str, widget_key: str) -> None:
+    """on_change callback: commit a text widget's value into char immediately.
+
+    Needed because a bare `char[x] = st.text_input(...)` only copies the value
+    when that widget's own code path re-executes — if the user navigates to a
+    different page/tab before that happens, the edit is silently dropped. An
+    on_change callback runs on the same rerun the value changed, regardless of
+    what renders afterward.
+    """
+    char[char_key] = st.session_state[widget_key]
+
+
 def dots(current: int, maximum: int) -> str:
     """Return a Unicode dot string: filled dots then empty dots."""
     current = max(0, min(current, maximum))

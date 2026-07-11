@@ -40,7 +40,7 @@ from pulse.models.character import (
     char_to_dict,
     char_from_dict,
 )
-from pulse.ui.components import dots, section_header, info_box, render_trait_pill, load_image
+from pulse.ui.components import dots, section_header, info_box, render_trait_pill, load_image, sync_text_field
 
 
 # ── Main entry ────────────────────────────────────────────────────────────────
@@ -108,17 +108,24 @@ def _tab_background(char: dict) -> None:
     section_header("Background & History")
     col1, col2 = st.columns([2, 1])
     with col1:
-        char["name"] = st.text_input("Name", value=char.get("name", ""), placeholder="Character name", key="sheet_name")
+        st.text_input(
+            "Name", value=char.get("name", ""), placeholder="Character name", key="sheet_name",
+            on_change=sync_text_field, args=(char, "name", "sheet_name"),
+        )
     with col2:
-        char["tagline"] = st.text_input("Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="sheet_tagline")
+        st.text_input(
+            "Tagline", value=char.get("tagline", ""), placeholder="e.g. Former NSA analyst", key="sheet_tagline",
+            on_change=sync_text_field, args=(char, "tagline", "sheet_tagline"),
+        )
 
     from pulse.ui.wizard import _MEMORIES_PLACEHOLDER
-    char["memories"] = st.text_area(
+    st.text_area(
         "Memories",
         value=char.get("memories", ""),
         placeholder=_MEMORIES_PLACEHOLDER,
         height=220,
         key="sheet_memories",
+        on_change=sync_text_field, args=(char, "memories", "sheet_memories"),
     )
 
     # Default vampire powers
@@ -677,12 +684,13 @@ def _tab_xp(char: dict) -> None:
 
 def _tab_notes(char: dict) -> None:
     section_header("Notes")
-    char["notes"] = st.text_area(
+    st.text_area(
         "Session notes, observations, contacts…",
         value=char.get("notes", ""),
         height=350,
         key="sheet_notes",
         label_visibility="collapsed",
+        on_change=sync_text_field, args=(char, "notes", "sheet_notes"),
     )
 
 
