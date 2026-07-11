@@ -557,39 +557,45 @@ def _render_trait_card(char: dict, trait_list_key: str, trait_def: dict, form_ke
     )
 
     if is_expanded:
-        chosen_cost = cost
-        if variable:
-            opt_labels = [f"{c:+d} — {d}" for c, d in trait_def["cost_options"]]
-            chosen_label = st.selectbox("Severity", opt_labels, key=f"{expand_key}_cost", label_visibility="collapsed")
-            chosen_cost = trait_def["cost_options"][opt_labels.index(chosen_label)][0]
+        with st.form(key=f"{expand_key}_form"):
+            chosen_cost = cost
+            if variable:
+                opt_labels = [f"{c:+d} — {d}" for c, d in trait_def["cost_options"]]
+                chosen_label = st.selectbox("Severity", opt_labels, key=f"{expand_key}_cost", label_visibility="collapsed")
+                chosen_cost = trait_def["cost_options"][opt_labels.index(chosen_label)][0]
 
-        sub_choice = None
-        if requires_sub:
-            sub_choice = st.selectbox("Choose option", trait_def["sub_options"], key=f"{expand_key}_sub", label_visibility="collapsed")
+            sub_choice = None
+            if requires_sub:
+                sub_choice = st.selectbox("Choose option", trait_def["sub_options"], key=f"{expand_key}_sub", label_visibility="collapsed")
 
-        detail = ""
-        if requires_detail:
-            detail = st.text_input(
-                trait_def.get("detail_prompt", "Detail"),
-                key=f"{expand_key}_detail",
-                placeholder=trait_def.get("detail_prompt", ""),
-                label_visibility="collapsed",
-            )
+            detail = ""
+            if requires_detail:
+                detail = st.text_input(
+                    trait_def.get("detail_prompt", "Detail"),
+                    key=f"{expand_key}_detail",
+                    placeholder=trait_def.get("detail_prompt", ""),
+                    label_visibility="collapsed",
+                )
 
-        ready = not (requires_detail and not detail.strip())
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("✓ Confirm", key=f"{expand_key}_confirm", type="primary", disabled=not ready, use_container_width=True):
+            c1, c2 = st.columns(2)
+            with c1:
+                confirm_clicked = st.form_submit_button("✓ Confirm", type="primary", use_container_width=True)
+            with c2:
+                cancel_clicked = st.form_submit_button("Cancel", use_container_width=True)
+
+        if confirm_clicked:
+            if requires_detail and not detail.strip():
+                st.warning(f"{trait_def.get('detail_prompt', 'Detail')} is required.")
+            else:
                 selected_list.append({
                     "key": key, "name": name, "cost": chosen_cost,
                     "detail": detail.strip() or None, "sub_choice": sub_choice,
                 })
                 st.session_state.pop(expand_key, None)
                 st.rerun()
-        with c2:
-            if st.button("Cancel", key=f"{expand_key}_cancel", use_container_width=True):
-                st.session_state.pop(expand_key, None)
-                st.rerun()
+        elif cancel_clicked:
+            st.session_state.pop(expand_key, None)
+            st.rerun()
     else:
         c1, c2 = st.columns(2)
         with c1:
@@ -619,33 +625,39 @@ def _render_custom_trait_row(char: dict, trait_list_key: str, index: int, form_k
     is_editing = st.session_state.get(edit_key, False)
 
     if is_editing:
-        col_name, col_cost = st.columns([3, 1])
-        with col_name:
-            new_name = st.text_input(
-                "Trait name", value=t["name"], key=f"{edit_key}_name", label_visibility="collapsed"
+        with st.form(key=f"{edit_key}_form"):
+            col_name, col_cost = st.columns([3, 1])
+            with col_name:
+                new_name = st.text_input(
+                    "Trait name", value=t["name"], key=f"{edit_key}_name", label_visibility="collapsed"
+                )
+            with col_cost:
+                new_cost = st.number_input(
+                    "Cost", min_value=-5, max_value=5, value=t["cost"], key=f"{edit_key}_cost", label_visibility="collapsed"
+                )
+            new_detail = st.text_input(
+                "Detail (optional)", value=t.get("detail") or "", key=f"{edit_key}_detail",
+                placeholder="Any clarifying notes", label_visibility="collapsed",
             )
-        with col_cost:
-            new_cost = st.number_input(
-                "Cost", min_value=-5, max_value=5, value=t["cost"], key=f"{edit_key}_cost", label_visibility="collapsed"
-            )
-        new_detail = st.text_input(
-            "Detail (optional)", value=t.get("detail") or "", key=f"{edit_key}_detail",
-            placeholder="Any clarifying notes", label_visibility="collapsed",
-        )
-        ready = bool(new_name.strip())
-        c1, c2 = st.columns(2)
-        with c1:
-            if st.button("✓ Save", key=f"{edit_key}_save", type="primary", disabled=not ready, use_container_width=True):
+            c1, c2 = st.columns(2)
+            with c1:
+                save_clicked = st.form_submit_button("✓ Save", type="primary", use_container_width=True)
+            with c2:
+                cancel_clicked = st.form_submit_button("Cancel", use_container_width=True)
+
+        if save_clicked:
+            if new_name.strip():
                 t["name"] = new_name.strip()
                 t["cost"] = int(new_cost)
                 t["detail"] = new_detail.strip() or None
                 t["key"] = f"custom_{new_name.strip().lower().replace(' ', '_')}"
                 st.session_state.pop(edit_key, None)
                 st.rerun()
-        with c2:
-            if st.button("Cancel", key=f"{edit_key}_cancel", use_container_width=True):
-                st.session_state.pop(edit_key, None)
-                st.rerun()
+            else:
+                st.warning("Enter a trait name.")
+        elif cancel_clicked:
+            st.session_state.pop(edit_key, None)
+            st.rerun()
     else:
         c = t["cost"]
         s = "+" if c >= 0 else ""
@@ -699,32 +711,33 @@ def _render_trait_grid(
                 _render_custom_trait_row(char, trait_list_key, i, form_key)
             st.divider()
 
-        col_name, col_cost = st.columns([3, 1])
-        with col_name:
-            custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
-                                        placeholder="e.g., Notorious Criminal")
-        with col_cost:
-            custom_cost = st.number_input("Cost", min_value=-5, max_value=5, value=-1,
-                                          key=f"{form_key}_custom_cost")
-        custom_detail = st.text_input("Detail (optional)", key=f"{form_key}_custom_detail",
-                                      placeholder="Any clarifying notes")
-        custom_warnings = []
-        if get_trait_count(char) >= MAX_TRAITS:
-            custom_warnings.append(f"Maximum {MAX_TRAITS} traits reached.")
-        if not custom_name.strip():
-            custom_warnings.append("Enter a trait name.")
-        for w in custom_warnings:
-            st.warning(w)
-        if st.button("Add Custom Trait", key=f"{form_key}_custom_add", disabled=bool(custom_warnings)):
-            char[trait_list_key].append({
-                "key": f"custom_{custom_name.strip().lower().replace(' ', '_')}",
-                "name": custom_name.strip(),
-                "cost": int(custom_cost),
-                "detail": custom_detail.strip() or None,
-                "sub_choice": None,
-                "custom": True,
-            })
-            st.rerun()
+        with st.form(key=f"{form_key}_custom_form", clear_on_submit=True):
+            col_name, col_cost = st.columns([3, 1])
+            with col_name:
+                custom_name = st.text_input("Trait name", key=f"{form_key}_custom_name",
+                                            placeholder="e.g., Notorious Criminal")
+            with col_cost:
+                custom_cost = st.number_input("Cost", min_value=-5, max_value=5, value=-1,
+                                              key=f"{form_key}_custom_cost")
+            custom_detail = st.text_input("Detail (optional)", key=f"{form_key}_custom_detail",
+                                          placeholder="Any clarifying notes")
+            submitted = st.form_submit_button("Add Custom Trait")
+
+        if submitted:
+            if get_trait_count(char) >= MAX_TRAITS:
+                st.warning(f"Maximum {MAX_TRAITS} traits reached.")
+            elif not custom_name.strip():
+                st.warning("Enter a trait name.")
+            else:
+                char[trait_list_key].append({
+                    "key": f"custom_{custom_name.strip().lower().replace(' ', '_')}",
+                    "name": custom_name.strip(),
+                    "cost": int(custom_cost),
+                    "detail": custom_detail.strip() or None,
+                    "sub_choice": None,
+                    "custom": True,
+                })
+                st.rerun()
 
 
 # ── Stage 1: Origins & Traits ─────────────────────────────────────────────────
@@ -924,20 +937,25 @@ def _render_custom_skills(char: dict, budget_remaining: int) -> None:
 
     st.divider()
     st.markdown("**Add a Custom Skill**")
-    col_name, col_max, col_add = st.columns([3, 2, 2])
-    with col_name:
-        new_name = st.text_input("Skill name", key="custom_skill_name", label_visibility="collapsed", placeholder="e.g. Chess")
-    with col_max:
-        new_max = st.number_input("Max dots", min_value=1, max_value=7, value=5, key="custom_skill_max", label_visibility="collapsed")
-    with col_add:
-        if st.button("Add Custom Skill", key="add_custom_skill_btn"):
-            if new_name.strip():
-                existing_names = [cs["name"] for cs in custom_skills] + list(SKILL_TREES.get("Custom", {}).keys())
-                if new_name.strip() not in existing_names:
-                    custom_skills.append({"name": new_name.strip(), "max_dots": int(new_max)})
-                    st.rerun()
-                else:
-                    st.error(f"Skill '{new_name}' already exists.")
+    with st.form(key="custom_skill_form", clear_on_submit=True):
+        col_name, col_max, col_add = st.columns([3, 2, 2])
+        with col_name:
+            new_name = st.text_input("Skill name", key="custom_skill_name", label_visibility="collapsed", placeholder="e.g. Chess")
+        with col_max:
+            new_max = st.number_input("Max dots", min_value=1, max_value=7, value=5, key="custom_skill_max", label_visibility="collapsed")
+        with col_add:
+            submitted = st.form_submit_button("Add Custom Skill")
+
+    if submitted:
+        if new_name.strip():
+            existing_names = [cs["name"] for cs in custom_skills] + list(SKILL_TREES.get("Custom", {}).keys())
+            if new_name.strip() not in existing_names:
+                custom_skills.append({"name": new_name.strip(), "max_dots": int(new_max)})
+                st.rerun()
+            else:
+                st.error(f"Skill '{new_name}' already exists.")
+        else:
+            st.warning("Enter a skill name.")
 
 
 # ── Stage 4: Disciplines ──────────────────────────────────────────────────────

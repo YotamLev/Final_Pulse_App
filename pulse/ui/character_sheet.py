@@ -321,24 +321,27 @@ def _sheet_custom_skills(char: dict, earned_avail: int) -> None:
 
     st.divider()
     st.markdown("**Add a Custom Skill**")
-    col_name, col_max, col_add = st.columns([3, 2, 2])
-    with col_name:
-        new_name = st.text_input("Name", key="sheet_custom_skill_name",
-                                 label_visibility="collapsed", placeholder="e.g. Chess")
-    with col_max:
-        new_max = st.number_input("Max dots", min_value=1, max_value=7, value=5,
-                                  key="sheet_custom_skill_max", label_visibility="collapsed")
-    with col_add:
-        if st.button("Add Skill", key="sheet_add_custom_skill_btn"):
-            name = new_name.strip()
-            existing = [cs["name"] for cs in custom_skills] + [s for t in _ST.values() for s in t]
-            if not name:
-                st.error("Enter a skill name.")
-            elif name in existing:
-                st.error(f"'{name}' already exists.")
-            else:
-                custom_skills.append({"name": name, "max_dots": int(new_max)})
-                st.rerun()
+    with st.form(key="sheet_custom_skill_form", clear_on_submit=True):
+        col_name, col_max, col_add = st.columns([3, 2, 2])
+        with col_name:
+            new_name = st.text_input("Name", key="sheet_custom_skill_name",
+                                     label_visibility="collapsed", placeholder="e.g. Chess")
+        with col_max:
+            new_max = st.number_input("Max dots", min_value=1, max_value=7, value=5,
+                                      key="sheet_custom_skill_max", label_visibility="collapsed")
+        with col_add:
+            submitted = st.form_submit_button("Add Skill")
+
+    if submitted:
+        name = new_name.strip()
+        existing = [cs["name"] for cs in custom_skills] + [s for t in _ST.values() for s in t]
+        if not name:
+            st.error("Enter a skill name.")
+        elif name in existing:
+            st.error(f"'{name}' already exists.")
+        else:
+            custom_skills.append({"name": name, "max_dots": int(new_max)})
+            st.rerun()
 
 
 def _tab_disciplines(char: dict) -> None:
@@ -643,16 +646,19 @@ def _tab_xp(char: dict) -> None:
 
     st.divider()
     st.markdown("**Storyteller: Award Earned XP**")
-    col_add, col_note, col_btn = st.columns([2, 3, 2])
-    with col_add:
-        xp_award = st.number_input("Amount", min_value=1, max_value=100, value=1, key="xp_award_amount", label_visibility="collapsed")
-    with col_note:
-        xp_note = st.text_input("Reason", key="xp_award_note", placeholder="e.g., Session reward", label_visibility="collapsed")
-    with col_btn:
-        if st.button("Award XP", key="award_xp_btn", type="primary"):
-            char["earned_xp"] = char.get("earned_xp", 0) + int(xp_award)
-            char.setdefault("xp_log", []).append({"description": f"[Award] {xp_note or 'Earned XP'}", "cost": -int(xp_award)})
-            st.rerun()
+    with st.form(key="xp_award_form", clear_on_submit=True):
+        col_add, col_note, col_btn = st.columns([2, 3, 2])
+        with col_add:
+            xp_award = st.number_input("Amount", min_value=1, max_value=100, value=1, key="xp_award_amount", label_visibility="collapsed")
+        with col_note:
+            xp_note = st.text_input("Reason", key="xp_award_note", placeholder="e.g., Session reward", label_visibility="collapsed")
+        with col_btn:
+            submitted = st.form_submit_button("Award XP", type="primary")
+
+    if submitted:
+        char["earned_xp"] = char.get("earned_xp", 0) + int(xp_award)
+        char.setdefault("xp_log", []).append({"description": f"[Award] {xp_note or 'Earned XP'}", "cost": -int(xp_award)})
+        st.rerun()
 
     st.divider()
     section_header("XP Log")
