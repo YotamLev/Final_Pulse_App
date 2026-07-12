@@ -31,7 +31,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Ghoul Animal", "level": 1, "description": "Pay 1 Blood to ghoul an animal to serve you. Up to Animalism level simultaneously. Wants to serve like a loyal dog but no greater intelligence.", "requires": None},
             {"name": "Mark Territory", "level": 1, "description": "Pay 1 Blood in a place you own to impose difficulty on rivals in it.", "requires": None},
             {"name": "Confront the Beast", "level": 1, "description": "Pay 1 Blood, roll Animalism — relax or enrage another Vampire's Beast.", "requires": None},
-            {"name": "Borrowed Wisdom", "level": 2, "description": "Drinking from an animal gives +3 to +5 in things it excels at until next feed.", "requires": None},
+            {"name": "Borrowed Wisdom", "level": 2, "description": "Drinking from an animal gives +3 to +5 in things it excels at until next feed. In addition, animal blood becomes as nourishing as human Blood - a large dog can give 3 Blood, a wolf can give 4 Blood, a horse 6.", "requires": None},
             {"name": "Abomination", "level": 2, "description": "Pay 1 Blood to make monstrous changes to a ghouled animal (enlarge, add HP, add features). Max changes = Animalism level.", "requires": "Ghoul Animal"},
             {"name": "Unliving Hive", "level": 2, "description": "A swarm of small animals lives in your dead flesh. Add Animalism level to Intimidation rolls, half Animalism (rounded down) to close-range attacks.", "requires": None},
             {"name": "The Wild Hunt", "level": 3, "description": "Pay 1 Blood, enrage all animals to seek and attack a target — your Animalism is their roll.", "requires": None},
