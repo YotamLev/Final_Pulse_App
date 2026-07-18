@@ -237,6 +237,7 @@ TEMPLATE = """<!DOCTYPE html>
   <a href="#clans">Clans</a>
   <a href="#powers">Default Vampire Powers</a>
   <a href="#rolls">Rolls</a>
+  <a href="#hunger">Hunger</a>
 </div>
 
 <div class="section" id="overview">
@@ -371,6 +372,14 @@ TEMPLATE = """<!DOCTYPE html>
 <div style="text-align:center">
   <img src="{dice_image}" alt="Dice cheat sheet" style="max-width:100%;width:500px;border-radius:4px"/>
 </div>
+</div>
+
+<div class="section" id="hunger">
+<h2>Hunger</h2>
+<p>When you are at -1 Blood or less, you experience painful, supernatural Hunger. At all rolls, your Hunger is the amount of black dice you replace with red dice.</p>
+<p>For example: Dracula is at Hunger 3 (-3 Blood). He has Animalism 5, so when asked to roll Animalism, his pool is 6 — because of Hunger 3, he rolls 3 red dice and 3 black dice. If he chooses to use Blood Surge, he will add additional red dice to the pool, but his Hunger will increase.</p>
+<p>Later, Dracula has to roll Biology, but only has Curiosity 2. So, he simply rolls 2 red dice — Hunger does not enlarge the dice pool.</p>
+<p>Taking 1-2 Blood from a human will leave them only momentarily dizzy; 3-4 is anemia and possibly life-threatening; 5 is all the Blood a mortal has to give.</p>
 </div>
 
 <script>
