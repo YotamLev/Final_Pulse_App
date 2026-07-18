@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Final Pulse 2E — Character Building Rules</title>
+<style>
+  body { font-family: Georgia, serif; background: #0a080c; color: #e8ddd0; margin: 2rem auto; max-width: 900px; line-height: 1.5; }
+  h1 { color: #c41e3a; font-family: 'Times New Roman', serif; font-size: 2.2rem; margin-bottom: 0.2rem; }
+  h2 { color: #c41e3a; font-size: 1.4rem; border-bottom: 1px solid #4a2030; padding-bottom: 0.3rem; margin-top: 2.5rem; }
+  h3 { color: #d4c8b8; font-size: 1.1rem; margin-bottom: 0.2rem; }
+  h4 { color: #c9bdb0; font-size: 0.95rem; margin: 0.8rem 0 0.2rem; }
+  p.subtitle { color: #9a8f82; margin-top: 0; }
+  table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
+  th, td { padding: 0.4rem 0.8rem; border: 1px solid #4a2030; text-align: left; vertical-align: top; }
+  th { background: #1a0a12; color: #c9bdb0; }
+  small, .desc { color: #9a8f82; }
+  ul { margin: 0.3rem 0; padding-left: 1.3rem; }
+  li { margin: 0.15rem 0; }
+  .section { background: #12101a; border: 1px solid #3d2830; border-radius: 4px; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; }
+  .toc { columns: 2; }
+  .toc a { color: #e8ddd0; text-decoration: none; }
+  .toc a:hover { color: #c41e3a; }
+  .tag { display: inline-block; font-size: 0.75rem; color: #c9bdb0; background: #1a0a12; border: 1px solid #4a2030; border-radius: 3px; padding: 0.05rem 0.4rem; margin-left: 0.4rem; }
+  .req { color: #c41e3a; }
+  .clan-card { border: 1px solid #3d2830; border-radius: 4px; padding: 0.8rem 1rem; margin-bottom: 1rem; }
+  code { background: #1a0a12; padding: 0.05rem 0.3rem; border-radius: 3px; }
+  a.anchor-link { color: #c9bdb0; }
+  @media print { body { background: white; color: black; } .section { border: 1px solid #ccc; } }
+</style>
+</head>
+<body>
+
+<h1>Final Pulse 2E</h1>
+<p class="subtitle">Character Building Rules — generated from the live app's data files</p>
+
+<div class="section toc">
+  <a href="#overview">Overview &amp; Creation Order</a>
+  <a href="#xp">Experience Points</a>
+  <a href="#traits">Traits</a>
+  <a href="#skills">Skill Trees</a>
+  <a href="#disciplines">Discipline Trees</a>
+  <a href="#clans">Clans</a>
+  <a href="#powers">Default Vampire Powers</a>
+</div>
+
+<div class="section" id="overview">
+<h2>Overview &amp; Creation Order</h2>
+<p>A character is built in four stages:</p>
+<ol>
+  <li><strong>Traits</strong> — choose Mortal and Vampire Traits (optional).</li>
+  <li><strong>Skills</strong> — spend 15 XP across the Skill Trees.</li>
+  <li><strong>Disciplines</strong> — unlock up to 3 Disciplines, then spend 10 XP raising their levels.</li>
+  <li><strong>Clan</strong> — optional; join the one Clan (if any) whose requirements your Traits and Disciplines satisfy.</li>
+</ol>
+</div>
+
+<div class="section" id="xp">
+<h2>Experience Points</h2>
+<p>Skill XP and Discipline XP are separate pools and cannot be mixed:</p>
+<ul>
+  <li><strong>Creation Skill XP:</strong> 15, spent only on Skills.</li>
+  <li><strong>Creation Discipline XP:</strong> 10, spent only on Disciplines.</li>
+</ul>
+<p>After creation, the Storyteller awards <strong>Earned XP</strong>, which may be spent on either pool once its creation allotment is exhausted.</p>
+<h4>Skill cost</h4>
+<p>Each dot you personally invest in a skill costs XP equal to the <em>effective level it brings the skill to</em> — that is, its static base (dots inherited from a parent skill at the branch point, see below) plus the dot number you're buying. So the 1st own dot costs <code>base + 1</code>, the 2nd costs <code>base + 2</code>, and so on. A skill with no parent (base 0) costs 1 XP for its 1st dot, 2 for its 2nd, etc. — the classic <code>1, 2, 3, 4, 5</code> XP curve. Custom skills always have base 0.</p>
+<h4>Discipline cost</h4>
+<p>Raising a Discipline from level <em>L</em> to <em>L+1</em> costs <em>L+1</em> XP. So level 1 costs 1 XP, level 2 costs 2 more (3 total), up to level 5 costing 5 more (15 total).</p>
+</div>
+
+<div class="section" id="traits">
+<h2>Traits</h2>
+<p>Every Trait has a cost (some, like curses, have <em>negative</em> cost). <strong>Total cost of all Mortal + Vampire Traits combined cannot exceed +2.</strong> You may take up to <strong>8 Traits</strong> total; 6 or fewer is recommended.</p>
+
+<h3>Mortal Traits</h3>
+<table>
+<thead><tr><th>Trait</th><th>Cost</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><b>Specialist</b> <span class='tag'>up to 2x</span></td><td>+1</td><td>Expertise in a narrow field. Gain +1 whenever you roll using this expertise.</td></tr>
+<tr><td><b>Rare Specialist</b> <span class='tag'>up to 2x</span></td><td>+2</td><td>Rare expertise in a narrow field. Gain +2 whenever you roll using this expertise.</td></tr>
+<tr><td><b>World-Renowned Specialist</b></td><td>+4</td><td>World-renowned expertise. Gain +3 whenever you roll using this expertise. Can be taken once.</td></tr>
+<tr><td><b>Medical Condition</b></td><td>-3 to -1</td><td>A medical condition the Embrace did not fix. Relevant rolls will be impeded.<br><small>-1: Minor — very short-sighted, stammer, limp; -2: Moderate — missing limb, loss of hearing; -3: Severe — wheelchair bound, blindness</small></td></tr>
+<tr><td><b>Brave</b></td><td>+2</td><td>Add +2 to rolls involving resisting fear.</td></tr>
+<tr><td><b>Natural Leader</b></td><td>+3</td><td>Add +2 to rolls involving leadership.</td></tr>
+<tr><td><b>Compulsion</b></td><td>-1</td><td>A persistent mundane habit or fixation. Resisting tempting opportunities requires a roll.</td></tr>
+<tr><td><b>Distinctive Appearance</b></td><td>-1</td><td>A conspicuous, memorable feature. Attempts to identify or track you gain +1. Disguises must conceal this.</td></tr>
+<tr><td><b>Illiterate</b></td><td>-2</td><td>Cannot read or write fluently. May recognize familiar signs but cannot reliably understand written material.</td></tr>
+<tr><td><b>Addiction</b></td><td>-2 to -1</td><td>Dependent on a mundane substance or behavior.<br><small>-1: Deprivation makes you distracted and irritable, impeding relevant rolls; -2: Prolonged deprivation also prevents recovering Willpower until you indulge</small></td></tr>
+<tr><td><b>Phobia</b></td><td>-2 to -1</td><td>Intense, irrational fear of a specific stimulus.<br><small>-1: Confronting it impedes relevant rolls; -2: Must also succeed on a roll to willingly approach or remain near it</small></td></tr>
+<tr><td><b>Famous</b></td><td>+1</td><td>Publicly known before the Embrace. Reputation opens doors but strangers may recognize you.</td></tr>
+<tr><td><b>Beautiful</b></td><td>+2</td><td>Exceptionally attractive. Gain +1 on first-impression rolls where physical appeal is relevant.</td></tr>
+<tr><td><b>Large</b></td><td>+1</td><td>Exceptionally tall and heavily built. Gain +1 when size helps with lifting, blocking, or intimidation.</td></tr>
+<tr><td><b>Dwarfism</b></td><td>+0</td><td>Significantly shorter than average. Gain +1 when size helps you hide or squeeze through confined spaces.</td></tr>
+<tr><td><b>Criminal Record</b></td><td>-1</td><td>Serious criminal history. Official scrutiny involving your mortal identity is more likely to escalate.</td></tr>
+<tr><td><b>Double-Jointed</b></td><td>+1</td><td>Unusually flexible joints. Gain +1 when escaping restraints, contorting through confined spaces.</td></tr>
+<tr><td><b>Sterile / Eunuch</b></td><td>+0</td><td>Infertile or castrated before the Embrace. No mechanical effect, but shapes your mortal history.</td></tr>
+<tr><td><b>Embraced Young</b></td><td>-1</td><td>Embraced before physical adulthood. Adults often dismiss your authority; age-restricted access is difficult.</td></tr>
+<tr><td><b>Embraced Old</b></td><td>-1</td><td>Embraced at an advanced age. Others underestimate or patronize you.</td></tr>
+<tr><td><b>Perfect Pitch</b></td><td>+1</td><td>Can identify and reproduce musical notes without a reference. Gain +1 when directly relevant.</td></tr>
+<tr><td><b>Color Blindness</b></td><td>-1</td><td>Cannot reliably distinguish colors. Rolls involving color-coded information are impeded when color matters.</td></tr>
+<tr><td><b>Face Blindness</b></td><td>-1</td><td>Struggles to recognize people by faces. Rolls involving identifying individuals by appearance are impeded.</td></tr>
+<tr><td><b>Tetrachromat</b></td><td>+1</td><td>Perceive subtle color differences most cannot. Gain +1 when examining dyes, bruising, forged artwork.</td></tr>
+<tr><td><b>Aphantasia</b></td><td>-1</td><td>Cannot voluntarily form mental images. Rolls depending on visualizing a remembered face, place, or scene are impeded.</td></tr>
+<tr><td><b>Unerring Sense of Direction</b></td><td>+1</td><td>Always knows cardinal directions. Gain +1 when navigating or estimating relative positions.</td></tr>
+<tr><td><b>Genius</b></td><td>+3</td><td>Exceptional general intelligence. Gain +1 on abstract reasoning, rapid learning, complex problem-solving.</td></tr>
+<tr><td><b>Iron Constitution</b></td><td>+2</td><td>Exceptionally resistant to poison, disease, exhaustion. Gain +1 HP and +1 to rolls to muddle through.</td></tr>
+<tr><td><b>Perfect Balance</b></td><td>+2</td><td>Extraordinary sense of balance. Gain +2 on rolls to keep footing, move across unstable surfaces.</td></tr>
+<tr><td><b>Lightning Reflexes</b></td><td>+3</td><td>Exceptionally fast reactions. Gain +1 to rolls involving sudden danger, avoiding ambushes, or reacting quickly.</td></tr>
+<tr><td><b>Cowardly</b></td><td>-2</td><td>Unusually vulnerable to fear and panic. Suffer -2 on rolls to resist fear; when failed, instinctively flee or freeze.</td></tr>
+<tr><td><b>Amnesiac</b></td><td>-2</td><td>Large parts of mortal life are missing. Rolls depending on personal history are impeded.</td></tr>
+<tr><td><b>Bad Liar</b></td><td>-2</td><td>Visibly uncomfortable when lying. Rolls to tell a direct lie are impeded. Evasion and omission are unaffected.</td></tr>
+<tr><td><b>Night Blindness</b></td><td>-3</td><td>Exceptionally poor vision in dim light. Unless brightly lit, visual rolls are impeded.</td></tr>
+<tr><td><b>Ugly</b></td><td>-2</td><td>Notably unpleasant appearance. Rolls relying on physical attractiveness or favorable first impressions are impeded.</td></tr>
+<tr><td><b>Chronic Pain</b></td><td>-2</td><td>Persistent pain the Embrace did not cure. During demanding scenes, one relevant roll may be impeded.</td></tr>
+<tr><td><b>Innumerate</b></td><td>-2</td><td>Severe difficulty with numbers and arithmetic. Rolls involving accounts, prices, or calculations are impeded.</td></tr>
+<tr><td><b>Severe Allergy</b></td><td>-2</td><td>A dangerous allergy retained from mortal life. Exposure to the trigger causes serious impairment.</td></tr>
+<tr><td><b>Dyslexia</b></td><td>-2</td><td>Severe difficulty reading quickly. Rolls involving written records, codes, or time-sensitive reading are impeded.</td></tr>
+<tr><td><b>Severe Motion Sickness</b></td><td>-1</td><td>Becomes disoriented in moving vehicles. Relevant rolls are impeded during travel and shortly afterward.</td></tr>
+<tr><td><b>Paranoid</b></td><td>-2</td><td>Habitually perceives hidden threats and betrayal. Rolls to accurately judge trustworthiness are impeded.</td></tr>
+<tr><td><b>Dissociative Episodes</b></td><td>-2</td><td>Under severe stress, becomes detached from surroundings. Awareness, memory, and social rolls are impeded.</td></tr>
+<tr><td><b>Depressive Episodes</b></td><td>-2</td><td>Periodically falls into profound hopelessness. Rolls requiring initiative or sustained effort are impeded.</td></tr>
+<tr><td><b>Manic Episodes</b></td><td>-2</td><td>Periodic extreme energy and reduced judgment. Rolls to resist risky opportunities are impeded during episodes.</td></tr>
+<tr><td><b>Psychotic Episodes</b></td><td>-3</td><td>Under severe stress, may experience hallucinations or delusions. Rolls to correctly interpret events are impeded.</td></tr>
+<tr><td><b>Selective Mutism</b></td><td>-2</td><td>In certain social situations becomes unable to speak. During such episodes, verbal social actions are impossible.</td></tr>
+<tr><td><b>Panic Disorder</b></td><td>-2</td><td>Under intense stress, may suffer a panic attack. Rolls requiring concentration or calm interaction are impeded.</td></tr>
+<tr><td><b>Post-Traumatic Stress</b></td><td>-2</td><td>Choose a trigger category. When confronted, rolls to remain composed or act against the trigger are impeded.</td></tr>
+<tr><td><b>Delusional Belief</b></td><td>-2</td><td>One fixed false belief that resists evidence. When relevant, rolls to interpret events objectively are impeded.</td></tr>
+</tbody>
+</table>
+
+<h3>Vampire Traits</h3>
+<table>
+<thead><tr><th>Trait</th><th>Cost</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><b>Folkloric Bane</b> <span class='tag'>up to 7x</span></td><td>-1</td><td>A classic vampiric weakness from folklore. Choose one each time you take this trait.<br><small>Choose one: Weakness to garlic, Willpower roll to enter homes uninvited, Hearing ringing bells or crowing of a rooster causes 1 HP damage, Willpower roll to cross running water, Weakness to salt, No mirror reflection, Your shadow is uncanny: moves too late, in wrong directions</small></td></tr>
+<tr><td><b>Morph</b></td><td>+2</td><td>Can change your timeless appearance to adapt to the times. Spend 2 Blood per change consistent with some passage of time (up to 1 year). Changes apply and revert during daysleep.</td></tr>
+<tr><td><b>Prone to Rage</b></td><td>-2</td><td>Suffer -2 to resist Rage Frenzy.</td></tr>
+<tr><td><b>Archaic</b></td><td>-3</td><td>Cannot competently use modern technology. Computers, smartphones, elevators, cars — require assistance or a difficult roll.</td></tr>
+<tr><td><b>Ravenous</b></td><td>-3</td><td>Feeding without killing always requires a Willpower roll.</td></tr>
+<tr><td><b>Selective Taste</b></td><td>-5 to -1</td><td>Only feed on a specific type of mortal. Feeding on others costs 1-5 Willpower depending on proximity to desired prey.<br><small>-1: Broadly selective (e.g., 20-30 year old males); -2: Selective (e.g., a specific ethnicity or profession); -3: Very selective; -4: Extremely selective; -5: Near-impossible (e.g., only pregnant women)</small></td></tr>
+<tr><td><b>Territorial</b></td><td>-2</td><td>Every encroachment on your territory or property triggers a Rage Frenzy, or costs 2 Willpower.</td></tr>
+<tr><td><b>Stigmata</b></td><td>-1</td><td>Begin to bleed from your eyes when Blood reaches -4.</td></tr>
+<tr><td><b>Corpse-Like</b></td><td>-2</td><td>Your appearance feels wrong and dead. Rolls relying on physical attractiveness or favorable first impressions are impeded.</td></tr>
+<tr><td><b>Iron Gullet</b></td><td>+2</td><td>Can feed from cold blood, rancid blood, and fractionated plasma.</td></tr>
+<tr><td><b>Dead Stillness</b></td><td>+1</td><td>Can remain perfectly motionless for any length of time. Casual observers mistake you for a corpse or statue.</td></tr>
+<tr><td><b>Scent Hound</b></td><td>+2</td><td>Can smell fresh blood from several rooms away and distinguish individuals by the scent of their blood.</td></tr>
+<tr><td><b>Infatuation</b></td><td>-1</td><td>Easily emotionally bonded to mortals, caring about them deeply.</td></tr>
+<tr><td><b>Painful Bite</b></td><td>-2</td><td>The Kiss doesn't work — mortals experience only pain when bitten. You can still close wounds afterwards.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" id="skills">
+<h2>Skill Trees</h2>
+<p>Skills are grouped into 5 trees. When a skill <em>branches from</em> a parent skill at a given dot threshold, the parent's dots up to that threshold count as a static base added on top of the dots you invest directly in the child — so a skill's effective (practical) level is <code>parent's static base + your own dots</code>. This chains: a skill three branches deep inherits the accumulated base of everything above it.</p>
+<p>Below, indentation shows the branching hierarchy — a nested skill branches from the skill directly above it at the dot count noted.</p>
+
+<h3>Scheming</h3>
+<ul><li><b>Basic Analytical</b> <span class='tag'>up to 2 dots</span> <br><small>Inferring secrets, planning ambushes, investigating crime scenes.</small><ul><li><b>Finance</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Analytical 2 dots</span><br><small>Manage money, embezzle, launder, follow money trails.</small></li><li><b>Logistics</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Analytical 2 dots</span><br><small>Supplying, smuggling, organizing.</small></li><li><b>Investigation</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Analytical 2 dots</span><br><small>Interrogate, pick up clues, scan vast text sources.</small></li><li><b>Social Academics</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Analytical 2 dots</span><br><small>History, Archeology, Sociology, Anthropology, Philosophy, Literature.</small></li><li><b>Mortal Politics</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Analytical 2 dots</span><br><small>Organize large institutions, find who holds sway in mortal society, understand mortal laws.</small><ul><li><b>Undead Politics</b> <span class='tag'>up to 2 dots</span> <span class='tag'>branches from Mortal Politics 3 dots</span><br><small>Find out who holds sway and makes decisions in vampiric society.</small></li></ul></li></ul></li></ul>
+<h3>Manipulation</h3>
+<ul><li><b>Basic Manipulation</b> <span class='tag'>up to 2 dots</span> <br><small>Push people's buttons, convince, convert.</small><ul><li><b>Court Etiquette</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Manipulation 2 dots</span><br><small>Rules of Vampiric society, traditions, proper forms of address.</small><ul><li><b>Boon Economy</b> <span class='tag'>up to 2 dots</span> <span class='tag'>branches from Court Etiquette 3 dots</span><br><small>Understand how Boons and Debts amongst Vampires work and use them to your advantage.</small></li></ul></li><li><b>Social Chameleon</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Manipulation 2 dots</span><br><small>Integrate in mortal society and circles, understand and perform mortal culture.</small><ul><li><b>Mortal Society Status</b> <span class='tag'>up to 2 dots</span> <span class='tag'>branches from Social Chameleon 1 dots</span><br><small>Learn to rise in Status and recognition, and wield them over mortals.</small></li></ul></li><li><b>Deception</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Manipulation 2 dots</span><br><small>Learn to lie and deceive.</small></li><li><b>Persuasion</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Manipulation 2 dots</span><br><small>Learn to convince and corrupt.</small></li><li><b>Intimidation</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Basic Manipulation 2 dots</span><br><small>Learn to frighten and strong-arm your lessers.</small></li></ul></li><li><b>Insight</b> <span class='tag'>up to 5 dots</span> <br><small>See through lies, uncover motives and emotions.</small></li></ul>
+<h3>Thrashing</h3>
+<ul><li><b>Brawl</b> <span class='tag'>up to 2 dots</span> <br><small>Up-close and personal fighting. Battle-awareness, willingness to suffer and impose pain.</small><ul><li><b>Martial Arts</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Brawl 2 dots</span><br><small>Fighting face-to-face using fists, kicks, chokeholds etc.</small></li><li><b>Swordsmanship</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Brawl 2 dots</span><br><small>Fighting using bladed weapons: swords, scimitars, rapiers, katanas.</small></li><li><b>Bludgeoning</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Brawl 2 dots</span><br><small>Adept at blunt-force trauma: maces, baseball bats, rocks.</small></li></ul></li><li><b>Guns</b> <span class='tag'>up to 5 dots</span> <br><small>Can shoot, clean, reload guns. Knows how to handle them.</small><ul><li><b>Marksmanship</b> <span class='tag'>up to 2 dots</span> <span class='tag'>branches from Guns 5 dots or Projectiles 5 dots</span><br><small>Can shoot long range, picking up targets as a sniper.</small></li></ul></li><li><b>Projectiles</b> <span class='tag'>up to 5 dots</span> <br><small>Can shoot bows, throw knives, and use other long-range weapons.</small></li><li><b>Dodge</b> <span class='tag'>up to 5 dots</span> <br><small>Dodge physical attacks. Roll if actively dodging, or take half rounded-down as difficulty to hit you.</small></li><li><b>Athletics</b> <span class='tag'>up to 5 dots</span> <br><small>Can jump, climb, crawl, and stay upright.</small></li></ul>
+<h3>Resourcefulness</h3>
+<ul><li><b>Awareness</b> <span class='tag'>up to 5 dots</span> <br><small>Notice threats, recognize surroundings.</small><ul><li><b>Streetwise</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Awareness 2 dots</span><br><small>Can get drugs, understand gang territory, notice weird looks, survive in urban areas.</small></li><li><b>Survival</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Awareness 2 dots</span><br><small>Understand terrain, navigation, find sanctuary from the sun, survive in non-urban areas.</small></li></ul></li><li><b>Stealth</b> <span class='tag'>up to 5 dots</span> <br><small>Can hide, sneak, skulk, notice gazes.</small><ul><li><b>Larceny</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Stealth 2 dots</span><br><small>Can picklock, pickpocket, carjack, break &amp; enter.</small></li></ul></li><li><b>Technology</b> <span class='tag'>up to 5 dots</span> <br><small>Understand common technology as something to use and manipulate.</small><ul><li><b>Hacking</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Technology 2 dots</span><br><small>Understand operating systems, cryptography, and communication well enough to abuse, infiltrate, and distort.</small></li></ul></li><li><b>Medicine</b> <span class='tag'>up to 7 dots</span> <br><small>Understand the mortal body, disease symptoms, treatments. (Mastery level — up to 7 dots)</small><ul><li><b>Medical Forensics</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Medicine 2 dots</span><br><small>Understand evidence collection methods, DNA, how to make deaths look natural.</small></li><li><b>Poisons</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Medicine 2 dots</span><br><small>Understand dosages, poisons, drug overdoses.</small></li></ul></li></ul>
+<h3>Experimentation</h3>
+<ul><li><b>Curiosity</b> <span class='tag'>up to 2 dots</span> <br><small>Morbid interest in pushing the limits of what current society can do and is willing to do.</small><ul><li><b>Science</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Curiosity 2 dots</span><br><small>Understand the scientific method and current mainstream science.</small><ul><li><b>Biology</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Science 2 dots</span><br><small>Understand biological processes in mortals, animals, bacteria, viruses.</small><ul><li><b>Weird Science</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Biology 2 dots</span><br><small>Willing to experiment on unwilling mortals; can create mutants, targeted viruses. Uses are specific, unstable, and often unreproducible.</small></li></ul></li><li><b>Chemistry</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Science 2 dots</span><br><small>Understand compounds, can create chemical reactions, acids, explosives.</small><ul><li><b>Alchemy</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Chemistry 2 dots</span><br><small>Can create new materials, potions and elixirs with limited-time effects. Uses are specific, unstable, and require exotic ingredients.</small></li></ul></li></ul></li><li><b>Occult</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Curiosity 2 dots</span><br><small>Research forbidden lore, secret weaknesses, and rituals.</small><ul><li><b>Demonology</b> <span class='tag'>up to 5 dots</span> <span class='tag'>branches from Occult 3 dots</span><br><small>Research demons and means of summoning them.</small></li></ul></li></ul></li></ul>
+
+<h3>Custom Skills</h3>
+<p>Players may invent their own skill (e.g. Dance, Chess, Agriculture) with a Storyteller-set max dots. Custom skills have no parent/base — cost follows the same <code>1, 2, 3…</code> curve from 0.</p>
+</div>
+
+<div class="section" id="disciplines">
+<h2>Discipline Trees</h2>
+<p>A vampire may unlock up to <strong>3 Disciplines</strong>. Each Discipline has a level from 0–5. Raising a Discipline's level lets you acquire that many powers total from it (one power slot per level), chosen from any power at or below your current level whose prerequisite (if any) you already hold.</p>
+
+<h3>Auspex</h3>
+<p class='desc'>Enhance senses, peer into other dimensions, telepathy.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Enhance Senses</b><br><small>Add Auspex level to sensory input: seeing, hearing, etc.</small></li>
+<li><b>Sense The Unseen</b><br><small>Roll Auspex to find hidden and invisible creatures or objects.</small></li>
+<li><b>Impulse</b><br><small>Ask 1 question per scene about: danger, emotions, or specific secrets.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Read Aura</b><br><small>Pay 1 Blood, roll Auspex — margin is number of questions you ask about a target creature, or skim surface thoughts of people nearby.</small></li>
+<li><b>Spirit's Touch</b><br><small>Pay 1 Blood, roll Auspex — margin is number of questions you ask about a target item or building.</small></li>
+<li><b>Anticipation</b><br><small>Pay 1 Blood, add Auspex to rolls made to dodge or defend against all kinds of attacks and dangers, for a scene.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Telepathy</b><br><small>Pay 1 Blood, talk to 1 target you know for a scene. If target is unwilling or far, roll Auspex. Lasts for a scene.</small></li>
+<li><b>Write Script</b><br><small>Pay 1 Blood, choose a short phrase and a target whom you are in conversation with - the target will utter it, in some form.</small></li>
+<li><b>Clairvoyance</b><br><small>Pay 1 Blood, roll Auspex — margin is number of questions about events during the last day in a large area.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Tempt Fate</b><br><small>Pay 3 Blood, cause another to reroll a roll. Once per night.</small></li>
+<li><b>Scry</b> <span class='tag req'>requires Telepathy</span><br><small>When using Telepathy you can roll Auspex to avoid the target sensing you. When Telepathy is active, experience the target's senses in real time.</small></li>
+</ul></li>
+</ul>
+<h3>Animalism</h3>
+<p class='desc'>Control animals, act on your inner animal.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Ghoul Animal</b><br><small>Pay 1 Blood to ghoul an animal to serve you. Up to Animalism level simultaneously. Wants to serve like a loyal dog but no greater intelligence.</small></li>
+<li><b>Mark Territory</b><br><small>Pay 1 Blood in a place you own to impose difficulty on rivals in it.</small></li>
+<li><b>Confront the Beast</b><br><small>Pay 1 Blood, roll Animalism — relax or enrage another Vampire's Beast.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Borrowed Wisdom</b><br><small>Drinking from an animal gives +3 to +5 in things it excels at until next feed. In addition, animal blood becomes as nourishing as human Blood - a large dog can give 3 Blood, a wolf can give 4 Blood, a horse 6.</small></li>
+<li><b>Abomination</b> <span class='tag req'>requires Ghoul Animal</span><br><small>Pay 1 Blood to make monstrous changes to a ghouled animal (enlarge, add HP, add features). Max changes = Animalism level.</small></li>
+<li><b>Unliving Hive</b><br><small>A swarm of small animals lives in your dead flesh. Add Animalism level to Intimidation rolls, half Animalism (rounded down) to close-range attacks.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>The Wild Hunt</b><br><small>Pay 1 Blood, enrage all animals to seek and attack a target — your Animalism is their roll.</small></li>
+<li><b>Wild Whispers</b><br><small>Pay 1 Blood, communicate with any animal fully for a scene.</small></li>
+<li><b>Summon Animal</b><br><small>Summon a specific type of animal or specify characteristics. Roll Animalism if very specific or uncommon in area.</small></li>
+</ul></li>
+<li><i>Level 5</i><ul>
+<li><b>Wild Escape</b> <span class='tag req'>requires Ghoul Animal</span><br><small>When reduced to 0 HP, instantly move your consciousness to a nearby ghouled animal instead of torpor. Getting a drop of your original blood lets you reform your old body.</small></li>
+</ul></li>
+</ul>
+<h3>Celerity</h3>
+<p class='desc'>Superhuman speed and agility.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Speed</b><br><small>Add Celerity level to rolls involving speed: running, slashing, dodging. Add half Celerity (rounded down) to rolls of precision.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Blink</b><br><small>Pay 1 Blood, move super-fast in your turn: walk on water, on vertical walls, between the blades of a spinning jet engine.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Bullet Speed</b> <span class='tag req'>requires Speed</span><br><small>When using Speed, add Celerity level (instead of half) to rolls of precision, including shooting.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Hover</b><br><small>The vampire can hover slightly above ground.</small></li>
+<li><b>Fast Strike</b><br><small>Pay 2 Blood, you can take 2 actions in a turn without penalties.</small></li>
+</ul></li>
+<li><i>Level 5</i><ul>
+<li><b>Unholy Flight</b> <span class='tag req'>requires Hover</span><br><small>Pay 1 Blood, the vampire can fly at running speed for a scene.</small></li>
+<li><b>Uncanny Dodge</b> <span class='tag req'>requires Hover</span><br><small>When attacked by something you can dodge, pay 1 Blood, lower incoming HP damage by 2, as a reflex.</small></li>
+</ul></li>
+</ul>
+<h3>Dominate</h3>
+<p class='desc'>Puppeteer others, wipe memories.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Draw On Instinct</b><br><small>Cause a mortal to obey a simple command that is some form of: Flee ('run away!'), Freeze ('kneel before me,'), or Fight ('shoot that guy!').</small></li>
+<li><b>Cloud Mind</b><br><small>Cause a mortal to forget the last 5 minutes and the next 2 minutes.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Mesmerize</b><br><small>Pay 1 Blood, target a mortal (roll Dominate if they resist), cause a simple task for about a scene. Task can't be suicidal. Mortals remember the task but not why.</small></li>
+<li><b>Modify Memory</b><br><small>Pay 1 Blood, target a mortal, roll Dominate, alter memories. Cannot extract information.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Implant Trigger</b><br><small>Pay 1 Blood, allows Mesmerize, Cloud Mind, and Modify Memory to have a trigger. Lasts for Dominate level days or until triggered.</small></li>
+<li><b>Terminal Decree</b> <span class='tag req'>requires Mesmerize</span><br><small>Allows suicidal tasks with Mesmerize.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Dominate Your Kind</b><br><small>Allows using Dominate powers on vampires. Very hard and very risky.</small></li>
+<li><b>Mass Dominate</b><br><small>Target more than 1 mortal with Dominate, paying 1 Blood per extra mortal. Max targets = Dominate level.</small></li>
+<li><b>Rationalize</b><br><small>Targets of Dominate powers will attempt to reconcile their actions &amp; memories, possibly scarring their personality.</small></li>
+</ul></li>
+</ul>
+<h3>Fortitude</h3>
+<p class='desc'>Heal, absorb damage, enhance your capacity.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Rapid Healing</b><br><small>Each 1 Blood paid allows healing 2 HP instead of 1.</small></li>
+<li><b>Toughness</b><br><small>Add 2 max HP per level of Fortitude.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Prowess From Pain</b><br><small>Each HP damage you have, up to Fortitude level, can be added to physical attacks or stressed efforts.</small></li>
+<li><b>Draught of Endurance</b><br><small>Your ghouls add your Fortitude level to their HP. A vampire drinking at least 1 of your Blood gets your Fortitude powers for the night.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Flesh of Marble</b><br><small>Pay 2 Blood, take no damage for 1 turn.</small></li>
+<li><b>Mind Fortress</b><br><small>Add Fortitude level to rolls to resist mental powers.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Last Stand</b> <span class='tag req'>requires Flesh of Marble</span><br><small>If reduced to 0 HP, Flesh of Marble activates automatically to prevent Torpor, as long as Blood is -8 or higher. Blood cost paid as normal.</small></li>
+</ul></li>
+<li><i>Level 5</i><ul>
+<li><b>Endurance</b> <span class='tag req'>requires Flesh of Marble</span><br><small>Flesh of Marble costs 1 Blood instead of 2.</small></li>
+</ul></li>
+</ul>
+<h3>Nightmare</h3>
+<p class='desc'>Scare, unsettle, put to sleep.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Haunt Dream</b><br><small>Appear in a mortal's dreams, give them messages. Can be activated during day and from torpor.</small></li>
+<li><b>Lullaby</b><br><small>Put an unsuspecting mortal to sleep, or a group of mortals by paying 1 Blood. Suspecting mortals or stressful environments may require a Nightmare roll.</small></li>
+<li><b>It Was All a Bad Dream</b><br><small>Cause all mortals in a scene to believe whatever scary thing they just saw was a dream or has a mundane explanation.</small></li>
+<li><b>Melpominee</b><br><small>Cast your voice to sound as if coming from a point you can see.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Dread Gaze</b><br><small>Add Nightmare to Intimidation rolls, create scary illusions of your appearance. A +3 margin can paralyze a target for a turn.</small></li>
+<li><b>Haunting Ground</b><br><small>Activate to cause mortals to subconsciously avoid an area when you are there.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Paranoia</b> <span class='tag req'>requires Haunt Dream</span><br><small>Pay 1 Blood, unnerve a target you talk to, causing up to -4 for the night.</small></li>
+<li><b>Illusion</b><br><small>Pay 1 Blood, create a small motionless illusion affecting one sense. Each additional sense, motion, or size increase costs 1 more Blood.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Summon Nightmare</b> <span class='tag req'>requires Paranoia</span><br><small>Pay 1 Blood, attack a target with its worst fear, rolling Nightmare, inflicting Willpower damage.</small></li>
+</ul></li>
+</ul>
+<h3>Obfuscate</h3>
+<p class='desc'>Hide, appear differently.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Fade</b><br><small>Low-level hypnotism makes all mortals avert their eyes and ignore you, seeing you as a forgettable nobody.</small></li>
+<li><b>Cloak of Shadows</b><br><small>Standing still or moving obscured against a backdrop allows you to be totally ignored by mortals — they see you as an object or vegetation.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Vanish</b><br><small>Pay 1 Blood, be completely invisible for a scene. Intentionally stopping from hiding, by attacking, talking loudly etc, - ends the invisibility.</small></li>
+<li><b>Disguise</b><br><small>Pay 1 Blood, alter your appearance to appear as another person. Copying someone exactly is much harder.</small></li>
+<li><b>Labyrinth</b><br><small>Pay 1 Blood, cause mortals to get confused and lost around you, having difficulty navigating. Lasts a scene or pay 1 extra Blood for the whole day.</small></li>
+<li><b>Silent Hunter</b><br><small>When using Fade, Cloak of Shadows, or Vanish — the vampire can also completely silence sounds from themselves.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Ambusher</b><br><small>Pay 1 Blood, make Obfuscate powers work on other Vampires for a scene. Those with Auspex can roll against your Obfuscate.</small></li>
+<li><b>Cloak the Gathering</b><br><small>Extend Obfuscate powers to willing vampires who stay close. Pay 1 extra Blood per vampire per scene.</small></li>
+</ul></li>
+</ul>
+<h3>Potence</h3>
+<p class='desc'>Strength, brutality.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Vigor</b><br><small>Add Potence to rolls involving strength and muscles: swinging a sword, jumping, bending metal.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Shockwave</b><br><small>Pay 1 Blood, your attacks count against all in close-range to you instead of choosing 1 enemy.</small></li>
+<li><b>Bloody Strangle</b><br><small>Pay 1 Blood while grappling a target — that target cannot use supernatural powers, except Potence and Fortitude, as long as you hold it.</small></li>
+<li><b>Brutal Feed</b><br><small>Can drain an entire mortal in 1 turn.</small></li>
+</ul></li>
+</ul>
+<h3>Presence</h3>
+<p class='desc'>Enrapture, charm, control masses.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Awe</b><br><small>Add Presence to Social rolls.</small></li>
+<li><b>Summon</b><br><small>Call a mortal you know to you. They will do all in their power to reach you.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Midnight Command</b><br><small>Pay 1 Blood, add your Presence to rolls made by your ghouls and mortals you lead for a scene.</small></li>
+<li><b>Hypnotize</b><br><small>Pay 1 Blood, roll Presence, paralyze a group of mortals or a vampire for as long as you keep using turns on this power.</small></li>
+<li><b>Affect Mood</b><br><small>Choose an emotion and project it to all mortals in the scene.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Sway</b><br><small>Pay 2 Blood, cause a great crowd of mortals to absolutely believe in a plausible cause. They will endanger themselves for it. Lasts a scene.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Art Necro</b><br><small>Create a piece of art that can project one of your Presence powers on viewers.</small></li>
+</ul></li>
+</ul>
+<h3>Protean</h3>
+<p class='desc'>Shapeshift.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Animorph</b><br><small>Pay 1 Blood, assume the shape of an animal (mouse to tiger) for a scene. Transforming takes a turn.</small></li>
+<li><b>Feral Weapons</b><br><small>Extend fangs and claws, add your Protean to close-range physical attacks.</small></li>
+<li><b>Bone Armor</b><br><small>Pay 1 or more Blood, gain 2 extra HP per Blood for a scene.</small></li>
+<li><b>Bone Bullets</b><br><small>Shoot teeth, bone spurs, or nails as natural weapons.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Separate Limb</b><br><small>Pay 1 Blood, separate a limb and grant it independence. It serves you but only has senses it physically has. Up to Protean level simultaneously.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Mist Form</b><br><small>Pay 1 Blood, spend two turns to transform into a cloud of mist — untouchable save by fire and sunlight. Cannot spend more than two scenes as mist.</small></li>
+<li><b>Internal Shift</b><br><small>Move your internal organs at will — shift your heart to dodge a stake, make it seem to pound, terrify onlookers.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Fleshcraft</b><br><small>pay 2 Blood, take two turns to transform your body: rotate your head 180°, move your hands to your belly, even attaching organs from other creatures, like having extra hands or spider eyes. Note that sensory organs offer no sensory input, but muscle, bone, chitin etc. do. wings require a giant bird, and flying with them is very hard. Up to Protean level changes simultaneously.</small></li>
+</ul></li>
+<li><i>Level 5</i><ul>
+<li><b>Szlachta</b><br><small>You can use your Protean powers on your ghouls by touching them. This is very painful. Pay Blood prices as usual.</small></li>
+</ul></li>
+</ul>
+<h3>Arrete</h3>
+<p class='desc'>Supernatural intelligence.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Calculating</b><br><small>Add your Arrete to mental actions requiring intelligence, typically in the Scheming Skill Tree.</small></li>
+<li><b>Perfect Recall</b><br><small>Pay 1 Blood, retroactively remember a detail from something you have seen, heard, or read.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Borrowed Knowledge</b><br><small>When feeding from a victim, gain a bonus (1-3 dice) to areas of expertise they had until next feeding.</small></li>
+<li><b>The Common Denominator</b><br><small>Pay 1 Blood, learn any human language for a scene. Pay 2 Blood to decipher any encoded message you can access.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Perfectionism</b><br><small>You can use Willpower to reroll up to 5 dice, instead of 3.</small></li>
+<li><b>Oral History</b> <span class='tag req'>requires Borrowed Knowledge</span><br><small>When feeding from a victim, gain a temporary custom skill at level 4 in an area of expertise the victim had, for the night. Up to Arrete level simultaneous skills. This does not interrupt Borrowed Knowledge.</small></li>
+</ul></li>
+</ul>
+<h3>Necromancy</h3>
+<p class='desc'>Decay, raise lesser undead.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Touch of Oblivion</b><br><small>Pay 1 Blood, cripple and age a body part with a single touch. Roll Necromancy and relevant skills to touch an unwilling creature.</small></li>
+<li><b>Ashes to Ashes</b><br><small>Turn a body to fine ash, eliminating all blood and gore. Can be used on rival zombies.</small></li>
+<li><b>Kill the Vibe</b><br><small>Roll Mortifex (Necromancy) to cancel Presence and Nightmare powers.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Raise Corpse</b><br><small>Pay 1 Blood to raise a zombie using your Necromancy to act. Lasts for a night. The zombie obeys your commands as long as it can percieve you. Up to Necromancy level simultaneously.</small></li>
+<li><b>Summon Wraith</b><br><small>Pay 1 Blood to summon a ghost. Convince them to help — they can spy and frighten but not move anything materially except weak wind and sound.</small></li>
+<li><b>Ossuary Explosion</b><br><small>Pay 1 Blood, cause a body to explode, dealing Necromancy level damage to those nearby. No roll required.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Zombie Legion</b> <span class='tag req'>requires Raise Corpse</span><br><small>Undead created with Raise Corpse last to the next night as long as they aren't in sunlight. In addition, these undead serve even if they can't percieve who raised them.</small></li>
+</ul></li>
+</ul>
+<h3>Druidic</h3>
+<p class='desc'>Control plants.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Frost Touch</b><br><small>Chill objects, freeze areas of water, or inflict frostbite with a touch.</small></li>
+<li><b>Disband Beasts</b><br><small>Roll Druidic to counter Animalism powers.</small></li>
+<li><b>Druidcraft</b><br><small>Cause minor changes in vegetation: flowers wither or bloom, mushrooms sprout.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Upend the Course</b><br><small>Pay 1 Blood, somewhat affect the weather of a city area. Summon clouds, rain, or snow for the night.</small></li>
+<li><b>Wrath of Zeus</b><br><small>Pay 1 Blood, direct lightning to strike a target, rolling Druidic.</small></li>
+<li><b>Earth Meld</b><br><small>Pay 1 Blood, sink into and become one with soil. Leave when you wish. You can travel slowly through natural earth and wood in this state.</small></li>
+<li><b>Root Grasp</b><br><small>Pay 1 Blood, command roots, vines, branches, or other living plants to move, entangle, or immobilize targets. Roll Druidic. Lasts a scene.</small></li>
+<li><b>Sweet Sap</b><br><small>You can drink Blood from trees, killing them. A large old tree gives 2 Blood, and small bushes give nothing.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Malakan's Gift</b><br><small>Pay 1 Blood, animate a tree or major plant as a servant for a night. The older the plant is - the more powerful it is as a servant.</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Foul Wind</b><br><small>Pay 2 Blood, strong winds can lift you to fly, and you can direct strong wind to push people and objects around.</small></li>
+</ul></li>
+</ul>
+<h3>Blood Sorcery</h3>
+<p class='desc'>Bend blood.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Bend Blood</b><br><small>Control spilled blood, making it flow or float in the air. Up to 2 Liters at a time, and the max force it can apply is 3 kg.</small></li>
+<li><b>A Taste for Blood</b><br><small>By tasting blood, detect many facts: age, birthplace, Sire (if Vampire), Disciplines (if Vampire), emotions when blood was spilled. Additional facts may require a Blood Sorcery roll.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Bend Veins</b> <span class='tag req'>requires Bend Blood</span><br><small>by paying 3 Blood, you can use Bend Blood even on blood inside another's body, rolling Blood Sorcery, for a scene. Causing damage is very difficult; slowing movement or causing a vampire to vomit blood is easy.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Telekinesis</b> <span class='tag req'>requires Bend Blood</span><br><small>by paying 1 Blood, Your Bend Blood power can now control up to 10 Liters of blood, and apply some force (roughly ~50 kg) at a time, for a turn.</small></li>
+<li><b>Scorpion's Touch</b><br><small>Turn your own spilled vitae corrosive, melting whatever it touches. 1 Blood extracted is enough to melt a hole through a regular door.</small></li>
+<li><b>Vanigma</b><br><small>You can research and cast various spells and rituals. Describe your desited effect to the Storyteller, and they will present you with the Scheme difficulty to research &amp; cast it.</small></li>
+</ul></li>
+<li><i>Level 5</i><ul>
+<li><b>Cauldron of Blood</b><br><small>Pay 2 Blood, boil an enemy's blood in their veins, causing Blood Sorcery level damage in a turn to a target you can reach. No roll required.</small></li>
+</ul></li>
+</ul>
+<h3>Shadow Sorcery</h3>
+<p class='desc'>Grab others by their shadow, spy through shadows.</p>
+<ul>
+<li><i>Level 1</i><ul>
+<li><b>Dim the Lights</b><br><small>Cause lights to dim or flicker, subject to your control.</small></li>
+<li><b>Shadow Perspective</b><br><small>Look into a shadow and see from another shadow nearby.</small></li>
+</ul></li>
+<li><i>Level 2</i><ul>
+<li><b>Shadow Step</b><br><small>Pay 1 Blood, slip into a shadow and re-emerge into another shadow close by.</small></li>
+<li><b>Grab the Effigy</b><br><small>Pay 1 Blood, for a scene you can beat, grapple, or use another's shadow as if it were the target. Roll Shadow Sorcery, adding Brawl if relevant.</small></li>
+</ul></li>
+<li><i>Level 3</i><ul>
+<li><b>Shadow Step Mastery</b> <span class='tag req'>requires Shadow Step</span><br><small>Shadow Step costs 1 Blood and lasts for the scene.</small></li>
+<li><b>Shoot the Shadow</b><br><small>Pay 2 Blood, cause one attack that hit you to hit your shadow instead, reflexively (no action required).</small></li>
+</ul></li>
+<li><i>Level 4</i><ul>
+<li><b>Shadow Avatar</b><br><small>Pay 3 Blood, cause your shadow to materialize and act for a scene, acting as your double.</small></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="section" id="clans">
+<h2>Clans</h2>
+<p>Clans are optional. Each has requirements built from your Traits and unlocked Disciplines — <strong>you may qualify for and join at most one Clan.</strong></p>
+
+<div class='clan-card'>
+<h3>Ventrue</h3>
+<p><i>The self-styled rulers of vampire society, masters of control, who believe it is their birthright to lead.</i></p>
+<p><strong>Recruitment:</strong> Generals, Lords, Gang Leaders</p>
+<p><strong>Requirements:</strong> Trait: Selective Taste; Discipline: Dominate</p>
+<p><strong>Bonus:</strong> Connected — you gain significant advantages to find useful vampires and advance your status. In a social scene, for one target, if you ask for and recieve respect (in the form of proper addressing, a bow, etc.), you gain +2 on rolls to convince, intimidate, or strong-arm the target. If you do not recieve the respect you asked for, you gain +2 on all attack rolls gainst target.</p>
+<p><strong>Suggested Disciplines:</strong> Fortitude, Presence</p>
+</div>
+<div class='clan-card'>
+<h3>Dracul</h3>
+<p><i>The main competitors of the Ventrue, fiercely stubborn. Known to ruin potential Embracees' lives to 'test' whether they are cut out for the Clan.</i></p>
+<p><strong>Recruitment:</strong> Crusaders, Fierce Nationalists, Merchant Princes</p>
+<p><strong>Requirements:</strong> Trait: Territorial or Archaic or Folkloric Bane</p>
+<p><strong>Bonus:</strong> Vengeful — you can Blood Surge and pay only half when pursuing vengeance against one target at a time, once per scene.</p>
+<p><strong>Suggested Disciplines:</strong> Dominate, Protean, Potence</p>
+</div>
+<div class='clan-card'>
+<h3>Toreador</h3>
+<p><i>Connoisseurs of ascendant beauty and emotion, drawn irresistibly to the artistic and the sublime.</i></p>
+<p><strong>Recruitment:</strong> Artists, Diplomats, Charismatic Clergy</p>
+<p><strong>Requirements:</strong> Trait: Infatuation or Beautiful or Rare Specialist or World-Renowned Specialist; Discipline: Presence</p>
+<p><strong>Bonus:</strong> Gentle Touch — gain +2 on rolls to blood-bond others, and you can Blood Surge and pay only half when convincing or manipulating others.</p>
+<p><strong>Suggested Disciplines:</strong> Auspex, Celerity</p>
+</div>
+<div class='clan-card'>
+<h3>Nosferatu</h3>
+<p><i>Hidden eyes and ears of the vampire world, cursed with a grotesque appearance that separates them from mortal society.</i></p>
+<p><strong>Recruitment:</strong> Spymasters, Assassins, Mercenaries</p>
+<p><strong>Requirements:</strong> Trait: Ugly or Corpse-Like; Discipline: Obfuscate</p>
+<p><strong>Bonus:</strong> Cryptomania — you heal Willpower when finding hidden information or things due to a focused, unnerving curiosity. Gain an advantage convincing Vampires to share information via trade.</p>
+<p><strong>Suggested Disciplines:</strong> Nightmare, Shadow Sorcery, Animalism</p>
+</div>
+<div class='clan-card'>
+<h3>Brujah</h3>
+<p><i>Philosophers, fighters, rebels, gladiators. A history of great thinkers, generals, and revolutionaries.</i></p>
+<p><strong>Recruitment:</strong> Anarchists, Soldiers, Disloyal Knights</p>
+<p><strong>Requirements:</strong> Trait: Prone to Rage; Discipline: Potence or Celerity</p>
+<p><strong>Bonus:</strong> Freedom — heals Willpower twice as fast.</p>
+<p><strong>Suggested Disciplines:</strong> Presence, Potence, Celerity</p>
+</div>
+<div class='clan-card'>
+<h3>Gangrel</h3>
+<p><i>Wild vampires described as closest to their Beast, who maintain they are simply best at interacting with it.</i></p>
+<p><strong>Recruitment:</strong> Survivalists, Conquistadors, Raiders</p>
+<p><strong>Requirements:</strong> Trait: Ravenous; Discipline: Animalism or Protean</p>
+<p><strong>Bonus:</strong> Can stay awake an hour after dawn and wake up half an hour before sunset.</p>
+<p><strong>Suggested Disciplines:</strong> Animalism, Protean, Fortitude</p>
+</div>
+<div class='clan-card'>
+<h3>Malkavian</h3>
+<p><i>Afflicted by a supernatural madness — the clan of seers and oracles. The most heterogeneous clan.</i></p>
+<p><strong>Recruitment:</strong> Odd Scientists, Genius Detectives, Shamans</p>
+<p><strong>Requirements:</strong> At least one qualifying mental-illness Trait (Paranoid, Dissociative Episodes, Depressive Episodes, Manic Episodes, Psychotic Episodes, Panic Disorder, Post-Traumatic Stress, Delusional Belief, or Selective Mutism), from before or caused by the Embrace</p>
+<p><strong>Bonus:</strong> Prophetic — you can make a cryptic, vague, or riddle prophecy and have it be fulfilled. Only one prophecy active at a time.</p>
+<p><strong>Suggested Disciplines:</strong> Auspex, Nightmare, Arrete</p>
+</div>
+<div class='clan-card'>
+<h3>Tremere</h3>
+<p><i>Mages who sought immortality. In their greed, they instigated a terrifying magical experiment, damning themselves to a hell of their own making.</i></p>
+<p><strong>Recruitment:</strong> Occultists, Pagans, Academics</p>
+<p><strong>Requirements:</strong> Trait: Rare Specialist or World-Renowned Specialist; Discipline: Blood Sorcery</p>
+<p><strong>Bonus:</strong> Ritual Magic — can find other Tremere to cast spells together; Somewhat tolerated by other mages.</p>
+<p><strong>Suggested Disciplines:</strong> Auspex, Arrete</p>
+</div>
+<div class='clan-card'>
+<h3>Hecata</h3>
+<p><i>A strange clan steeped in death, practising the arts of necromancy. Favors Embracing from their own mortal family or those with useful outside connections.</i></p>
+<p><strong>Recruitment:</strong> Bankers, Arms Dealers, Monks</p>
+<p><strong>Requirements:</strong> Trait: Painful Bite or Selective Mutism; Discipline: Necromancy</p>
+<p><strong>Bonus:</strong> Private — spend 1 Willpower to automatically succeed against Insight, Aura Reading, or Dominate.</p>
+<p><strong>Suggested Disciplines:</strong> Fortitude, Potence</p>
+</div>
+</div>
+
+<div class="section" id="powers">
+<h2>Default Vampire Powers</h2>
+<p>Every vampire has access to these regardless of Discipline or Clan:</p>
+<table>
+<thead><tr><th>Power</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td><b>Blood Surge</b></td><td>Pay 1 or more Blood, add 1 red die per Blood spent to a roll.</td></tr>
+<tr><td><b>Blood Heal</b></td><td>Pay 1 Blood, heal 1 HP. Max once per turn.</td></tr>
+<tr><td><b>Blush of Life</b></td><td>Pay 1 Blood, become warm and able to blush for a scene.</td></tr>
+<tr><td><b>Blood Bond</b></td><td>Makes mortals Ghouls, makes vampires supernaturally like you.</td></tr>
+<tr><td><b>The Kiss</b></td><td>Mortals experience ecstasy when bitten. You can close wounds by licking.</td></tr>
+<tr><td><b>Willpower Reroll</b></td><td>Spend 1 Willpower to reroll up to 3 black dice.</td></tr>
+</tbody>
+</table>
+</div>
+
+</body>
+</html>
