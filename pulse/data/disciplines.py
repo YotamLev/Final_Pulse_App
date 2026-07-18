@@ -102,7 +102,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Disguise", "level": 2, "description": "Pay 1 Blood, alter your appearance to appear as another person. Copying someone exactly is much harder.", "requires": None},
             {"name": "Labyrinth", "level": 2, "description": "Pay 1 Blood, cause mortals to get confused and lost around you, having difficulty navigating. Lasts a scene or pay 1 extra Blood for the whole day.", "requires": None},
             {"name": "Silent Hunter", "level": 2, "description": "When using Fade, Cloak of Shadows, or Vanish — the vampire can also completely silence sounds from themselves.", "requires": None},
-            {"name": "Ambusher", "level": 3, "description": "Pay 1 Blood, make Obfuscate powers work on other Vampires for a scene. Those with Auspex can roll against your Obfuscate.", "requires": None},
+            {"name": "Ambusher", "level": 3, "description": "All Obfuscate powers now work on other Vampires. Those with Auspex can roll against your Obfuscate, but suffer -3.", "requires": None},
             {"name": "Cloak the Gathering", "level": 3, "description": "Extend Obfuscate powers to willing vampires who stay close. Pay 1 extra Blood per vampire per scene.", "requires": None},
         ],
     },
