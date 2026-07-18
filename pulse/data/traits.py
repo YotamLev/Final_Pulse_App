@@ -464,9 +464,9 @@ VAMPIRE_TRAITS: list[dict] = [
         "cost_options": [
             (-1, "Broadly selective (e.g., 20-30 year old males)"),
             (-2, "Selective (e.g., a specific ethnicity or profession)"),
-            (-3, "Very selective"),
-            (-4, "Extremely selective"),
-            (-5, "Near-impossible (e.g., only pregnant women)"),
+            (-3, "Very selective (e.g. young male doctors, widows, CEOs)"),
+            (-4, "Extremely selective (e.g. identical twins, murderers, cancer survivors)"),
+            (-5, "Near-impossible (e.g., olympians, pregnant women, heads of state)"),
         ],
         "description": "Only feed on a specific type of mortal. Feeding on others costs 1-5 Willpower depending on proximity to desired prey.",
         "requires_detail": True,
