@@ -491,6 +491,12 @@ VAMPIRE_TRAITS: list[dict] = [
         "description": "Your appearance feels wrong and dead. Rolls relying on physical attractiveness or favorable first impressions are impeded.",
     },
     {
+        "key": "monstrous",
+        "name": "Monstrous",
+        "cost": -3,
+        "description": "Your Embrace changed you to an unnatural monster: you have fish-like eyes, or a deformed skull, or any other aesthetic change - this trait grants no physical advantages.",
+    },
+    {
         "key": "iron_gullet",
         "name": "Iron Gullet",
         "cost": 2,
