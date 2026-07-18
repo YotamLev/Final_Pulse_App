@@ -236,6 +236,7 @@ TEMPLATE = """<!DOCTYPE html>
   <a href="#disciplines">Discipline Trees</a>
   <a href="#clans">Clans</a>
   <a href="#powers">Default Vampire Powers</a>
+  <a href="#rolls">Rolls</a>
 </div>
 
 <div class="section" id="overview">
@@ -340,6 +341,38 @@ TEMPLATE = """<!DOCTYPE html>
 </table>
 </div>
 
+<div class="section" id="rolls">
+<h2>Rolls</h2>
+<p>We use dice when a result would be interesting and dramatic. We typically roll <strong>1 base die + skill</strong>. Sometimes, certain supernatural powers, Traits, situations, and other elements add or subtract from this pool. So, if your character has Awareness 3, they would roll a pool of 4 dice.</p>
+
+<h3>Tests &amp; Opposed Rolls</h3>
+<p>We have 2 kinds of rolls:</p>
+<ul>
+  <li><strong>Test</strong> — the character has to meet-or-beat a certain number of successes. For example: breaking into a bank might be a Larceny test of difficulty 4.</li>
+  <li><strong>Opposed</strong> — the character has to meet-or-beat the roll of an opponent. For example: two vampires are locked in combat, rolling Martial Arts and Swordsmanship against each other.</li>
+</ul>
+<p><strong>Margins</strong> happen when the roll is over or under the difficulty or the opposition roll.</p>
+<ul>
+  <li>A <strong>negative margin</strong> has consequences: failure to break into the bank and activating an alarm. In combat, negative margin can translate into damage, or a weaker position.</li>
+  <li>A <strong>positive margin</strong> has advantages: a hunting roll yields more victims than expected, a combat roll causes extra damage, an Auspex roll allows extra questions.</li>
+</ul>
+
+<h3>Turns</h3>
+<p>In combat or other intense scenes where every moment matters, the game might use Turns. Each Turn looks like:</p>
+<ol>
+  <li>Players who want to declare their intended actions for this turn.</li>
+  <li>Rivals act their turn, sometimes clashing with the Players and rolling Opposed rolls, sometimes the players simply roll Test rolls.</li>
+  <li>Players who have not acted yet may declare their action in reaction to the rival's actions. Waiting may have consequences, but can also be a smart move.</li>
+  <li>After all Players &amp; Rivals actions are resolved, next Turn begins.</li>
+</ol>
+
+<h3>Dice</h3>
+<p>The dice used in the game look like these, or, if d10s are used, then "1" corresponds to blank on black dice and skull on red dice, "2-5" corresponds to blank on black &amp; red dice, "6-9" corresponds to success on black &amp; red dice, and "0" corresponds to critical success on black &amp; red dice.</p>
+<div style="text-align:center">
+  <img src="{dice_image}" alt="Dice cheat sheet" style="max-width:100%;width:500px;border-radius:4px"/>
+</div>
+</div>
+
 <script>
 function filterMortalTraits(cat) {{
   var rows = document.querySelectorAll('#mortalTraitsTable tbody tr');
@@ -369,6 +402,7 @@ def main() -> None:
         discipline_options=discipline_options(),
         discipline_sections=discipline_sections(),
         clan_sections=clan_sections(),
+        dice_image=icon_data_uri("Data/Images/dice_cheat_sheet.png"),
     )
     with io.open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(html)
