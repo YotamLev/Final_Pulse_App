@@ -10,9 +10,12 @@ from pulse.ui.theme import apply_theme, render_hero
 from pulse.ui.wizard import render_wizard
 from pulse.ui.character_sheet import render_character_sheet
 from pulse.ui.struggle import render_struggle
+from pulse.ui.rules import render_rules_page
 from pulse.models.character import default_character
 from pulse.services import storage
 from pulse.ui.components import request_nav
+
+NAV_OPTIONS = ["wizard", "sheet", "struggle", "rules"]
 
 st.set_page_config(
     page_title="Final Pulse",
@@ -26,7 +29,9 @@ def _init_state() -> None:
     if "character" not in st.session_state:
         st.session_state.character = storage.resolve_initial_character()
     if "nav" not in st.session_state:
-        st.session_state.nav = "wizard"
+        # Deep link, e.g. "?nav=rules" — shareable URL that opens straight to a tab.
+        requested = st.query_params.get("nav")
+        st.session_state.nav = requested if requested in NAV_OPTIONS else "wizard"
     pending = st.session_state.pop("_pending_nav", None)
     if pending is not None:
         st.session_state.nav = pending
@@ -48,11 +53,12 @@ def _sidebar(char: dict) -> str:
 
     nav = st.sidebar.radio(
         "Navigate",
-        options=["wizard", "sheet", "struggle"],
+        options=NAV_OPTIONS,
         format_func=lambda x: {
             "wizard": "⚡ Character Creator",
             "sheet": "📜 Character Sheet",
             "struggle": "♟ Struggle",
+            "rules": "📖 Rules",
         }[x],
         key="nav",
         label_visibility="collapsed",
@@ -97,6 +103,8 @@ def main() -> None:
         render_character_sheet(char)
     elif nav == "struggle":
         render_struggle(char)
+    elif nav == "rules":
+        render_rules_page()
 
     storage.save_if_changed(char)
 
