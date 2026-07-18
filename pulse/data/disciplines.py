@@ -49,7 +49,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Hover", "level": 4, "description": "The vampire can hover slightly above ground.", "requires": None},
             {"name": "Fast Strike", "level": 4, "description": "Pay 2 Blood, you can take 2 actions in a turn without penalties.", "requires": None},
             {"name": "Unholy Flight", "level": 5, "description": "Pay 1 Blood, the vampire can fly at running speed for a scene.", "requires": "Hover"},
-            {"name": "Uncanny Dodge", "level": 5, "description": "When attacked by something you can dodge, pay 1 Blood, lower incoming HP damage by 2, as a reflex.", "requires": "Hover"},
+            {"name": "Uncanny Dodge", "level": 5, "description": "When attacked by something you can dodge, pay 1 Blood, lower incoming HP damage by 2, as a reflex.", "requires": "Bullet Speed"},
         ],
     },
     "Dominate": {
