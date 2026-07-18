@@ -42,7 +42,7 @@ def esc(s: str) -> str:
 
 
 def icon_data_uri(rel_path: str) -> str:
-    full = REPO_ROOT / rel_path.replace("/", "\\")
+    full = REPO_ROOT / rel_path
     b = full.read_bytes()
     return "data:image/png;base64," + base64.b64encode(b).decode("ascii")
 
