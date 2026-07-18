@@ -47,7 +47,7 @@ CLANS: dict[str, dict] = {
         "description": "Hidden eyes and ears of the vampire world, cursed with a grotesque appearance that separates them from mortal society.",
         "recruitment": "Spymasters, Assassins, Mercenaries",
         "requirements": {
-            "trait_any": ["ugly", "corpse_like"],
+            "trait_any": ["ugly", "corpse_like", "monstrous"],
             "discipline_all": ["Obfuscate"],
         },
         "bonus": "Cryptomania — you heal Willpower when finding hidden information or things due to a focused, unnerving curiosity. Gain an advantage convincing Vampires to share information via trade.",
@@ -69,7 +69,7 @@ CLANS: dict[str, dict] = {
         "description": "Wild vampires described as closest to their Beast, who maintain they are simply best at interacting with it.",
         "recruitment": "Survivalists, Conquistadors, Raiders",
         "requirements": {
-            "trait_any": ["ravenous"],
+            "trait_any": ["ravenous", "territorial"],
             "discipline_any": ["Animalism", "Protean"],
         },
         "bonus": "Can stay awake an hour after dawn and wake up half an hour before sunset.",
