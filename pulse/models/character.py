@@ -237,5 +237,14 @@ def char_from_dict(data: dict) -> dict:
     saved_stage = base.get("wizard_stage", 1)
     if saved_stage in old_stage_map:
         base["wizard_stage"] = old_stage_map[saved_stage]
+    # Migrate renamed discipline powers (name-only changes in data/disciplines.py)
+    power_renames = {
+        "The Still World": "Blink",
+        "Whirlwind": "Fast Strike",
+    }
+    for powers in base.get("discipline_powers", {}).values():
+        for i, name in enumerate(powers):
+            if name in power_renames:
+                powers[i] = power_renames[name]
     normalize_character(base)
     return base

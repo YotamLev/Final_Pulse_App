@@ -240,6 +240,12 @@ class TestSerialization:
         c = char_from_dict(data)
         assert c["memories"] == "Already set."
 
+    def test_renamed_discipline_powers_migrated(self):
+        """Old power names from before a disciplines.py rename still resolve."""
+        data = {"discipline_powers": {"Celerity": ["Speed", "The Still World", "Whirlwind"]}}
+        c = char_from_dict(data)
+        assert c["discipline_powers"]["Celerity"] == ["Speed", "Blink", "Fast Strike"]
+
     def test_xp_log_preserved_through_round_trip(self):
         c = default_character()
         log_xp_spend(c, "Guns +1 dot", 1)
