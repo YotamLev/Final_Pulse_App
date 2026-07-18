@@ -177,9 +177,9 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Wrath of Zeus", "level": 2, "description": "Pay 1 Blood, direct lightning to strike a target, rolling Druidic.", "requires": None},
             {"name": "Earth Meld", "level": 2, "description": "Pay 1 Blood, sink into and become one with soil. Leave when you wish. You can travel slowly through natural earth and wood in this state.", "requires": None},
             {"name": "Root Grasp", "level": 2, "description": "Pay 1 Blood, command roots, vines, branches, or other living plants to move, entangle, or immobilize targets. Roll Druidic. Lasts a scene.", "requires": None},
-            {"name": "Sweet Sap", "level": 2, "description": "You can drink Blood from trees, killing them. A large old tree gives 2 Blood, and small bushes give nothing.", "requires": None},
+            {"name": "Sweet Sap", "level": 2, "description": "You can drink Blood from trees, killing them. A large old tree gives 2 Blood, and large bushes give 1.", "requires": None},
             {"name": "Malakan's Gift", "level": 3, "description": "Pay 1 Blood, animate a tree or major plant as a servant for a night. The older the plant is - the more powerful it is as a servant.", "requires": None},
-            {"name": "Foul Wind", "level": 4, "description": "Pay 2 Blood, strong winds can lift you to fly, and you can direct strong wind to push people and objects around.", "requires": None},
+            {"name": "Foul Wind", "level": 4, "description": "Pay 2 Blood, for a scene: strong winds can lift you to fly, and you can direct strong wind to push people and objects around.", "requires": None},
         ],
     },
     "Blood Sorcery": {
