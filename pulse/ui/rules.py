@@ -19,5 +19,14 @@ def _load_rules_html() -> str:
     return RULES_HTML_PATH.read_text(encoding="utf-8")
 
 
+# components.v1.html can't auto-size to its content (that needs the full
+# component JS API, not the plain html() helper), so this is a fixed height
+# sized to the doc's content at typical embed widths (~900px wide ->
+# ~23.2K px tall). scrolling=True is a fallback for narrower widths, where
+# more text wrapping makes the content taller than this. Bump this if the
+# rules doc grows enough to need the fallback scrollbar regularly.
+RULES_FRAME_HEIGHT = 23400
+
+
 def render_rules_page() -> None:
-    components.html(_load_rules_html(), height=900, scrolling=True)
+    components.html(_load_rules_html(), height=RULES_FRAME_HEIGHT, scrolling=True)
