@@ -1,0 +1,40 @@
+name: Regenerate Rules Doc
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - "pulse/data/**"
+      - "scripts/generate_rules_doc.py"
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Regenerate rules doc
+        run: python scripts/generate_rules_doc.py
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet -- "Instructions/Final Pulse 2E - Character Building Rules.html"; then
+            echo "Rules doc already up to date, nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add "Instructions/Final Pulse 2E - Character Building Rules.html"
+            git commit -m "Auto-regenerate rules doc from pulse/data changes"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
