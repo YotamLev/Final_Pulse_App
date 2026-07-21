@@ -77,6 +77,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Mind Fortress", "level": 3, "description": "Add Fortitude level to rolls to resist mental powers.", "requires": None},
             {"name": "Last Stand", "level": 4, "description": "If reduced to 0 HP, Flesh of Marble activates automatically to prevent Torpor, as long as Blood is -8 or higher. Blood cost paid as normal.", "requires": "Flesh of Marble"},
             {"name": "Endurance", "level": 5, "description": "Flesh of Marble costs 1 Blood instead of 2.", "requires": "Flesh of Marble"},
+            {"name": "Retribution", "level": 5, "description": "When using Flesh of Marble, you can reflect attacks back to attackers: fists break on your skin, swords bounce back, and bullets ricochet.", "requires": "Flesh of Marble"},
         ],
     },
     "Nightmare": {
