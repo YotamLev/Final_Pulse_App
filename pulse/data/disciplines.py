@@ -57,7 +57,7 @@ DISCIPLINES: dict[str, dict] = {
         "powers": [
             {"name": "Draw On Instinct", "level": 1, "description": "Cause a mortal to obey a simple command that is some form of: Flee ('run away!'), Freeze ('kneel before me,'), or Fight ('shoot that guy!').", "requires": None},
             {"name": "Cloud Mind", "level": 1, "description": "Cause a mortal to forget the last 5 minutes and the next 2 minutes.", "requires": None},
-            {"name": "Mesmerize", "level": 2, "description": "Pay 1 Blood, target a mortal (roll Dominate if they resist), cause a simple task for about a scene. Task can't be suicidal. Mortals remember the task but not why.", "requires": None},
+            {"name": "Mesmerize", "level": 2, "description": "Pay 1 Blood, target a mortal (roll Dominate if they resist), set a simple task, which the target will do for about a scene. Task can't be suicidal. Mortals remember the task but not why.", "requires": None},
             {"name": "Modify Memory", "level": 2, "description": "Pay 1 Blood, target a mortal, roll Dominate, alter memories. Cannot extract information.", "requires": None},
             {"name": "Implant Trigger", "level": 3, "description": "Pay 1 Blood, allows Mesmerize, Cloud Mind, and Modify Memory to have a trigger. Lasts for Dominate level days or until triggered.", "requires": None},
             {"name": "Terminal Decree", "level": 3, "description": "Allows suicidal tasks with Mesmerize.", "requires": "Mesmerize"},
