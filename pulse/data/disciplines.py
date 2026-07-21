@@ -73,7 +73,7 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Toughness", "level": 1, "description": "Add 2 max HP per level of Fortitude.", "requires": None},
             {"name": "Prowess From Pain", "level": 2, "description": "Each HP damage you have, up to Fortitude level, can be added to physical attacks or stressed efforts.", "requires": None},
             {"name": "Draught of Endurance", "level": 2, "description": "Your ghouls add your Fortitude level to their HP. A vampire drinking at least 1 of your Blood gets your Fortitude powers for the night.", "requires": None},
-            {"name": "Flesh of Marble", "level": 3, "description": "Pay 2 Blood, take no damage for 1 turn.", "requires": None},
+            {"name": "Flesh of Marble", "level": 3, "description": "Pay 2 Blood, take no damage for 1 turn. You choose if this power manifests as attacks bouncing off of your body, or as you soaking them in and healing instantly and effortlessly.", "requires": None},
             {"name": "Mind Fortress", "level": 3, "description": "Add Fortitude level to rolls to resist mental powers.", "requires": None},
             {"name": "Last Stand", "level": 4, "description": "If reduced to 0 HP, Flesh of Marble activates automatically to prevent Torpor, as long as Blood is -8 or higher. Blood cost paid as normal.", "requires": "Flesh of Marble"},
             {"name": "Endurance", "level": 5, "description": "Flesh of Marble costs 1 Blood instead of 2.", "requires": "Flesh of Marble"},
@@ -128,7 +128,6 @@ DISCIPLINES: dict[str, dict] = {
             {"name": "Sway", "level": 3, "description": "Pay 2 Blood, cause a great crowd of mortals to absolutely believe in a plausible cause. They will endanger themselves for it. Lasts a scene.", "requires": None},
             {"name": "Art Necro", "level": 4, "description": "Create a piece of art that can project one of your Presence powers on viewers.", "requires": None},
             {"name": "Ultimate Hypnotic", "level": 4, "description": "Hypnotize can now work on as many vampires as your Presence level.", "requires": "Hypnotize"},
-            {"name": "Susceptible", "level": 5, "description": "Mortals exposed to your Presence powers act as loyal as Ghouls, for a night.", "requires": None},
         ],
     },
     "Protean": {
